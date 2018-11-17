@@ -1,0 +1,14 @@
+def path = file('..').getAbsolutePath()
+//path = path.substring(0,path.length()-20)
+
+include 'plwordnetMobileEntity'
+include 'plwordnetMobileService'
+include 'plwordnetMobileApp'
+
+project(":plwordnetMobileEntity").name = "plwordnetmobile-entity"
+project(":plwordnetMobileService").name = "plwordnetmobile-service"
+project(":plwordnetMobileApp").name = "plwordnetmobile-app"
+
+project(':plwordnetmobile-entity').projectDir = new File (path + "\\plwordnetMobileEntity")
+project(':plwordnetmobile-service').projectDir = new File (path + "\\plwordnetMobileService")
+project(':plwordnetmobile-app').projectDir = new File (path + "\\plwordnetMobileApp")

@@ -1,0 +1,18 @@
+group 'bzapps'
+version '1.0'
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    version = '1.0'
+
+    //dependencies{
+    //    compile project(':plwordnetmobile-entity')
+    //    compile project(':plwordnetmobile-service')
+    //    compile project(':plwordnetmobile-app')
+    //}
+}

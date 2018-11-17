@@ -3,4 +3,5 @@
 /.idea
 **/gradlew
 **/gradlew.bat
+*.iml
 **/proguard-rules.pro
