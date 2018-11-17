@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4f4f4f</color>
+    <color name="colorDrawer">#3f3f3f</color>
+    <color name="colorPrimaryDark">#303030</color>
+    <color name="colorWordnetTitle">#8e0707</color>
+    <color name="colorWordnetSubtitle">#5f5f5f</color>
+    <color name="colorCopyrightText">#888888</color>
+    <color name="colorLowerBar">#DDDDDD</color>
+    <color name="colorNavigationViewIcon">#DDDDDD</color>
+    <color name="colorNavigationViewText">#DDDDDD</color>
+    <color name="colorAccent">#8e0707</color>
+    <color name="colorMainText">#101010</color>
+    <color name="colorDescriptionText">#5f5f5f</color>
+    <color name="colorMainSeparator">#DFDFDF</color>
+    <color name="colorHighlight">#88FFFFaf</color>
+    <color name="colorLink">#1a73e8</color>
+    <color name="alpha">#00FFFFFF</color>
+</resources>

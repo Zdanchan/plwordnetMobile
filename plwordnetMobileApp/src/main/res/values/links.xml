@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mnisw_link" translatable="false">https://www.nauka.gov.pl/</string>
+    <string name="clarinpl_link" translatable="false">http://clarin-pl.eu/pl/strona-glowna/</string>
+    <string name="pwr_link" translatable="false">http://pwr.edu.pl/</string>
+    <string name="nekst_link" translatable="false">https://nekst.ipipan.waw.pl/</string>
+    <string name="synat_link" translatable="false">http://synat.pl/</string>
+</resources>

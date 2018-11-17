@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relation_cell"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/relation_cell_line_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
+            android:id="@+id/relation_sense_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="sense-1"
+            android:textColor="@color/colorLink"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            />
+        <ImageView
+            android:id="@+id/language_icon"
+            android:layout_width="15dp"
+            android:layout_height="10dp"
+            android:layout_toRightOf="@id/relation_sense_id"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="2dp"
+            android:src="@drawable/flag_unknown" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/relation_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relation_cell_line_one"
+        android:layout_alignParentLeft="true"
+        android:text="description"
+        android:textColor="@color/colorDescriptionText"
+        android:textSize="12dp" />
+
+</RelativeLayout>

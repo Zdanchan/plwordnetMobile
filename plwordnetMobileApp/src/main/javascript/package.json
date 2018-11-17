@@ -1,0 +1,20 @@
+{
+  "name": "wordnet_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "npx webpack --watch",
+    "develop": "npx webpack --mode development --watch ",
+    "build": "npx webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@nlp.pwr.wroc.pl:plwordnetjs.git"
+  },
+  "mode": "development",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

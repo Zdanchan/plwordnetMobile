@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="locales_symbols">
+        <item>en_US</item>
+        <item>pl_PL</item>
+    </string-array>
+    <string name="locale_en_US" translatable="false">english</string>
+    <string name="locale_pl_PL" translatable="false">polish</string>
+</resources>
