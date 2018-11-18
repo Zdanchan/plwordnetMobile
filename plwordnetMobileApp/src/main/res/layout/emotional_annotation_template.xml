@@ -1,13 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/emotional_annotation_cell"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TableLayout
+    android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/annotation_attributes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+        <TextView
+                android:id="@+id/polarity_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:text="@string/polarity_emo"
+                android:textColor="@color/colorDescriptionText"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/polarity_value"
+        />
+        <TextView
+                android:id="@+id/emotions_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:text="@string/emotions_emo"
+                android:textColor="@color/colorDescriptionText"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/emotions_value"
+        />
+        <TextView
+                android:id="@+id/valuations_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:text="@string/valuations_emo"
+                android:textColor="@color/colorDescriptionText"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/valuations_value"
+        />
+        <TextView
+                android:id="@+id/examples_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:text="@string/examples_emo"
+                android:textColor="@color/colorDescriptionText"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/examples_value"
+        />
 
-    </TableLayout>
+
+        <android.support.constraint.Barrier
+                android:id="@+id/labels_barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="polarity_label,emotions_label,valuations_label,examples_label"/>
+
+        <TextView
+                android:id="@+id/polarity_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:text="text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toRightOf="@id/labels_barrier"
+                app:layout_constraintRight_toRightOf="parent"
+        />
+        <TextView
+                android:id="@+id/emotions_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toRightOf="@id/labels_barrier"
+                app:layout_constraintTop_toBottomOf="@id/polarity_value"
+                app:layout_constraintRight_toRightOf="parent"
+        />
+        <TextView
+                android:id="@+id/valuations_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toRightOf="@id/labels_barrier"
+                app:layout_constraintTop_toBottomOf="@id/emotions_value"
+                app:layout_constraintRight_toRightOf="parent"
+        />
+        <TextView
+                android:id="@+id/examples_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toRightOf="@id/labels_barrier"
+                app:layout_constraintTop_toBottomOf="@id/valuations_value"
+                app:layout_constraintRight_toRightOf="parent"
+        />
+
+    </android.support.constraint.ConstraintLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:elevation="2dp"
+            android:layout_below="@id/annotation_attributes"
+            android:background="@color/colorPrimaryDark"
+    />
 </RelativeLayout>

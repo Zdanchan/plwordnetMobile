@@ -122,6 +122,14 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
     }
 
     @Override
+    protected void onDestroy(){
+        if(retrieveSensesTask!=null){
+            retrieveSensesTask.cancel(true);
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
         ArrayList<SenseEntity> word_related_senses = new ArrayList<SenseEntity>();

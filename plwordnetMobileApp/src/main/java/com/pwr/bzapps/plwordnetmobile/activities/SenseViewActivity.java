@@ -3,9 +3,12 @@ package com.pwr.bzapps.plwordnetmobile.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,6 +54,7 @@ public class SenseViewActivity extends BackButtonActivity {
     private ArrayList<SenseEntity> synonyms;
     private ArrayList<SynsetRelationEntity> relations;
     private ProgressBar progress_bar;
+    private AsyncTask retrieveSelectedSensesTask, retrieveSynonymsTask, retrieveWordRelatedSensesTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +80,26 @@ public class SenseViewActivity extends BackButtonActivity {
             ids.add(relation.getChild_synset_id());
         }
 
-        new RetriveSelectedSensesTask(this,getApplicationContext()).execute(ids.toString());
-        new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
+        retrieveSelectedSensesTask = new RetriveSelectedSensesTask(this,getApplicationContext()).execute(ids.toString());
+        retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
-            new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord());
+            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord());
         }
         prepareLowerBar();
+    }
+
+    @Override
+    protected void onDestroy(){
+        if(retrieveSelectedSensesTask!=null){
+            retrieveSelectedSensesTask.cancel(true);
+        }
+        if(retrieveSynonymsTask!=null){
+            retrieveSynonymsTask.cancel(true);
+        }
+        if(retrieveWordRelatedSensesTask!=null){
+            retrieveWordRelatedSensesTask.cancel(true);
+        }
+        super.onDestroy();
     }
 
     public void setRelated(ArrayList<SenseEntity> related) {
@@ -235,105 +253,56 @@ public class SenseViewActivity extends BackButtonActivity {
         boolean no_emotions = true;
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
             RelativeLayout annotation = (RelativeLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.emotional_annotation_template, null);
-            TableLayout content_table = annotation.findViewById(R.id.annotation_attributes);
+            ConstraintLayout annotation_attributes = annotation.findViewById(R.id.annotation_attributes);
             if(emo.isHas_emotional_characteristic()) {
+                int counter=1;
                 if (emo.getMarkedness() != null && !"".equals(emo.getMarkedness())) {
-                    TableRow markedness = new TableRow(getApplicationContext());
-                    TextView markedness_label = new TextView(getApplicationContext());
-                    markedness_label.setText(getResources().getString(R.string.polarity_emo));
-                    markedness_label.setTextSize(14);
-                    markedness_label.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDescriptionText));
-                    markedness_label.setTypeface(markedness_label.getTypeface(), Typeface.BOLD);
-                    markedness_label.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                    ((TableRow.LayoutParams) markedness_label.getLayoutParams()).setMargins(0, 0, 20, 0);
-
-                    TextView markedness_value = new TextView(getApplicationContext());
+                    TextView markedness_value = (TextView)annotation_attributes.findViewById(R.id.polarity_value);
                     markedness_value.setText(EmotionalAnnotationsInterpreter.interpretMarkedness(getApplicationContext(), emo.getMarkedness()));
-                    markedness_value.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMainText));
-                    markedness_value.setTextSize(14);
-                    markedness_value.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    markedness.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    markedness.addView(markedness_label);
-                    markedness.addView(markedness_value);
-
-                    content_table.addView(markedness, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    if(counter%2==0)
+                        markedness_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
+                    counter++;
+                }
+                else{
+                    ((TextView)annotation_attributes.findViewById(R.id.polarity_label)).setVisibility(View.GONE);
+                    ((TextView)annotation_attributes.findViewById(R.id.polarity_value)).setVisibility(View.GONE);
                 }
 
                 if (emo.getEmotions() != null && !"".equals(emo.getEmotions())) {
-                    TableRow emotions = new TableRow(getApplicationContext());
-                    TextView emotions_label = new TextView(getApplicationContext());
-                    emotions_label.setText(getResources().getString(R.string.emotions_emo));
-                    emotions_label.setTextSize(14);
-                    emotions_label.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDescriptionText));
-                    emotions_label.setTypeface(emotions_label.getTypeface(), Typeface.BOLD);
-                    emotions_label.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                    ((TableRow.LayoutParams) emotions_label.getLayoutParams()).setMargins(0, 0, 20, 0);
-
-                    TextView emotions_value = new TextView(getApplicationContext());
+                    TextView emotions_value = (TextView)annotation_attributes.findViewById(R.id.emotions_value);
                     emotions_value.setText(EmotionalAnnotationsInterpreter.interpretEmotions(getApplicationContext(), emo.getEmotions()));
-                    emotions_value.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMainText));
-                    emotions_value.setTextSize(14);
-                    emotions_value.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    emotions.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    emotions.addView(emotions_label);
-                    emotions.addView(emotions_value);
-
-                    content_table.addView(emotions, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    if(counter%2==0)
+                        emotions_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
+                    counter++;
+                }
+                else{
+                    ((TextView)annotation_attributes.findViewById(R.id.emotions_label)).setVisibility(View.GONE);
+                    ((TextView)annotation_attributes.findViewById(R.id.emotions_value)).setVisibility(View.GONE);
                 }
 
                 if (emo.getValuations() != null && !"".equals(emo.getValuations())) {
-                    TableRow valuations = new TableRow(getApplicationContext());
-                    TextView valuations_label = new TextView(getApplicationContext());
-                    valuations_label.setText(getResources().getString(R.string.valuations_emo));
-                    valuations_label.setTextSize(14);
-                    valuations_label.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDescriptionText));
-                    valuations_label.setTypeface(valuations_label.getTypeface(), Typeface.BOLD);
-                    valuations_label.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                    ((TableRow.LayoutParams) valuations_label.getLayoutParams()).setMargins(0, 0, 20, 0);
-
-                    TextView valuations_value = new TextView(getApplicationContext());
+                    TextView valuations_value = (TextView)annotation_attributes.findViewById(R.id.valuations_value);
                     valuations_value.setText(EmotionalAnnotationsInterpreter.interpretValuations(getApplicationContext(), emo.getValuations()));
-                    valuations_value.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMainText));
-                    valuations_value.setTextSize(14);
-                    valuations_value.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    valuations.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    valuations.addView(valuations_label);
-                    valuations.addView(valuations_value);
-
-                    content_table.addView(valuations, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    if(counter%2==0)
+                        valuations_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
+                    counter++;
+                }
+                else{
+                    ((TextView)annotation_attributes.findViewById(R.id.valuations_label)).setVisibility(View.GONE);
+                    ((TextView)annotation_attributes.findViewById(R.id.valuations_value)).setVisibility(View.GONE);
                 }
 
                 if ((emo.getExample1() != null && !"".equals(emo.getExample1())) || (emo.getExample2() != null && !"".equals(emo.getExample2()))) {
-                    TableRow examples = new TableRow(getApplicationContext());
-                    WrapedMultilineTextWiew examples_label = new WrapedMultilineTextWiew(getApplicationContext());
-                    examples_label.setText(getResources().getString(R.string.examples_emo));
-                    examples_label.setTextSize(14);
-                    examples_label.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDescriptionText));
-                    examples_label.setTypeface(examples_label.getTypeface(), Typeface.BOLD);
-                    examples_label.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                    ((TableRow.LayoutParams) examples_label.getLayoutParams()).setMargins(0, 0, 20, 0);
-
-                    TextView examples_value = new TextView(getApplicationContext());
+                    TextView examples_value = (TextView)annotation_attributes.findViewById(R.id.examples_value);
                     examples_value.setText(EmotionalAnnotationsInterpreter.prepareExamples(emo.getExample1(), emo.getExample2()));
-                    examples_value.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMainText));
-                    examples_value.setTextSize(14);
-                    examples_value.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-                    examples.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                    ((TableRow.LayoutParams) examples_value.getLayoutParams()).setMargins(0, 0, 1, 0);
-
-                    examples.addView(examples_label);
-                    examples.addView(examples_value);
-
-                    content_table.addView(examples, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    if(counter%2==0)
+                        examples_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
+                    counter++;
                 }
-
+                else{
+                    ((TextView)annotation_attributes.findViewById(R.id.examples_label)).setVisibility(View.GONE);
+                    ((TextView)annotation_attributes.findViewById(R.id.examples_value)).setVisibility(View.GONE);
+                }
                 annotation_container.addView(annotation);
                 no_emotions=false;
             }

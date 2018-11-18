@@ -122,14 +122,17 @@
                     app:constraint_referenced_ids="sense_attribute_part_of_speech,sense_attribute_domain,sense_attribute_examples,sense_attribute_synonyms,sense_attribute_source"/>
                 <RelativeLayout
                     android:id="@+id/first_row"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier" >
+                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                    app:layout_constraintRight_toRightOf="parent">
                     <RelativeLayout
                         android:id="@+id/sense_line_one"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true">
                         <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
                             android:id="@+id/sense_word"
@@ -156,8 +159,10 @@
                     </RelativeLayout>
                     <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
                         android:id="@+id/sense_description"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
                         android:layout_below="@id/sense_line_one"
                         android:text="description"
                         android:textSize="14dp" />
@@ -172,15 +177,18 @@
                 <RelativeLayout
                     android:id="@+id/domain_row"
                     android:layout_below="@id/first_row"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/first_row">
                     <TextView
                         android:id="@+id/sense_domain"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
                         android:text="domain"
                         android:textSize="14dp" />
                     <View
@@ -194,10 +202,11 @@
                 <RelativeLayout
                     android:id="@+id/examples_row"
                     android:layout_below="@id/domain_row"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/domain_row">
                     <LinearLayout
                         android:id="@+id/sense_examples_container"
@@ -217,15 +226,18 @@
                 <RelativeLayout
                     android:id="@+id/synonyms_row"
                     android:layout_below="@id/examples_row"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/examples_row">
                     <LinearLayout
                         android:id="@+id/sense_synonyms_container"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
                         android:orientation="vertical">
                     </LinearLayout>
                     <View
@@ -239,15 +251,18 @@
                 <RelativeLayout
                     android:id="@+id/source_row"
                     android:layout_below="@id/synonyms_row"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/synonyms_row">
                     <TextView
                         android:id="@+id/sense_source"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
                         android:text="source"
                         android:textSize="14dp" />
                     <View
@@ -264,16 +279,18 @@
                 android:layout_below="@id/sense_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp">
                 <TextView
                     android:id="@+id/emotional_annotation_attribute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/emotional_annotation"
-                    android:textColor="@color/colorDescriptionText"
-                    android:textSize="14dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorMainText"
                     />
                 <LinearLayout
                     android:id="@+id/emotional_annotations_container"

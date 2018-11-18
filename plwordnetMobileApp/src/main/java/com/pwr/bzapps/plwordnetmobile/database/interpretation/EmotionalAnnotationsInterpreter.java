@@ -52,7 +52,7 @@ public class EmotionalAnnotationsInterpreter {
     public static String prepareExamples(String example1, String example2){
         String result = "";
         result+=(example1!=null ? example1 : "");
-        result+=(example1!=null && example2!=null ? "\n " : "");
+        result+=(example1!=null && example2!=null ? "\n" : "");
         result+=(example2!=null ? example2 : "");
 
 
