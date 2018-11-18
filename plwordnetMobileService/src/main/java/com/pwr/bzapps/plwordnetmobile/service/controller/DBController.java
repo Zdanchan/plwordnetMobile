@@ -43,7 +43,9 @@ import java.util.*;
 public class DBController {
 
     private Logger log = LoggerFactory.getLogger(ApplicationLocalisedStringController.class);
-    private final String QUERY_DIRECTORY = "/queries/";
+    private final String QUERY_DIRECTORY = "/downloads/queries/";
+    private final String TMP_DIRECTORY = "/downloads/tmp/";
+    private final String[] languages = {"polish", "english"};
 
     @Autowired
     private TablesRepository tablesRepository;
@@ -217,7 +219,7 @@ public class DBController {
                 @Override
                 public void run() {
                     try {
-                        File theDir = new File(new File("").getAbsolutePath() + QUERY_DIRECTORY);
+                        File theDir = new File(new File("").getAbsolutePath() + TMP_DIRECTORY);
                         if (!theDir.exists()) {
                             log.info("Creating directory for queries: " + theDir.getName());
                             boolean result = false;
@@ -318,8 +320,6 @@ public class DBController {
                                 "db_insert_sense_relations.q"
                         };
 
-                        String[] languages = {"polish", "english"};
-
 
                         for(int i=0; i<languages.length; i++){
                             Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(languages[i]));
@@ -368,6 +368,8 @@ public class DBController {
                             storeQuery(insert,getFileLocalisedName(file_names[7],key));
                         }
 
+                        moveFromTMP();
+
                         log.info("Insert queries are stored and up to date");
                     }catch (Exception e){
                         log.error("Exception during query generation: ", e);
@@ -384,6 +386,50 @@ public class DBController {
         }
 
         return response;
+    }
+
+    private void moveFromTMP(){
+        String[] file_names = new String[]{
+                "db_insert_application_localised_strings.q",
+                "db_insert_dictionaries.q",
+                "db_insert_domains.q",
+                "db_insert_lexicons.q",
+                "db_insert_parts_of_speech.q",
+                "db_insert_word.q",
+                "db_insert_relation_types.q",
+                "db_insert_relation_type_allowed_lexicons.q",
+                "db_insert_relation_type_allowed_parts_of_speech.q",
+        };
+        String[] localised_file_names = new String[]{
+                "db_insert_synsets.q",
+                "db_insert_synset_attributes.q",
+                "db_insert_synset_examples.q",
+                "db_insert_synset_relations.q",
+                "db_insert_senses.q",
+                "db_insert_sense_attributes.q",
+                "db_insert_sense_examples.q",
+                "db_insert_sense_relations.q"
+        };
+        File tmpDir = new File(new File("").getAbsolutePath() + TMP_DIRECTORY);
+        File targetDir = new File(new File("").getAbsolutePath() + QUERY_DIRECTORY);
+        for(int i=0; i<file_names.length; i++){
+            File oldFile = new File(targetDir.getAbsolutePath() + file_names[i]);
+            if(oldFile.exists())
+                oldFile.delete();
+            File newFile = new File(tmpDir.getAbsolutePath() + file_names[i]);
+            newFile.renameTo(new File(targetDir.getAbsolutePath() + file_names[i]));
+        }
+
+        for(int i=0; i<localised_file_names.length; i++){
+            for(int l=0; l<languages.length; l++) {
+                String file_name = getFileLocalisedName(localised_file_names[i],languages[l]);
+                File oldFile = new File(targetDir.getAbsolutePath() + file_name);
+                if (oldFile.exists())
+                    oldFile.delete();
+                File newFile = new File(tmpDir.getAbsolutePath() + file_name);
+                newFile.renameTo(new File(targetDir.getAbsolutePath() + file_name));
+            }
+        }
     }
 
     private HashMap<String,Integer[]> getInterLingualRelationsIds(){
@@ -415,7 +461,7 @@ public class DBController {
     }
 
     private String getFileLocalisedName(String file_name, String language_name){
-        return file_name.substring(0,file_name.indexOf(".q")) + "-" + language_name + ".q";
+        return file_name.substring(0,file_name.indexOf(".q")) + "_" + language_name + ".q";
     }
 
     private String generateInsertQueryForEntities(List entities, Class clazz){
