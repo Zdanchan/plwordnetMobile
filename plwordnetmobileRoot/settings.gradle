@@ -9,8 +9,9 @@ include 'dockerDeployer'
 project(":plwordnetMobileEntity").name = "plwordnetmobile-entity"
 project(":plwordnetMobileService").name = "plwordnetmobile-service"
 project(":plwordnetMobileApp").name = "plwordnetmobile-app"
+project(":dockerDeployer").name = "docker-deployer"
 
 project(':plwordnetmobile-entity').projectDir = new File (path + "\\plwordnetMobileEntity")
 project(':plwordnetmobile-service').projectDir = new File (path + "\\plwordnetMobileService")
 project(':plwordnetmobile-app').projectDir = new File (path + "\\plwordnetMobileApp")
-project(':dockerDeployer').projectDir = new File (path + "\\dockerDeployer")
+project(':docker-deployer').projectDir = new File (path + "\\dockerDeployer")
