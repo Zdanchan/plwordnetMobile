@@ -7,13 +7,6 @@ allprojects {
     }
 }
 
-task build {
-    dependsOn subprojects.build
-    doLast {
-        project(':docker-deployer').tasks.deploySpringServiceToDocker.execute()
-    }
-}
-
 subprojects {
     version = '1.0'
 

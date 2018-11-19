@@ -1,18 +1,6 @@
 group 'bzapps'
 version '1.0'
 
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-task build{
-
-}
-
 task deploySpringServiceToDocker(type: Copy) {
     println '== Deploying spring service to Docker container =='
     def target_dir = '/home/plwordnetMobile-spring-service'
@@ -24,9 +12,5 @@ task deploySpringServiceToDocker(type: Copy) {
     into "${target_dir}/plwordnetmobile-service.jar"
     from "${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
     into "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
-}
 
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
