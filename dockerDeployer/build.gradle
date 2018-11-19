@@ -16,8 +16,10 @@ task deploySpringServiceToDocker(type: Copy) {
     def app_build_dir = 'plwordnetMobileApp/build/outputs/apk/debug'
     def apk_type = '-debug'
     def path = file('..').getAbsolutePath()
-    from file("${service_build_dir}/plwordnetmobile-service-1.0.jar", "${app_build_dir}/plwordnetmobile-app${apk_type}.apk")
-    into file("${target_dir}/plwordnetmobile-service.jar", "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk")
+    from "${service_build_dir}/plwordnetmobile-service-1.0.jar"
+    into "${target_dir}/plwordnetmobile-service.jar"
+    from "${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
+    into "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
 }
 
 
