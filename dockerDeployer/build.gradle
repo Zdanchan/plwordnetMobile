@@ -9,6 +9,10 @@ repositories {
     mavenCentral()
 }
 
+task build{
+
+}
+
 task deploySpringServiceToDocker(type: Copy) {
     println '== Deploying spring service to Docker container =='
     def target_dir = '/home/plwordnetMobile-spring-service'

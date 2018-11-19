@@ -7,8 +7,11 @@ allprojects {
     }
 }
 
-task buildAll {
-    dependsOn gradle.includedBuilds*.task(':buildAll')
+task build {
+    dependsOn subprojects.build
+    doLast {
+        project(':docker-deployer').tasks.deploySpringServiceToDocker.execute()
+    }
 }
 
 subprojects {
