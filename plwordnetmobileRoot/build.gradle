@@ -7,6 +7,10 @@ allprojects {
     }
 }
 
+task buildAll {
+    dependsOn gradle.includedBuilds*.task(':buildAll')
+}
+
 subprojects {
     version = '1.0'
 
