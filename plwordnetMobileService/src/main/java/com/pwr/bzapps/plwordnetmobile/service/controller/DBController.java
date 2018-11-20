@@ -42,7 +42,7 @@ import java.util.*;
 @RequestMapping(path="/db_controller")
 public class DBController {
 
-    private Logger log = LoggerFactory.getLogger(ApplicationLocalisedStringController.class);
+    private Logger log = LoggerFactory.getLogger(DBController.class);
     private final String QUERY_DIRECTORY = "/downloads/queries/";
     private final String TMP_DIRECTORY = "/downloads/tmp/";
     private final String[] languages = {"polish", "english"};
@@ -96,7 +96,7 @@ public class DBController {
                         }
 
                         //Create tables part
-                        if (!(new File(theDir.getAbsolutePath() + "\\db_create_query.q")).exists()) {
+                        if (!(new File(theDir.getAbsolutePath() + "/db_create_query.q")).exists()) {
                             log.info("Initialazed Create query generation");
                             String create = "";
                             create += SQLExporter.getCreateApplicationLocalisedQuery();
@@ -120,7 +120,7 @@ public class DBController {
 
                             StringCache.putString("db_create", create);
                             log.info("Create query ready and stored in file");
-                            storeQuery(create,theDir.getAbsolutePath() + "\\db_create_query.q");
+                            storeQuery(create,theDir.getAbsolutePath() + "/db_create_query.q");
                         }
                         else {
                             log.info("Create query file is up to date");
@@ -171,14 +171,14 @@ public class DBController {
 
 
                         for (int i = 0; i < file_names.length; i++) {
-                            if (!(new File(theDir.getAbsolutePath() + "\\" + file_names[i])).exists()) {
+                            if (!(new File(theDir.getAbsolutePath() + "/" + file_names[i])).exists()) {
                                 log.info("Generating insert query for: " + classes[i].getSimpleName());
                                 String insert = "";
                                 List entities = helper.findAllForEntity(classes[i]);
                                 insert += helper.generateSQLInsertForEntity(entities, classes[i]);
                                 entities.clear();
                                 log.info("Successfully generated insert query for: " + classes[i].getSimpleName());
-                                storeQuery(insert,theDir.getAbsolutePath() + "\\" + file_names[i]);
+                                storeQuery(insert,theDir.getAbsolutePath() + "/" + file_names[i]);
                                 log.info("Stored insert query for: " + classes[i].getSimpleName());
                             }
                             else {
@@ -203,7 +203,7 @@ public class DBController {
         return response;
     }
 
-    @GetMapping(path="/generate_lanuage_query_files")
+    @GetMapping(path="/generate_language_query_files")
     private @ResponseBody String generateLanguageQueryFiles(){
         String response = "";
 
@@ -237,7 +237,7 @@ public class DBController {
                         }
 
                         //Create tables part
-                        if (!(new File(theDir.getAbsolutePath() + "\\db_create_query.q")).exists()) {
+                        if (!(new File(theDir.getAbsolutePath() + "/db_create_query.q")).exists()) {
                             log.info("Initialazed Create query generation");
                             String create = "";
                             create += SQLExporter.getCreateApplicationLocalisedQuery();
@@ -261,7 +261,7 @@ public class DBController {
 
                             StringCache.putString("db_create", create);
                             log.info("Create query ready and stored in file");
-                            storeQuery(create,theDir.getAbsolutePath() + "\\db_create_query.q");
+                            storeQuery(create,theDir.getAbsolutePath() + "/db_create_query.q");
                         }
                         else {
                             log.info("Create query file is up to date");
@@ -295,14 +295,14 @@ public class DBController {
                         };
 
                         for (int i = 0; i < file_names.length; i++) {
-                            if (!(new File(theDir.getAbsolutePath() + "\\" + file_names[i])).exists()) {
+                            if (!(new File(theDir.getAbsolutePath() + "/" + file_names[i])).exists()) {
                                 log.info("Generating insert query for: " + classes[i].getSimpleName());
                                 String insert = "";
                                 List entities = helper.findAllForEntity(classes[i]);
                                 insert += helper.generateSQLInsertForEntity(entities, classes[i]);
                                 entities.clear();
                                 log.info("Successfully generated insert query for: " + classes[i].getSimpleName());
-                                storeQuery(insert,theDir.getAbsolutePath() + "\\" + file_names[i]);
+                                storeQuery(insert,theDir.getAbsolutePath() + "/" + file_names[i]);
                             }
                             else {
                                 log.info(classes[i].getSimpleName() + " - insert query file is up to date");
@@ -321,7 +321,7 @@ public class DBController {
                         };
 
 
-                        for(int i=0; i<languages.length; i++){
+                        for(int i=0; i<languages.length; i++) {
                             Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(languages[i]));
                             Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
                             Integer[] synset_attributes = helper.getIdsOfSynsetsByLanguage(synsets);
@@ -330,32 +330,80 @@ public class DBController {
 
                             String insert = "";
                             //Synsets
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetEntity.class,lexicons),SynsetEntity.class);
-                            log.info("Successfully generated insert query for: " + SynsetEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[0],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetAttributeEntity.class,synsets),SynsetAttributeEntity.class);
-                            log.info("Successfully generated insert query for: " + SynsetAttributeEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[1],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetExampleEntity.class,synset_attributes),SynsetExampleEntity.class);
-                            log.info("Successfully generated insert query for: " + SynsetExampleEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[2],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetRelationEntity.class,synsets),SynsetRelationEntity.class);
-                            log.info("Successfully generated insert query for: " + SynsetRelationEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[3],languages[i]));
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[0], languages[i])).exists())) {
+                                log.info("Generating insert query for: " + SynsetEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetEntity.class, lexicons), SynsetEntity.class);
+                                log.info("Successfully generated insert query for: " + SynsetEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[0], languages[i]));
+                            }
+                            else{
+                                log.info(SynsetEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[1], languages[i]))).exists()) {
+                                log.info("Generating insert query for: " + SynsetAttributeEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetAttributeEntity.class, synsets), SynsetAttributeEntity.class);
+                                log.info("Successfully generated insert query for: " + SynsetAttributeEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[1], languages[i]));
+                            }
+                            else{
+                                log.info(SynsetAttributeEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[2], languages[i]))).exists() && synset_attributes.length!=0) {
+                                log.info("Generating insert query for: " + SynsetExampleEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetExampleEntity.class, synset_attributes), SynsetExampleEntity.class);
+                                log.info("Successfully generated insert query for: " + SynsetExampleEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[2], languages[i]));
+                            }
+                            else{
+                                log.info(SynsetExampleEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[3], languages[i]))).exists()) {
+                                log.info("Generating insert query for: " + SynsetRelationEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SynsetRelationEntity.class, synsets), SynsetRelationEntity.class);
+                                log.info("Successfully generated insert query for: " + SynsetRelationEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[3], languages[i]));
+                            }
+                            else{
+                                log.info(SynsetRelationEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
 
                             //Senses
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseEntity.class,lexicons),SenseEntity.class);
-                            log.info("Successfully generated insert query for: " + SenseEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[4],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseAttributeEntity.class,senses),SenseAttributeEntity.class);
-                            log.info("Successfully generated insert query for: " + SenseAttributeEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[5],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseExampleEntity.class,senses_attributes),SenseExampleEntity.class);
-                            log.info("Successfully generated insert query for: " + SenseExampleEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[6],languages[i]));
-                            insert=generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseRelationEntity.class,senses),SenseRelationEntity.class);
-                            log.info("Successfully generated insert query for: " + SenseRelationEntity.class.getSimpleName());
-                            storeQuery(insert,getFileLocalisedName(file_names[7],languages[i]));
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[4], languages[i]))).exists()){
+                                log.info("Generating insert query for: " + SenseEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseEntity.class, lexicons), SenseEntity.class);
+                                log.info("Successfully generated insert query for: " + SenseEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[4], languages[i]));
+                            }
+                            else{
+                                log.info(SenseEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[5], languages[i]))).exists()) {
+                                log.info("Generating insert query for: " + SenseAttributeEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseAttributeEntity.class, senses), SenseAttributeEntity.class);
+                                log.info("Successfully generated insert query for: " + SenseAttributeEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[5], languages[i]));
+                            }
+                            else{
+                                log.info(SenseAttributeEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[6], languages[i]))).exists() && senses_attributes.length!=0) {
+                                log.info("Generating insert query for: " + SenseExampleEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseExampleEntity.class, senses_attributes), SenseExampleEntity.class);
+                                log.info("Successfully generated insert query for: " + SenseExampleEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[6], languages[i]));
+                            }
+                            else{
+                                log.info(SenseExampleEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[7], languages[i]))).exists()) {
+                                log.info("Generating insert query for: " + SenseRelationEntity.class.getSimpleName() + " -" + languages[i]);
+                                insert = generateInsertQueryForEntities(helper.findSynsetAndSensesAllByRelatedIds(SenseRelationEntity.class, senses), SenseRelationEntity.class);
+                                log.info("Successfully generated insert query for: " + SenseRelationEntity.class.getSimpleName() + " -" + languages[i]);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[7], languages[i]));
+                            }
+                            else{
+                                log.info(SenseRelationEntity.class.getSimpleName() + " -" + languages[i] + " - insert query file is up to date");
+                            }
                         }
 
                         //generate connectors

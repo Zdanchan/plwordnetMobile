@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SenseExampleRepository extends CrudRepository<SenseExampleEntity, Integer> {
-    @Query("SELECT se FROM SenseExampleEntity se WHERE se.sense_attribute_id IN (:sense_attribute_ids)")
-    public List<SenseExampleEntity> findMultipleBySenseAttributeId(@Param("sense_attribute_ids") Integer[] sense_attribute_ids);
+    @Query("SELECT se FROM SenseExampleEntity se WHERE sense_attribute_id IN (:ids)")
+    public List<SenseExampleEntity> findMultipleBySenseAttributeId(@Param("ids") Integer[] ids);
 }

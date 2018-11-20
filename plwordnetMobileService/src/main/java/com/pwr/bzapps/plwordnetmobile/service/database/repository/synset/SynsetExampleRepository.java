@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEntity, Integer> {
-    @Query("SELECT se FROM SynsetExampleEntity se WHERE se.synset_attributes_id IN (:synset_attribute_ids)")
-    public List<SynsetExampleEntity> findMultipleBySynsetAttributeId(@Param("synset_attribute_ids") Integer[] synset_attribute_ids);
+    @Query("SELECT se FROM SynsetExampleEntity se WHERE synset_attributes_id IN (:ids)")
+    public List<SynsetExampleEntity> findMultipleBySynsetAttributeId(@Param("ids") Integer[] ids);
 }
