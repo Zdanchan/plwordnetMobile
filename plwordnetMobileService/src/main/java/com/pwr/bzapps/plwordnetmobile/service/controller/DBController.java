@@ -410,10 +410,24 @@ public class DBController {
                         HashMap<String,Integer[]> map = getInterLingualRelationsIds();
                         for(String key : map.keySet()){
                             String insert = "";
-                            insert=generateInsertQueryForEntities(helper.getSynsetRelationsByRelationIds(map.get(key)),SynsetRelationEntity.class);
-                            storeQuery(insert,getFileLocalisedName(file_names[3],key));
-                            insert=generateInsertQueryForEntities(helper.getSenseRelationsByRelationIds(map.get(key)),SenseRelationEntity.class);
-                            storeQuery(insert,getFileLocalisedName(file_names[7],key));
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[3], key))).exists()) {
+                                log.info("Generating insert query for: " + SynsetRelationEntity.class.getSimpleName() + " -" + key + " connector");
+                                insert = generateInsertQueryForEntities(helper.getSynsetRelationsByRelationIds(map.get(key)), SynsetRelationEntity.class);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[3], key));
+                                log.info("Successfully generated insert query for: " + SynsetRelationEntity.class.getSimpleName() + " -" + key + " connector");
+                            }
+                            else{
+                                log.info(SynsetRelationEntity.class.getSimpleName()  + " -" + key + " connector" + " - insert query file is up to date");
+                            }
+                            if (!(new File(getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[7], key))).exists()) {
+                                log.info("Generating insert query for: " + SenseRelationEntity.class.getSimpleName() + " -" + key + " connector");
+                                insert = generateInsertQueryForEntities(helper.getSenseRelationsByRelationIds(map.get(key)), SenseRelationEntity.class);
+                                storeQuery(insert, getFileLocalisedName(theDir.getAbsolutePath() + "/" + file_names[7], key));
+                                log.info("Successfully generated insert query for: " + SenseRelationEntity.class.getSimpleName() + " -" + key + " connector");
+                            }
+                            else{
+                                log.info(SenseRelationEntity.class.getSimpleName()  + " -" + key + " connector" + " - insert query file is up to date");
+                            }
                         }
 
                         moveFromTMP();
@@ -461,21 +475,25 @@ public class DBController {
         File tmpDir = new File(new File("").getAbsolutePath() + TMP_DIRECTORY);
         File targetDir = new File(new File("").getAbsolutePath() + QUERY_DIRECTORY);
         for(int i=0; i<file_names.length; i++){
-            File oldFile = new File(targetDir.getAbsolutePath() + file_names[i]);
-            if(oldFile.exists())
-                oldFile.delete();
-            File newFile = new File(tmpDir.getAbsolutePath() + file_names[i]);
-            newFile.renameTo(new File(targetDir.getAbsolutePath() + file_names[i]));
+            if(new File(tmpDir.getAbsolutePath() + file_names[i]).exists()) {
+                File oldFile = new File(targetDir.getAbsolutePath() + file_names[i]);
+                if (oldFile.exists())
+                    oldFile.delete();
+                File newFile = new File(tmpDir.getAbsolutePath() + file_names[i]);
+                newFile.renameTo(new File(targetDir.getAbsolutePath() + file_names[i]));
+            }
         }
 
         for(int i=0; i<localised_file_names.length; i++){
             for(int l=0; l<languages.length; l++) {
-                String file_name = getFileLocalisedName(localised_file_names[i],languages[l]);
-                File oldFile = new File(targetDir.getAbsolutePath() + file_name);
-                if (oldFile.exists())
-                    oldFile.delete();
-                File newFile = new File(tmpDir.getAbsolutePath() + file_name);
-                newFile.renameTo(new File(targetDir.getAbsolutePath() + file_name));
+                if(new File(tmpDir.getAbsolutePath() + file_names[i]).exists()) {
+                    String file_name = getFileLocalisedName(localised_file_names[i], languages[l]);
+                    File oldFile = new File(targetDir.getAbsolutePath() + file_name);
+                    if (oldFile.exists())
+                        oldFile.delete();
+                    File newFile = new File(tmpDir.getAbsolutePath() + file_name);
+                    newFile.renameTo(new File(targetDir.getAbsolutePath() + file_name));
+                }
             }
         }
     }
