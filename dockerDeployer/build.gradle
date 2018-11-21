@@ -9,7 +9,8 @@ task deploySpringServiceToDocker(type: Copy) {
     println "from: ${path}/${service_build_dir}/plwordnetmobile-service-1.0.jar"
     from "${path}/${service_build_dir}/plwordnetmobile-service-1.0.jar"
     println("to: ${target_dir}/plwordnetmobile-service.jar")
-    into "${target_dir}/plwordnetmobile-service.jar"
+    into "${target_dir}"
+    rename "${target_dir}/plwordnetmobile-service-1.0.jar", "${target_dir}/plwordnetmobile-service.jar"
 
 }
 
@@ -22,6 +23,7 @@ task deployAndroidAppToDocker(type: Copy) {
     println "from: ${path}/${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
     from "${path}/${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
     println "to: ${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
-    into "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
+    into "${target_dir}/downloads/android-apk"
+    rename "${target_dir}/downloads/android-apk/plwordnetmobile-app${apk_type}.apk", "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
 
 }
