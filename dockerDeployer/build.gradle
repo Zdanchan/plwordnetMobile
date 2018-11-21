@@ -3,14 +3,14 @@ version '1.0'
 
 task deploySpringServiceToDocker(type: Copy) {
     println '== Deploying spring service to Docker container =='
-    def target_dir = '/home/plwordnetMobile-spring-service'
+    def target_dir = '/data/plwordnetMobile-spring-service'
     def service_build_dir = 'plwordnetMobileService/build/libs'
     def app_build_dir = 'plwordnetMobileApp/build/outputs/apk/debug'
     def apk_type = '-debug'
     def path = file('..').getAbsolutePath()
-    from "${service_build_dir}/plwordnetmobile-service-1.0.jar"
+    from "${path}/${service_build_dir}/plwordnetmobile-service-1.0.jar"
     into "${target_dir}/plwordnetmobile-service.jar"
-    from "${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
+    from "${path}/${app_build_dir}/plwordnetmobile-app${apk_type}.apk"
     into "${target_dir}/downloads/android-apk/plwordnetmobile-app.apk"
 
 }
