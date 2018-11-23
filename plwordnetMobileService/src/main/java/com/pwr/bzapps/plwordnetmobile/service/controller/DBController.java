@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 @Controller
@@ -61,6 +62,16 @@ public class DBController {
     private SynsetAttributeRepository synsetAttributeRepository;
     @Autowired
     private DBHelperComponent helper;
+
+    @GetMapping(path="/print_generated_files")
+    public @ResponseBody String printGeneratedFiles(){
+        String content = "generated files:\n";
+        File[] files = (new File(new File("").getAbsolutePath() + TMP_DIRECTORY)).listFiles();
+        for (File file : files){
+            content+=file.getAbsolutePath()+"\n";
+        }
+        return content;
+    }
 
     @GetMapping(path="/generate_query_files")
     private @ResponseBody String generateQueryFiles(){
