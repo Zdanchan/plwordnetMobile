@@ -5,3 +5,4 @@
 **/gradlew.bat
 *.iml
 **/proguard-rules.pro
+plwordnetMobileService/src/main/resources/application.properties
