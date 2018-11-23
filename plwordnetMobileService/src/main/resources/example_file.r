@@ -1,2 +1,0 @@
-some_content
-and_some_change
