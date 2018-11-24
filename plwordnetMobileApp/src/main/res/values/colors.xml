@@ -6,6 +6,7 @@
     <color name="colorWordnetTitle">#8e0707</color>
     <color name="colorWordnetSubtitle">#5f5f5f</color>
     <color name="colorCopyrightText">#888888</color>
+    <color name="colorSenseAttributeLabel">#888888</color>
     <color name="colorBackgroundAccent">#DFDFDF</color>
     <color name="colorLowerBar">#DDDDDD</color>
     <color name="colorNavigationViewIcon">#DDDDDD</color>

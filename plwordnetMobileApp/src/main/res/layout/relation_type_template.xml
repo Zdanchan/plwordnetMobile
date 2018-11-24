@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relation_type_cell"
+    android:paddingTop="15dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/relation_type_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Relation type"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorMainText"
+    <RelativeLayout
+            android:id="@+id/relative_type_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true">
+        <TextView
+                android:id="@+id/relation_type_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/drawer_icon"
+                android:text="Relation type"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorMainText"
+        />
+        <ImageButton
+                android:id="@+id/drawer_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:minWidth="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/drawer_open_icon"
+                android:tint="@android:color/black"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@color/alpha"
         />
 
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/relations_container"
-        android:layout_below="@id/relation_type_name"
+        android:layout_below="@id/relative_type_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">

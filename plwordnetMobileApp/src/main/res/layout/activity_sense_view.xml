@@ -55,7 +55,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="2dp"
                     android:text="PART OF SPEECH"
-                    android:textColor="@color/colorDescriptionText"
+                    android:textColor="@color/colorSenseAttributeLabel"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="@id/first_row"
@@ -68,7 +68,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/sense_attribute_part_of_speech"
                     android:text="@string/domain"
-                    android:textColor="@color/colorDescriptionText"
+                    android:textColor="@color/colorSenseAttributeLabel"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="@id/domain_row"
@@ -81,7 +81,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/sense_attribute_domain"
                     android:text="@string/examples"
-                    android:textColor="@color/colorDescriptionText"
+                    android:textColor="@color/colorSenseAttributeLabel"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="@id/examples_row"
@@ -94,7 +94,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/sense_attribute_examples"
                     android:text="@string/synonyms"
-                    android:textColor="@color/colorDescriptionText"
+                    android:textColor="@color/colorSenseAttributeLabel"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="@id/synonyms_row"
@@ -108,7 +108,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/sense_attribute_synonyms"
                     android:text="@string/source"
-                    android:textColor="@color/colorDescriptionText"
+                    android:textColor="@color/colorSenseAttributeLabel"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="@id/source_row"
@@ -164,6 +164,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/sense_line_one"
+                        android:textColor="@color/colorDescriptionText"
                         android:text="description"
                         android:textSize="14dp" />
                     <View
@@ -189,6 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
+                        android:textColor="@color/colorDescriptionText"
                         android:text="domain"
                         android:textSize="14dp" />
                     <View
@@ -264,6 +266,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
                         android:text="source"
+                        android:textColor="@color/colorDescriptionText"
                         android:textSize="14dp" />
                     <View
                         android:layout_width="match_parent"
@@ -281,20 +284,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp">
-                <TextView
-                    android:id="@+id/emotional_annotation_attribute"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/emotional_annotations_header"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/emotional_annotation"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorMainText"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true">
+                    <TextView
+                            android:id="@+id/emotional_annotation_attribute"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_toLeftOf="@+id/drawer_icon"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/emotional_annotation"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorMainText"
                     />
+
+                    <ImageButton
+                            android:id="@+id/drawer_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:minWidth="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/drawer_open_icon"
+                            android:tint="@android:color/black"
+                            android:scaleType="fitCenter"
+                            android:adjustViewBounds="true"
+                            android:background="@color/alpha"
+                    />
+
+                </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/emotional_annotations_container"
-                    android:layout_below="@id/emotional_annotation_attribute"
+                    android:layout_below="@id/emotional_annotations_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">

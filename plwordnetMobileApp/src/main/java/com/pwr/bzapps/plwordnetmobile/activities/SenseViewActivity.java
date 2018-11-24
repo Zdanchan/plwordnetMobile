@@ -38,6 +38,7 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEnti
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.EmotionalAnnotationsInterpreter;
+import com.pwr.bzapps.plwordnetmobile.database.interpretation.RelationInterpreter;
 import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
 
 import java.util.ArrayList;
@@ -69,16 +70,16 @@ public class SenseViewActivity extends BackButtonActivity {
         }
         relations = new ArrayList<SynsetRelationEntity>();
         relations.addAll(entity.getSynset_id().getRelation_child());
-        relations.addAll(entity.getSynset_id().getRelation_parent());
+        //relations.addAll(entity.getSynset_id().getRelation_parent());
 
         LinkedList ids = new LinkedList();
 
         for(SynsetRelationEntity relation : entity.getSynset_id().getRelation_child()){
             ids.add(relation.getParent_synset_id());
         }
-        for(SynsetRelationEntity relation : entity.getSynset_id().getRelation_parent()){
-            ids.add(relation.getChild_synset_id());
-        }
+        //for(SynsetRelationEntity relation : entity.getSynset_id().getRelation_parent()){
+        //    ids.add(relation.getChild_synset_id());
+        //}
 
         retrieveSelectedSensesTask = new RetriveSelectedSensesTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
@@ -122,36 +123,55 @@ public class SenseViewActivity extends BackButtonActivity {
         }
 
         for(ArrayList<SynsetRelationEntity> list : relations_sorted.values()){
-            RelativeLayout type = (RelativeLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
-            ((TextView)type.findViewById(R.id.relation_type_name)).setText(
-                    getResources().getString(getResources().getIdentifier("als_" + list.get(0).getSynset_relation_type_id().getName_id(),"string",getPackageName())));
-            LinearLayout cell_container = type.findViewById(R.id.relations_container);
-            for(SynsetRelationEntity relation : list){
-                RelativeLayout cell = (RelativeLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
-                Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
-                final SenseEntity sense = findRelatedBySynsetId(other);
-                ((TextView)cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
-                ((ImageView)cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(sense.getLexicon_id().getLanguage_name()));
-                if("Polish".equals(sense.getLexicon_id().getLanguage_name())){
-                    ((TextView) cell.findViewById(R.id.relation_description)).setText(
-                            SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
-                }
-                else {
-                    ((TextView) cell.findViewById(R.id.relation_description)).setText(
-                            SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id().getSynset_attributes()).get(0).getDefinition()));
-                }
-                cell_container.addView(cell);
-                cell.setOnClickListener(new View.OnClickListener() {
+            if(getResources().getIdentifier("rel_type_" + list.get(0).getSynset_relation_type_id().getId(),"string",getPackageName())!=0) {
+                RelativeLayout type = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
+                ((TextView) type.findViewById(R.id.relation_type_name)).setText(RelationInterpreter.getRelationTypeLabel(getApplicationContext(),list.get(0).getSynset_relation_type_id().getId(),getPackageName()));
+                final LinearLayout cell_container = type.findViewById(R.id.relations_container);
+                final ImageButton expander = ((ImageButton) type.findViewById(R.id.drawer_icon));
+                expander.setOnClickListener(new View.OnClickListener() {
+                    private boolean isOpen = false;
+
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
-                        ArrayList<SenseEntity> word_related_senses = new ArrayList<SenseEntity>();
-                        intent.putExtra("sense_entity",sense);
-                        startActivity(intent);
+                        if (isOpen) {
+                            isOpen = !isOpen;
+                            cell_container.setVisibility(View.GONE);
+                            expander.setImageResource(R.drawable.drawer_open_icon);
+
+                        } else {
+                            isOpen = !isOpen;
+                            cell_container.setVisibility(View.VISIBLE);
+                            expander.setImageResource(R.drawable.drawer_close_icon);
+                        }
                     }
                 });
+                for (SynsetRelationEntity relation : list) {
+                    RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
+                    Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
+                    final SenseEntity sense = findRelatedBySynsetId(other);
+                    ((TextView) cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
+                    ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(sense.getLexicon_id().getLanguage_name()));
+                    if ("Polish".equals(sense.getLexicon_id().getLanguage_name())) {
+                        ((TextView) cell.findViewById(R.id.relation_description)).setText(
+                                SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
+                    } else {
+                        ((TextView) cell.findViewById(R.id.relation_description)).setText(
+                                SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id().getSynset_attributes()).get(0).getDefinition()));
+                    }
+                    cell_container.addView(cell);
+                    cell.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
+                            ArrayList<SenseEntity> word_related_senses = new ArrayList<SenseEntity>();
+                            intent.putExtra("sense_entity", sense);
+                            startActivity(intent);
+                        }
+                    });
+                }
+                cell_container.setVisibility(View.GONE);
+                sense_relations_container.addView(type);
             }
-            sense_relations_container.addView(type);
         }
     }
 
@@ -249,8 +269,27 @@ public class SenseViewActivity extends BackButtonActivity {
         }
     }
 
-    private void setEmotionalAnnotations(LinearLayout annotation_container){
+    private void setEmotionalAnnotations(final LinearLayout annotation_container){
         boolean no_emotions = true;
+        final ImageButton expander = ((ImageButton) findViewById(R.id.drawer_icon));
+        expander.setOnClickListener(new View.OnClickListener() {
+            private boolean isOpen = false;
+
+            @Override
+            public void onClick(View view) {
+                if (isOpen) {
+                    isOpen = !isOpen;
+                    annotation_container.setVisibility(View.GONE);
+                    expander.setImageResource(R.drawable.drawer_open_icon);
+
+                } else {
+                    isOpen = !isOpen;
+                    annotation_container.setVisibility(View.VISIBLE);
+                    expander.setImageResource(R.drawable.drawer_close_icon);
+                }
+            }
+        });
+
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
             RelativeLayout annotation = (RelativeLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.emotional_annotation_template, null);
             ConstraintLayout annotation_attributes = annotation.findViewById(R.id.annotation_attributes);
@@ -307,9 +346,9 @@ public class SenseViewActivity extends BackButtonActivity {
                 no_emotions=false;
             }
         }
+        annotation_container.setVisibility(View.GONE);
         if(entity.getEmotional_annotations().size()==0 || no_emotions){
-            ((TextView)findViewById(R.id.emotional_annotation_attribute)).setVisibility(View.GONE);
-            annotation_container.setVisibility(View.GONE);
+            ((RelativeLayout)findViewById(R.id.emotional_annotations_view)).setVisibility(View.GONE);
         }
     }
 
