@@ -41,12 +41,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp">
+            android:layout_marginTop="10dp">
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/sense_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp">
                 <TextView
                     android:id="@+id/sense_attribute_part_of_speech"
                     android:layout_width="wrap_content"
@@ -164,6 +164,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/sense_line_one"
+                        android:layout_marginBottom="3dp"
                         android:textColor="@color/colorDescriptionText"
                         android:text="description"
                         android:textSize="14dp" />
@@ -190,6 +191,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
+                        android:layout_marginBottom="3dp"
                         android:textColor="@color/colorDescriptionText"
                         android:text="domain"
                         android:textSize="14dp" />
@@ -214,6 +216,7 @@
                         android:id="@+id/sense_examples_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
                         android:orientation="vertical">
 
                     </LinearLayout>
@@ -240,6 +243,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
+                        android:layout_marginBottom="3dp"
                         android:orientation="vertical">
                     </LinearLayout>
                     <View
@@ -265,6 +269,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
+                        android:layout_marginBottom="3dp"
                         android:text="source"
                         android:textColor="@color/colorDescriptionText"
                         android:textSize="14dp" />
@@ -290,7 +295,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    android:background="@color/colorSenseRelationAccent">
                     <TextView
                             android:id="@+id/emotional_annotation_attribute"
                             android:layout_width="match_parent"
@@ -298,7 +304,8 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:layout_toLeftOf="@+id/drawer_icon"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="5dp"
                             android:text="@string/emotional_annotation"
                             android:textSize="20dp"
                             android:textStyle="bold"
@@ -327,6 +334,7 @@
                     android:layout_below="@id/emotional_annotations_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -367,7 +375,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/colorLowerBar"
+            android:background="@color/colorPrimary"
             android:layout_alignParentBottom="true">
             <RelativeLayout
                 android:layout_alignParentLeft="true"
@@ -382,8 +390,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:text="#/#"
-                    android:textSize="10dp"
-                    android:textColor="@color/colorMainText"
+                    android:background="@drawable/button"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorMainBrightText"
                     android:paddingRight="0dp"
                     android:paddingLeft="0dp"
                     android:adjustViewBounds="true"
@@ -395,6 +404,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:text="@string/other_senses"
+                    android:textColor="@color/colorMainBrightText"
                     android:textSize="10dp"
                     />
             </RelativeLayout>
@@ -411,8 +421,9 @@
                     android:layout_height="40dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_three"
-                    android:tint="@color/colorMainText"
+                    android:src="@drawable/search_icon"
+                    android:background="@drawable/button"
+                    android:tint="@color/colorMainBrightText"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     />
@@ -423,6 +434,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:text="@string/search"
+                    android:textColor="@color/colorMainBrightText"
                     android:textSize="10dp"
                     />
             </RelativeLayout>
@@ -453,6 +465,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/graph_view"
+                android:textColor="@color/colorMainBrightText"
                 android:textSize="10dp"
                 />
         </RelativeLayout>

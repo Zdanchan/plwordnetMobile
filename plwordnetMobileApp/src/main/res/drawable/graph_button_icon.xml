@@ -6,7 +6,7 @@
             android:shape="oval">
 
             <solid
-                android:color="@color/colorAccent"/>
+                android:color="@color/colorGraphButton"/>
             <corners android:radius="5dp" />
         </shape>
     </item>

@@ -49,7 +49,7 @@
     <string name="source">SOURCE</string>
     <string name="hypernyms">HYPERNYMS</string>
     <string name="graph">GRAPH</string>
-    <string name="emotional_annotation">EMOTIONAL ANNOTATIONS</string>
+    <string name="emotional_annotation">Emotional annotations</string>
     <!---->
     <!--Relation types-->
 

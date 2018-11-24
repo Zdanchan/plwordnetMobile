@@ -49,7 +49,7 @@
     <string name="source">ŹRÓDŁO</string>
     <string name="hypernyms">HIPERONIMY</string>
     <string name="graph">GRAF</string>
-    <string name="emotional_annotation">ANNOTACJE EMOCJONALNE</string>
+    <string name="emotional_annotation">Adnotacje emocjonalne</string>
     <!---->
     <!--Relation types-->
 

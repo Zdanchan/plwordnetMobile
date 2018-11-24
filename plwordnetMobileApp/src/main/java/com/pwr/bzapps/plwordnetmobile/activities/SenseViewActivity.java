@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -151,12 +152,20 @@ public class SenseViewActivity extends BackButtonActivity {
                     final SenseEntity sense = findRelatedBySynsetId(other);
                     ((TextView) cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
                     ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(sense.getLexicon_id().getLanguage_name()));
+                    String description = "";
                     if ("Polish".equals(sense.getLexicon_id().getLanguage_name())) {
-                        ((TextView) cell.findViewById(R.id.relation_description)).setText(
-                                SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
+                        description+=(SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
                     } else {
-                        ((TextView) cell.findViewById(R.id.relation_description)).setText(
-                                SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id().getSynset_attributes()).get(0).getDefinition()));
+                        description+=(SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id()
+                                .getSynset_attributes()).get(0).getDefinition()));
+                    }
+                    if(!description.isEmpty() && !"null".equals(description)) {
+                        ((TextView) cell.findViewById(R.id.relation_description)).setText(description);
+                    }
+                    else {
+                        String domain_label = getResources().getText(R.string.domain).toString().toLowerCase();
+                        ((TextView) cell.findViewById(R.id.relation_description)).setText(domain_label + ": "
+                                + getResources().getString(getResources().getIdentifier("als_" + sense.getDomain_id().getName_id(), "string", getPackageName())));
                     }
                     cell_container.addView(cell);
                     cell.setOnClickListener(new View.OnClickListener() {
@@ -394,15 +403,18 @@ public class SenseViewActivity extends BackButtonActivity {
         other_senses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SenseViewActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
                 View convertView = (View) inflater.inflate(R.layout.other_senses_popup, null);
-                alertDialog.setView(convertView);
-                alertDialog.setTitle(getResources().getString(R.string.other_senses));
+                //((TextView) convertView.findViewById(R.id.title)).setText(R.string.other_senses);
                 ListView lv = (ListView) convertView.findViewById(R.id.other_senses_list);
+                ImageButton close_button = (ImageButton) convertView.findViewById(R.id.close_button);
                 SenseAdapter adapter = new SenseAdapter(getApplicationContext(),word_related_senses);
                 lv.setAdapter(adapter);
-                final AlertDialog dialog = alertDialog.show();
+                builder.setView(convertView);
+                final AlertDialog dialog = builder.create();
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -411,6 +423,12 @@ public class SenseViewActivity extends BackButtonActivity {
                         intent.putExtra("word_related_senses", word_related_senses);
                         dialog.dismiss();
                         startActivity(intent);
+                    }
+                });
+                close_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
                     }
                 });
             }
@@ -428,15 +446,18 @@ public class SenseViewActivity extends BackButtonActivity {
         other_senses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SenseViewActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
                 View convertView = (View) inflater.inflate(R.layout.other_senses_popup, null);
-                alertDialog.setView(convertView);
-                alertDialog.setTitle(getResources().getString(R.string.other_senses));
+                //((TextView) convertView.findViewById(R.id.title)).setText(R.string.other_senses);
                 ListView lv = (ListView) convertView.findViewById(R.id.other_senses_list);
+                ImageButton close_button = (ImageButton) convertView.findViewById(R.id.close_button);
                 SenseAdapter adapter = new SenseAdapter(getApplicationContext(),word_related_senses);
                 lv.setAdapter(adapter);
-                final AlertDialog dialog = alertDialog.show();
+                builder.setView(convertView);
+                final AlertDialog dialog = builder.create();
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -445,6 +466,12 @@ public class SenseViewActivity extends BackButtonActivity {
                         intent.putExtra("word_related_senses", word_related_senses);
                         dialog.dismiss();
                         startActivity(intent);
+                    }
+                });
+                close_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
                     }
                 });
             }

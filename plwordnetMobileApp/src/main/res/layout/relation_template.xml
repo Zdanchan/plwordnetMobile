@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relation_cell"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
 
     <RelativeLayout
         android:id="@+id/relation_cell_line_one"
@@ -15,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
             android:text="sense-1"
             android:textColor="@color/colorLink"
             android:textSize="14dp"
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/relation_cell_line_one"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
         android:text="description"
         android:textColor="@color/colorDescriptionText"
         android:textSize="12dp" />

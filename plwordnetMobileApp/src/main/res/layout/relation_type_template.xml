@@ -11,13 +11,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:paddingBottom="5dp"
+            android:background="@color/colorSenseRelationAccent">
         <TextView
                 android:id="@+id/relation_type_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
                 android:layout_toLeftOf="@+id/drawer_icon"
                 android:text="Relation type"
                 android:textSize="20dp"

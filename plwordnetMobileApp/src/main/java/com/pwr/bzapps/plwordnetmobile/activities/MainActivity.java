@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
@@ -109,9 +110,16 @@ public class MainActivity extends DrawerMenuActivity {
             if(clipboard.hasPrimaryClip())
                 if(clipboard.getPrimaryClip().getItemCount()>0)
                     if(clipboard.getPrimaryClip().getItemAt(0)!=null){
-                        String item = (String)clipboard.getPrimaryClip().getItemAt(0).getText();
-                        if(item!=null)
-                            if(item.length()<40)
+                        String string = "";
+                        Object item = clipboard.getPrimaryClip().getItemAt(0).getText();
+                        if(item instanceof android.text.SpannableString){
+                            string = ((android.text.SpannableString)item).subSequence(0,((SpannableString) item).length()).toString();
+                        }
+                        else if(item instanceof String){
+                            string = (String) item;
+                        }
+                        if(string!=null)
+                            if(string.length()<40)
                                 searchEdit.setText(clipboard.getPrimaryClip().getItemAt(0).getText());
                     }
         }
