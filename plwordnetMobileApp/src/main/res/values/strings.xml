@@ -6,6 +6,7 @@
     <string name="sub_title">a large network of words</string>
     <!--Drawer menu options-->
     <string name="recent_searches">Recent searches</string>
+    <string name="bookmarks">Bookmarks</string>
     <string name="popular_searches">Popular searches</string>
     <string name="change_language">Change language</string>
     <string name="settings">Settings</string>
@@ -52,8 +53,11 @@
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
     <!---->
+    <!--Bookmarks messages-->
+    <string name="no_bookmarks">No bookmarks has been added yet</string>
+    <!---->
     <!--Search history messages-->
-    <string name="no_history">No searches has ben stored yet</string>
+    <string name="no_history">No searches has been stored yet</string>
     <!---->
     <!--Sense attributes-->
     <string name="domain">DOMAIN</string>

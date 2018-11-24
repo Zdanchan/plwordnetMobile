@@ -2,16 +2,15 @@ package com.pwr.bzapps.plwordnetmobile.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -20,43 +19,43 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSensesBySynsetsTask;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSynonymsTask;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveWordRelatedSensesTask;
-import com.pwr.bzapps.plwordnetmobile.database.access.task.RetriveSelectedSensesTask;
+import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSelectedSensesTask;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
 import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.EmotionalAnnotationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseAttributeEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseExampleEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseRelationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.EmotionalAnnotationsInterpreter;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.RelationInterpreter;
 import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class SenseViewActivity extends BackButtonActivity {
 
     private SenseEntity entity;
+    private ImageButton bookmark_button;
     private ArrayList<SenseEntity> word_related_senses;
     private ArrayList<SenseEntity> related;
     private ArrayList<SenseEntity> synonyms;
     private ArrayList<SynsetRelationEntity> relations;
     private ProgressBar progress_bar;
     private AsyncTask retrieveSelectedSensesTask, retrieveSynonymsTask, retrieveWordRelatedSensesTask;
+    private boolean bookmarked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,8 @@ public class SenseViewActivity extends BackButtonActivity {
         setContentView(R.layout.activity_sense_view);
         super.onCreate(savedInstanceState);
         progress_bar = findViewById(R.id.loading_spinner);
-        SenseEntity entity = (SenseEntity)getIntent().getSerializableExtra("sense_entity");
+        bookmark_button = findViewById(R.id.bookmark_button);
+        final SenseEntity entity = (SenseEntity)getIntent().getSerializableExtra("sense_entity");
         word_related_senses = (ArrayList<SenseEntity>)getIntent().getSerializableExtra("word_related_senses");
         if(entity!=null){
             setSenseEntity(entity);
@@ -82,11 +82,29 @@ public class SenseViewActivity extends BackButtonActivity {
         //    ids.add(relation.getChild_synset_id());
         //}
 
-        retrieveSelectedSensesTask = new RetriveSelectedSensesTask(this,getApplicationContext()).execute(ids.toString());
+        bookmarked = Settings.isSenseBookmarked(getApplicationContext(),entity.getId());
+
+        retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
             retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord());
         }
+        bookmark_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bookmarked){
+                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.remove_bookmark_anim);
+                    bookmark_button.startAnimation(rotateAnimation);
+                }
+                else{
+                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.add_bookmark_anim);
+                    bookmark_button.startAnimation(rotateAnimation);
+                }
+                Settings.addOrRemoveBookmark(getApplication(),entity.getId());
+                bookmarked = !bookmarked;
+            }
+        });
+
         prepareLowerBar();
     }
 

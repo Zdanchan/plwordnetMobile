@@ -6,6 +6,7 @@
     <!--Drawer menu options-->
     <string name="recent_searches">Ostatnio wyszukiwane</string>
     <string name="popular_searches">Często wyszukiwane</string>
+    <string name="bookmarks">Zakładki</string>
     <string name="change_language">Zmień język</string>
     <string name="settings">Ustawienia</string>
     <string name="about_us">O nas</string>
@@ -36,6 +37,9 @@
     <string name="no_connection">Brak połączenia z bazą danych</string>
     <string name="no_results">Brak wyników</string>
     <string name="searching">Wyszukiwanie</string>
+    <!---->
+    <!--Bookmarks messages-->
+    <string name="no_bookmarks">Nie masz jeszcze żadnej zakładki</string>
     <!---->
     <!--Search history messages-->
     <string name="no_history">Nie masz jeszcze żadnej historii wyszukiwań</string>

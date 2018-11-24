@@ -21,6 +21,9 @@
         <activity android:name=".activities.SearchResultsListActivity"
             android:configChanges="layoutDirection|locale">
         </activity>
+        <activity android:name=".activities.BookmarksActivity"
+                  android:configChanges="layoutDirection|locale">
+        </activity>
         <activity android:name=".activities.RecentSearchesActivity"
             android:configChanges="layoutDirection|locale">
         </activity>

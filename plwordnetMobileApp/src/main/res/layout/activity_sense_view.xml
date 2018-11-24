@@ -28,6 +28,18 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/wordnet_logo" />
+            <ImageButton
+                    android:id="@+id/bookmark_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/bookmark_button_icon"
+                    android:background="@color/alpha"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+            />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

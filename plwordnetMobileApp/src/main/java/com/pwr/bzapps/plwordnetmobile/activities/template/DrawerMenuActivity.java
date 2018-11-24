@@ -20,11 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.pwr.bzapps.plwordnetmobile.R;
-import com.pwr.bzapps.plwordnetmobile.activities.AboutUsActivity;
-import com.pwr.bzapps.plwordnetmobile.activities.ChangeLanguageActivity;
-import com.pwr.bzapps.plwordnetmobile.activities.FAQActivity;
-import com.pwr.bzapps.plwordnetmobile.activities.RecentSearchesActivity;
-import com.pwr.bzapps.plwordnetmobile.activities.SettingsActivity;
+import com.pwr.bzapps.plwordnetmobile.activities.*;
 import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -93,7 +89,12 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
                                 wentToNextActivity=true;
                                 startActivity(new Intent(getApplicationContext(), RecentSearchesActivity.class));
                                 return true;
-                            case R.id.nav_change_language:
+                            case R.id.nav_bookmarks:
+                                mDrawerMain.closeDrawer(GravityCompat.START);
+                                wentToNextActivity=true;
+                                startActivity(new Intent(getApplicationContext(), BookmarksActivity.class));
+                                return true;
+                                case R.id.nav_change_language:
                                 mDrawerMain.closeDrawer(GravityCompat.START);
                                 wentToNextActivity=true;
                                 startActivity(new Intent(getApplicationContext(), ChangeLanguageActivity.class));

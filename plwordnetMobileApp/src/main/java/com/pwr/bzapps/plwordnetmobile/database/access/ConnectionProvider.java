@@ -124,6 +124,8 @@ public class ConnectionProvider{
 
     public String getSensesBySynsetIds(String ids){
         try {
+            if("[]".equals(ids))
+                return "{\"content\":[]}";
             // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findMultipleBySynsetIds?ids=" + ids;
             url = url.replace("[","");

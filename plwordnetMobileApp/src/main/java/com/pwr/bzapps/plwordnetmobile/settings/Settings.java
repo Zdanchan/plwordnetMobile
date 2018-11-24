@@ -146,6 +146,64 @@ public class Settings {
         editor.commit();
     }
 
+
+    public static Integer[] getBookmarkedIds(Context ctx){
+        context=ctx;
+        if(preferences==null){
+            preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        }
+        String[] bookmarked = preferences.getString("bookmarks", "").split(";");
+        if(bookmarked.length==1 && bookmarked[0].isEmpty())
+            return new Integer[0];
+        Integer[] ids = new Integer[bookmarked.length];
+        for(int i=0; i <ids.length; i++){
+            ids[i]=Integer.parseInt(bookmarked[i]);
+        }
+        return ids;
+    }
+
+    public static boolean isSenseBookmarked(Context ctx, Integer id){
+        Integer[] ids = getBookmarkedIds(ctx);
+        return contains(ids,id);
+    }
+
+    public static void addOrRemoveBookmark(Context ctx, Integer id){
+        Integer[] ids = getBookmarkedIds(ctx);
+        String bookmarked = "";
+        if(contains(ids,id)){
+            for(int i=0; i<ids.length;i++){
+                if(ids[i].intValue()!=id.intValue()){
+                    bookmarked+=ids[i]+";";
+                }
+            }
+            if(!bookmarked.isEmpty()){
+                bookmarked=bookmarked.substring(0,bookmarked.length()-1);
+            }
+        }
+        else{
+            for(int i=0; i<ids.length;i++){
+                bookmarked+=ids[i]+";";
+            }
+            bookmarked+=id;
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        if(preferences==null){
+            preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        }
+        editor.putString("bookmarks", bookmarked);
+        editor.commit();
+    }
+
+    private static boolean contains(Integer[] ids, Integer id){
+        for(int i=0; i<ids.length; i++){
+            if(ids[i].intValue()==id.intValue())
+                return true;
+
+        }
+        return false;
+    }
+
     public static boolean isOfflineMode() {
         return offlineMode;
     }
