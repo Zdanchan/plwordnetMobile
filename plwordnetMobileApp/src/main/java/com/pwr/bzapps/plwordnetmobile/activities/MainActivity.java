@@ -184,10 +184,6 @@ public class MainActivity extends DrawerMenuActivity {
 
     private boolean checkIfContainsText(String string){
         String cuted = string.replaceAll(" ", "");
-        cuted = cuted.replaceAll(";", "");
-        cuted = cuted.replaceAll(":", "");
-        cuted = cuted.replaceAll(".", "");
-        cuted = cuted.replaceAll(",", "");
         if(cuted.equals(""))
             return false;
         return true;

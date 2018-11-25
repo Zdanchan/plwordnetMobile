@@ -166,10 +166,6 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
 
     private boolean checkIfContainsText(String string){
         String cuted = string.replaceAll(" ", "");
-        cuted = cuted.replaceAll(";", "");
-        cuted = cuted.replaceAll(":", "");
-        cuted = cuted.replaceAll(".", "");
-        cuted = cuted.replaceAll(",", "");
         if(cuted.equals(""))
             return false;
         return true;
