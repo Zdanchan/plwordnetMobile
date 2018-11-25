@@ -32,11 +32,19 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:layout_below="@id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--Insert Layout code here-->
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                    android:id="@+id/settings_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>

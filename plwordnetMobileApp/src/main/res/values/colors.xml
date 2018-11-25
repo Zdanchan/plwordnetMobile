@@ -32,5 +32,6 @@
     <color name="colorGraphButton_focused">#9e1717</color>
     <color name="colorGraphButton_pressed">#6e0000</color>
     <color name="colorSettingsIcon">#404040</color>
+    <color name="colorSeparator">#AAAAAA</color>
     <color name="alpha">#00FFFFFF</color>
 </resources>

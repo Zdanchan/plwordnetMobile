@@ -76,6 +76,16 @@
     <string name="graph_view">Wizualizacja grafu</string>
     <string name="search">Szukaj</string>
     <!---->
+    <!--Settings strings-->
+    <string name="offline_mode">Tryb offline</string>
+    <string name="local_database">Lokalna baza danych</string>
+    <string name="visual">Ustawienia graficzne</string>
+    <string name="history_and_bookmarks">Historia i zakładki</string>
+    <string name="clear_history">Wyczyść historie</string>
+    <string name="clear_bookmarks">Wyczyść zakładki</string>
+    <string name="clear_history_toast">Cała historia wyszukiwania została usunięta</string>
+    <string name="clear_bookmarks_toast">Wszystkie zakładki zostały usunięte</string>
+    <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">czasownik</string>
     <string name="als_2">rzeczownik</string>

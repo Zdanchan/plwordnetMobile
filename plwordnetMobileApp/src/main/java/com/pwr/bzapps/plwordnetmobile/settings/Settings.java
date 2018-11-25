@@ -35,6 +35,7 @@ public class Settings {
             editor.putString("selected_locale", localeName);
             editor.commit();
         }
+        offlineMode = preferences.getBoolean("offline_mode", false);
         locale = new Locale(localeName.substring(0,localeName.indexOf('_')));
     }
 
@@ -45,6 +46,7 @@ public class Settings {
             preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
         }
         editor.putString("selected_locale", localeName);
+        editor.putBoolean("offline_mode",offlineMode);
 
         editor.commit();
     }
@@ -202,6 +204,24 @@ public class Settings {
 
         }
         return false;
+    }
+
+    public static void clearHistory(){
+        SharedPreferences.Editor editor = preferences.edit();
+        if(preferences==null){
+            preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        }
+        editor.putString("search_history", "");
+        editor.commit();
+    }
+
+    public static void clearBookmarks(){
+        SharedPreferences.Editor editor = preferences.edit();
+        if(preferences==null){
+            preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        }
+        editor.putString("bookmarks", "");
+        editor.commit();
     }
 
     public static boolean isOfflineMode() {

@@ -91,6 +91,16 @@
     <string name="graph_view">View graph</string>
     <string name="search">Search</string>
     <!---->
+    <!--Settings strings-->
+    <string name="offline_mode">Offline mode</string>
+    <string name="local_database">Local database</string>
+    <string name="visual">Visual settings</string>
+    <string name="history_and_bookmarks">History and bookmarks</string>
+    <string name="clear_history">Clear history</string>
+    <string name="clear_bookmarks">Clear bookmarks</string>
+    <string name="clear_history_toast">Whole history has been removed</string>
+    <string name="clear_bookmarks_toast">All bookmarks has been removed</string>
+    <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>
     <string name="als_2">noun</string>
