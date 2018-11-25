@@ -68,28 +68,32 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(retrieveSensesTask!=null){
-                    retrieveSensesTask.cancel(true);
+                if(checkIfContainsText(searchEdit.getText().toString())) {
+                    if (retrieveSensesTask != null) {
+                        retrieveSensesTask.cancel(true);
+                    }
+                    adapter.getData().clear();
+                    messages.setText("");
+                    Settings.putSearchEntryToHistory(getApplicationContext(), searchEdit.getText().toString());
+                    retrieveSensesTask = new RetrieveSensesTask(getApplicationContext(), adapter, messages, SearchResultsListActivity.this);
+                    retrieveSensesTask.execute(searchEdit.getText().toString().trim());
                 }
-                adapter.getData().clear();
-                messages.setText("");
-                Settings.putSearchEntryToHistory(getApplicationContext(),searchEdit.getText().toString());
-                retrieveSensesTask = new RetrieveSensesTask(getApplicationContext(),adapter,messages,SearchResultsListActivity.this);
-                retrieveSensesTask.execute(searchEdit.getText().toString().trim());
             }
         });
         searchEdit.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    if(retrieveSensesTask!=null){
-                        retrieveSensesTask.cancel(true);
+                    if(checkIfContainsText(searchEdit.getText().toString())) {
+                        if (retrieveSensesTask != null) {
+                            retrieveSensesTask.cancel(true);
+                        }
+                        adapter.getData().clear();
+                        messages.setText("");
+                        Settings.putSearchEntryToHistory(getApplicationContext(), searchEdit.getText().toString());
+                        retrieveSensesTask = new RetrieveSensesTask(getApplicationContext(), adapter, messages, SearchResultsListActivity.this);
+                        retrieveSensesTask.execute(searchEdit.getText().toString().trim());
+                        return true;
                     }
-                    adapter.getData().clear();
-                    messages.setText("");
-                    Settings.putSearchEntryToHistory(getApplicationContext(),searchEdit.getText().toString());
-                    retrieveSensesTask = new RetrieveSensesTask(getApplicationContext(),adapter,messages,SearchResultsListActivity.this);
-                    retrieveSensesTask.execute(searchEdit.getText().toString().trim());
-                    return true;
                 }
                 return false;
             }
@@ -160,109 +164,16 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<SenseEntity> prepareDummyData(){
-        ArrayList<SenseEntity> dummyData = new ArrayList<SenseEntity>();
-
-        SenseEntity item1 = new SenseEntity();
-        item1.setWord_id(new WordEntity());
-        item1.getWord_id().setWord("zamek");
-        item1.setVariant(1);
-        item1.setPart_of_speech_id(new PartOfSpeechEntity());
-        item1.getPart_of_speech_id().setId(2);
-        item1.setLexicon_id(new LexiconEntity());
-        item1.getLexicon_id().setLanguage_name("Polish");
-        //item1.setShortDescription("warowna budowla mieszkalna, rezydencja pana, króla, księcia lub magnata");
-
-        SenseEntity item2 = new SenseEntity();
-        item2.setWord_id(new WordEntity());
-        item2.getWord_id().setWord("zamek");
-        item2.setVariant(2);
-        item2.setPart_of_speech_id(new PartOfSpeechEntity());
-        item2.getPart_of_speech_id().setId(2);
-        item2.setLexicon_id(new LexiconEntity());
-        item2.getLexicon_id().setLanguage_name("Polish");
-        //item2.setShortDescription("mechanizm lub urządzenie do zamykania np. drzwi, szuflad, walizek");
-
-        SenseEntity item3 = new SenseEntity();
-        item3.setWord_id(new WordEntity());
-        item3.getWord_id().setWord("zamek");
-        item3.setVariant(3);
-        item3.setPart_of_speech_id(new PartOfSpeechEntity());
-        item3.getPart_of_speech_id().setId(2);
-        item3.setLexicon_id(new LexiconEntity());
-        item3.getLexicon_id().setLanguage_name("Polish");
-        //item3.setShortDescription("urządzenie do łączenia lub zabezpieczania w ustalonym położeniu elementów maszyny");
-
-        SenseEntity item4 = new SenseEntity();
-        item4.setWord_id(new WordEntity());
-        item4.getWord_id().setWord("zamek");
-        item4.setVariant(4);
-        item4.setPart_of_speech_id(new PartOfSpeechEntity());
-        item4.getPart_of_speech_id().setId(2);
-        item4.setLexicon_id(new LexiconEntity());
-        item4.getLexicon_id().setLanguage_name("Polish");
-        //item4.setShortDescription("mechanizm broni palnej służący do zamykania na czas wystrzału i otwierania po strzale tylnej części lufy");
-
-        SenseEntity item5 = new SenseEntity();
-        item5.setWord_id(new WordEntity());
-        item5.getWord_id().setWord("zamek");
-        item5.setVariant(5);
-        item5.setPart_of_speech_id(new PartOfSpeechEntity());
-        item5.getPart_of_speech_id().setId(2);
-        item5.setLexicon_id(new LexiconEntity());
-        item5.getLexicon_id().setLanguage_name("Polish");
-        //item5.setShortDescription("blokada w informatyce");
-
-        SenseEntity item6 = new SenseEntity();
-        item6.setWord_id(new WordEntity());
-        item6.getWord_id().setWord("zamek");
-        item6.setVariant(6);
-        item6.setPart_of_speech_id(new PartOfSpeechEntity());
-        item6.getPart_of_speech_id().setId(2);
-        item6.setLexicon_id(new LexiconEntity());
-        item6.getLexicon_id().setLanguage_name("Polish");
-        //item6.setShortDescription("zapięcie przy ubraniu, suwak, ekler");
-
-        SenseEntity item7 = new SenseEntity();
-        item7.setWord_id(new WordEntity());
-        item7.getWord_id().setWord("zamek");
-        item7.setVariant(7);
-        item7.setPart_of_speech_id(new PartOfSpeechEntity());
-        item7.getPart_of_speech_id().setId(2);
-        item7.setLexicon_id(new LexiconEntity());
-        item7.getLexicon_id().setLanguage_name("Polish");
-        //item7.setShortDescription("zagranie taktyczne w hokeju; zamknięcie przeciwnika w jego tercji lodowiska/boiska");
-
-        SenseEntity item8 = new SenseEntity();
-        item8.setWord_id(new WordEntity());
-        item8.getWord_id().setWord("zamek");
-        item8.setVariant(8);
-        item8.setPart_of_speech_id(new PartOfSpeechEntity());
-        item8.getPart_of_speech_id().setId(2);
-        item8.setLexicon_id(new LexiconEntity());
-        item8.getLexicon_id().setLanguage_name("Polish");
-        //item8.setShortDescription("");
-
-        SenseEntity item9 = new SenseEntity();
-        item9.setWord_id(new WordEntity());
-        item9.getWord_id().setWord("zamek");
-        item9.setVariant(9);
-        item9.setPart_of_speech_id(new PartOfSpeechEntity());
-        item9.getPart_of_speech_id().setId(2);
-        item9.setLexicon_id(new LexiconEntity());
-        item9.getLexicon_id().setLanguage_name("Polish");
-        //item9.setShortDescription("");
-
-        dummyData.add(item1);
-        dummyData.add(item2);
-        dummyData.add(item3);
-        dummyData.add(item4);
-        dummyData.add(item5);
-        dummyData.add(item6);
-        dummyData.add(item7);
-        dummyData.add(item8);
-        dummyData.add(item9);
-
-        return dummyData;
+    private boolean checkIfContainsText(String string){
+        String cuted = string.replaceAll(" ", "");
+        cuted = cuted.replaceAll(";", "");
+        cuted = cuted.replaceAll(":", "");
+        cuted = cuted.replaceAll(".", "");
+        cuted = cuted.replaceAll(",", "");
+        if(cuted.equals(""))
+            return false;
+        return true;
     }
+
+
 }
