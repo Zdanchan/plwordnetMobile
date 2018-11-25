@@ -8,9 +8,11 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -37,6 +39,7 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.EmotionalAnnotationsInterpreter;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.RelationInterpreter;
+import com.pwr.bzapps.plwordnetmobile.layout.animator.ExpandableViewAnimator;
 import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -49,6 +52,7 @@ public class SenseViewActivity extends BackButtonActivity {
 
     private SenseEntity entity;
     private ImageButton bookmark_button;
+    private ImageView bookmark_tape;
     private ArrayList<SenseEntity> word_related_senses;
     private ArrayList<SenseEntity> related;
     private ArrayList<SenseEntity> synonyms;
@@ -64,6 +68,7 @@ public class SenseViewActivity extends BackButtonActivity {
         super.onCreate(savedInstanceState);
         progress_bar = findViewById(R.id.loading_spinner);
         bookmark_button = findViewById(R.id.bookmark_button);
+        bookmark_tape = findViewById(R.id.bookmark_tape);
         final SenseEntity entity = (SenseEntity)getIntent().getSerializableExtra("sense_entity");
         word_related_senses = (ArrayList<SenseEntity>)getIntent().getSerializableExtra("word_related_senses");
         if(entity!=null){
@@ -84,6 +89,12 @@ public class SenseViewActivity extends BackButtonActivity {
 
         bookmarked = Settings.isSenseBookmarked(getApplicationContext(),entity.getId());
 
+        if(!bookmarked){
+            Animation slideAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.remove_bookmark_tape_no_anim);
+            bookmark_tape.startAnimation(slideAnimation);
+            slideAnimation.setFillAfter(true);
+        }
+
         retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
@@ -95,10 +106,17 @@ public class SenseViewActivity extends BackButtonActivity {
                 if(bookmarked){
                     Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.remove_bookmark_anim);
                     bookmark_button.startAnimation(rotateAnimation);
+                    Animation slideAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.remove_bookmark_tape_anim);
+                    bookmark_tape.startAnimation(slideAnimation);
+                    slideAnimation.setFillAfter(true);
                 }
                 else{
                     Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.add_bookmark_anim);
                     bookmark_button.startAnimation(rotateAnimation);
+                    Animation slideAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.add_bookmark_tape_anim);
+                    slideAnimation.setFillBefore(true);
+                    bookmark_tape.startAnimation(slideAnimation);
+                    //slideAnimation.setFillAfter(true);
                 }
                 Settings.addOrRemoveBookmark(getApplication(),entity.getId());
                 bookmarked = !bookmarked;
@@ -154,13 +172,23 @@ public class SenseViewActivity extends BackButtonActivity {
                     public void onClick(View view) {
                         if (isOpen) {
                             isOpen = !isOpen;
-                            cell_container.setVisibility(View.GONE);
-                            expander.setImageResource(R.drawable.drawer_open_icon);
+                            ExpandableViewAnimator.collapse(cell_container);
+                            //cell_container.setVisibility(View.GONE);
+                            //expander.setImageResource(R.drawable.drawer_open_icon);
+                            Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_back_180_anim);
+                            rotateAnimation.setFillBefore(true);
+                            rotateAnimation.setFillAfter(true);
+                            expander.startAnimation(rotateAnimation);
 
                         } else {
                             isOpen = !isOpen;
-                            cell_container.setVisibility(View.VISIBLE);
-                            expander.setImageResource(R.drawable.drawer_close_icon);
+                            ExpandableViewAnimator.expand(cell_container);
+                            //cell_container.setVisibility(View.VISIBLE);
+                            //expander.setImageResource(R.drawable.drawer_close_icon);
+                            Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_180_anim);
+                            rotateAnimation.setFillBefore(true);
+                            rotateAnimation.setFillAfter(true);
+                            expander.startAnimation(rotateAnimation);
                         }
                     }
                 });
@@ -306,13 +334,19 @@ public class SenseViewActivity extends BackButtonActivity {
             public void onClick(View view) {
                 if (isOpen) {
                     isOpen = !isOpen;
-                    annotation_container.setVisibility(View.GONE);
-                    expander.setImageResource(R.drawable.drawer_open_icon);
+                    ExpandableViewAnimator.collapse(annotation_container,3);
+                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_back_180_anim);
+                    rotateAnimation.setFillBefore(true);
+                    rotateAnimation.setFillAfter(true);
+                    expander.startAnimation(rotateAnimation);
 
                 } else {
                     isOpen = !isOpen;
-                    annotation_container.setVisibility(View.VISIBLE);
-                    expander.setImageResource(R.drawable.drawer_close_icon);
+                    ExpandableViewAnimator.expand(annotation_container,3);
+                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_180_anim);
+                    rotateAnimation.setFillBefore(true);
+                    rotateAnimation.setFillAfter(true);
+                    expander.startAnimation(rotateAnimation);
                 }
             }
         });

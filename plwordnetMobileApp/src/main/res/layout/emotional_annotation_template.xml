@@ -8,7 +8,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/annotation_attributes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
         <TextView
@@ -72,7 +72,7 @@
         <android.support.constraint.Barrier
                 android:id="@+id/labels_barrier"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="1dp"
                 app:barrierDirection="right"
                 app:constraint_referenced_ids="polarity_label,emotions_label,valuations_label,examples_label"/>
 
