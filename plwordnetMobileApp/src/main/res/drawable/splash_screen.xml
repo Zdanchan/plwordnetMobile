@@ -7,11 +7,16 @@
     <item android:drawable="@color/colorPrimary"/>
 
     <!-- Your product logo - 144dp color version of your app icon -->
-    <item>
+    <item
+            android:width="80dp"
+            android:height="80dp"
+            android:gravity="center">
 
-        <bitmap
-            android:src="@drawable/wordnet_logo"
-            android:gravity="center"/>
+            <bitmap
+                android:src="@drawable/wordnet_logo_remastered"
+                android:gravity="fill_horizontal|fill_vertical"
+
+                />
 
     </item>
 

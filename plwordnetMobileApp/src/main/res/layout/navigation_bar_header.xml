@@ -9,7 +9,7 @@
         android:layout_height="70dp"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/wordnet_logo"/>
+        android:src="@drawable/wordnet_logo_remastered"/>
 
     <TextView
         android:id="@+id/title"

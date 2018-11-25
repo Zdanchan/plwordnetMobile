@@ -27,7 +27,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/wordnet_logo" />
+                android:src="@drawable/wordnet_logo_remastered" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

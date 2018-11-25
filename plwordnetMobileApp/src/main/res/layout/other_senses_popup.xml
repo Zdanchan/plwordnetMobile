@@ -17,12 +17,13 @@
     />
     <ImageButton
             android:id="@+id/close_button"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
             android:src="@drawable/icon_cross"
             android:tint="@android:color/black"
             android:scaleType="fitCenter"

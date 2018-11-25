@@ -21,36 +21,41 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true">
             <ImageView
                 android:id="@+id/toolbar_app_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/wordnet_logo" />
-            <ImageView
-                android:id="@+id/bookmark_tape"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="12dp"
-                android:src="@drawable/bookmark_tape"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-            />
-            <ImageButton
-                    android:id="@+id/bookmark_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                android:src="@drawable/wordnet_logo_remastered" />
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/bookmark_button_icon"
-                    android:background="@color/alpha"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-            />
+                    android:layout_marginRight="12dp">
+                <ImageView
+                        android:id="@+id/bookmark_tape"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/bookmark_tape"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"/>
+                <ImageButton
+                        android:id="@+id/bookmark_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:src="@drawable/bookmark_button_icon"
+                        android:background="@color/alpha"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"/>
+            </FrameLayout>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
