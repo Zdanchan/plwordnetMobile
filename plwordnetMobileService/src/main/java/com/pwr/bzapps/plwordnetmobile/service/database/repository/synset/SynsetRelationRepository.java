@@ -16,4 +16,19 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
 
     @Query("SELECT sr FROM SynsetRelationEntity sr WHERE sr.synset_relation_type_id NOT IN (:relation_type_ids)")
     public List<SynsetRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+
+    @Query(value = "SELECT CONCAT(" +
+            "sr.id,','," +
+            "sr.child_synset_id,','," +
+            "sr.parent_synset_id,','," +
+            "sr.relation_type_id,','," +
+            ")FROM SynsetRelationEntity sr", nativeQuery = true)
+    public List<String> findAllAndParseString();
+    @Query(value = "SELECT CONCAT(" +
+            "sr.id,','," +
+            "sr.child_synset_id,','," +
+            "sr.parent_synset_id,','," +
+            "sr.synset_relation_type_id,','," +
+            ")FROM SynsetRelationEntity sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
 }

@@ -17,4 +17,19 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
 
     @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relation_type_id NOT IN (:relation_type_ids)")
     public List<SenseRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+
+    @Query(value = "SELECT CONCAT(" +
+            "sr.id,','," +
+            "sr.child_sense_id,','," +
+            "sr.parent_sense_id,','," +
+            "sr.relation_type_id,','," +
+            ")FROM SenseRelationEntity sr", nativeQuery = true)
+    public List<String> findAllAndParseString();
+    @Query(value = "SELECT CONCAT(" +
+            "sr.id,','," +
+            "sr.child_sense_id,','," +
+            "sr.parent_sense_id,','," +
+            "sr.relation_type_id,','," +
+            ")FROM SenseRelationEntity sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
 }

@@ -2,6 +2,8 @@ package com.pwr.bzapps.plwordnetmobile.service.controller;
 
 import com.pwr.bzapps.plwordnetmobile.service.advisor.Advisor;
 import com.pwr.bzapps.plwordnetmobile.service.cache.StringCache;
+import com.pwr.bzapps.plwordnetmobile.service.component.DBHelperComponent;
+import com.pwr.bzapps.plwordnetmobile.service.component.SQLiteComponent;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DictionaryEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DomainEntity;
@@ -29,6 +31,9 @@ import com.pwr.bzapps.plwordnetmobile.service.database.repository.synset.SynsetR
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +41,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 @Controller
@@ -62,6 +66,8 @@ public class DBController {
     private SynsetAttributeRepository synsetAttributeRepository;
     @Autowired
     private DBHelperComponent helper;
+    @Autowired
+    private SQLiteComponent sqLiteComponent;
 
     @GetMapping(path="/print_generated_files")
     public @ResponseBody String printGeneratedFiles(){
@@ -71,6 +77,35 @@ public class DBController {
             content+=file.getAbsolutePath()+"\n";
         }
         return content;
+    }
+
+    @GetMapping(path="/generate_SQLite_files")
+    public @ResponseBody String generateSQLiteFiles(){
+
+        String response = "";
+        ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
+        ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
+        if(!Advisor.isQuery_generator_processing()){
+            Advisor.setQuery_generator_processing(true);
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDB(languages);
+                        log.info("SQLite databases are stored and up to date");
+                    }catch (Exception e){
+                        log.error("Exception during SQLite databases generation: ", e);
+                    } finally {
+                        Advisor.setQuery_generator_processing(false);
+                    }
+                }
+            });
+            response = "SQLite generator started";
+        }
+        else{
+            response = "SQLite generator is already running";
+        }
+        return response;
     }
 
     @GetMapping(path="/generate_query_files")

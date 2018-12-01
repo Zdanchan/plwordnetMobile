@@ -1,4 +1,4 @@
-package com.pwr.bzapps.plwordnetmobile.service.controller;
+package com.pwr.bzapps.plwordnetmobile.service.component;
 
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DictionaryEntity;
@@ -147,6 +147,68 @@ public class DBHelperComponent {
         }
         return null;
     }
+    public <T> List<String> findAllForEntityAndParseString(Class<T> clazz){
+        switch(clazz.getSimpleName()){
+            case "ApplicationLocalisedStringEntity":
+                return ((List<String>)applicationLocalisedStringRepository.findAllAndParseString());
+            case "DictionaryEntity":
+                return ((List<String>)dictionaryRepository.findAllAndParseString());
+            case "DomainEntity":
+                return ((List<String>)domainRepository.findAllAndParseString());
+            case "LexiconEntity":
+                return ((List<String>)lexiconRepository.findAllAndParseString());
+            case "EmotionalAnnotationEntity":
+                return ((List<String>)emotionalAnnotationRepository.findAllAndParseString());
+            case "PartOfSpeechEntity":
+                return ((List<String>)partOfSpeechRepository.findAllAndParseString());
+            case "WordEntity":
+                return ((List<String>)wordRepository.findAllAndParseString());
+            case "RelationTypeAllowedLexiconEntity":
+                return ((List<String>)relationTypeAllowedLexiconRepository.findAllAndParseString());
+            case "RelationTypeAllowedPartOfSpeechEntity":
+                return ((List<String>)relationTypeAllowedPartOfSpeechRepository.findAllAndParseString());
+            case "RelationTypeEntity":
+                return ((List<String>)relationTypeRepository.findAllAndParseString());
+            case "SenseAttributeEntity":
+                return ((List<String>)senseAttributeRepository.findAllAndParseString());
+            case "SenseEntity":
+                return ((List<String>)senseRepository.findAllAndParseString());
+            case "SenseExampleEntity":
+                return ((List<String>)senseExampleRepository.findAllAndParseString());
+            case "SenseRelationEntity":
+                return ((List<String>)senseRelationRepository.findAllAndParseString());
+            case "SynsetAttributeEntity":
+                return ((List<String>)synsetAttributeRepository.findAllAndParseString());
+            case "SynsetEntity":
+                return ((List<String>)synsetRepository.findAllAndParseString());
+            case "SynsetExampleEntity":
+                return ((List<String>)synsetExampleRepository.findAllAndParseString());
+            case "SynsetRelationEntity":
+                return ((List<String>)synsetRelationRepository.findAllAndParseString());
+        }
+        return null;
+    }
+    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids){
+        switch(clazz.getSimpleName()){
+            case "SenseAttributeEntity":
+                return ((List<String>)senseAttributeRepository.findAllForSensesAndParseString(ids));
+            case "SenseEntity":
+                return ((List<String>)senseRepository.findAllForLexiconsAndParseString(ids));
+            case "SenseExampleEntity":
+                return ((List<String>)senseExampleRepository.findAllForSenseAttributesAndParseString(ids));
+            case "SenseRelationEntity":
+                return ((List<String>)senseRelationRepository.findAllForSensesAndParseString(ids));
+            case "SynsetAttributeEntity":
+                return ((List<String>)synsetAttributeRepository.findAllForSynsetsAndParseString(ids));
+            case "SynsetEntity":
+                return ((List<String>)synsetRepository.findAllForLexiconsAndParseString(ids));
+            case "SynsetExampleEntity":
+                return ((List<String>)synsetExampleRepository.findAllForSynsetAttributesAndParseString(ids));
+            case "SynsetRelationEntity":
+                return ((List<String>)synsetRelationRepository.findAllForSynsetsAndParseString(ids));
+        }
+        return null;
+    }
     public <T> String generateSQLInsertForEntity(List<T> entities, Class<T> clazz){
         switch(clazz.getSimpleName()){
             case "ApplicationLocalisedStringEntity":
@@ -205,6 +267,10 @@ public class DBHelperComponent {
                         ,SQLExporter.getTableNameForEntity(clazz)));
         }
         return "";
+    }
+
+    public <T> String generateSQLInsertForStrings(List<String> entities, Class<T> clazz){
+        return SQLExporter.createInsertQueryWithStrings(entities,clazz);
     }
 
     public List<SynsetRelationEntity> getSynsetRelationsByRelationIds(Integer[] relation_ids){

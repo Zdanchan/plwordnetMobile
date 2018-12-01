@@ -12,4 +12,12 @@ public interface ApplicationLocalisedStringRepository extends CrudRepository<App
 
     @Query("SELECT als FROM ApplicationLocalisedStringEntity als WHERE id = :id AND language = :language")
     public ApplicationLocalisedStringEntity findByIdAndLang(@Param("id") Integer id, @Param("language") String language);
+
+    @Query(value = "SELECT CONCAT(als.id,',',als.value,'\\'',als.language,'\\'') FROM ApplicationLocalisedStringEntity als", nativeQuery = true)
+    public List<String> findAllAndParseString();
+
+    @Query(value = "SELECT CONCAT(als.id,',',als.value,'\\'',als.language,'\\'') FROM ApplicationLocalisedStringEntity als WHERE language = :language", nativeQuery = true)
+    public List<String> findAllByLanguageAndParseString(@Param("language") String language);
+
+
 }

@@ -17,4 +17,21 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
 
     @Query("SELECT s.id FROM SynsetEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
     public List<Integer> findIdsForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
+
+    @Query(value = "SELECT CONCAT(" +
+            "s.id,','," +
+            "s.split,','," +
+            "s.lexicon_id.id,','," +
+            "s.status_id,','," +
+            "s.abstract,','," +
+            ")FROM SynsetEntity s", nativeQuery = true)
+    public List<String> findAllAndParseString();
+    @Query(value = "SELECT CONCAT(" +
+            "s.id,','," +
+            "s.split,','," +
+            "s.lexicon_id.id,','," +
+            "s.status_id,','," +
+            "s.abstract,','," +
+            ")FROM SynsetEntity s WHERE s.lexicon_id.id  IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
 }
