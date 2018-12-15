@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RelationTypeAllowedLexiconRepository extends CrudRepository<RelationTypeAllowedLexiconEntity, Integer> {
-    @Query(value = "SELECT CONCAT(rtal.relation_type_id.id,',',rtal.lexicon_id.id) FROM RelationTypeAllowedLexiconEntity rtal", nativeQuery = true)
+    @Query(value = "SELECT CONCAT(rtal.relation_type_id,',',rtal.lexicon_id) FROM relation_type_allowed_lexicons rtal", nativeQuery = true)
     public List<String> findAllAndParseString();
 }

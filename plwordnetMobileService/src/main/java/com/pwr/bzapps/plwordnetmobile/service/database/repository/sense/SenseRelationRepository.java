@@ -22,14 +22,14 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "sr.id,','," +
             "sr.child_sense_id,','," +
             "sr.parent_sense_id,','," +
-            "sr.relation_type_id,','," +
-            ")FROM SenseRelationEntity sr", nativeQuery = true)
+            "sr.relation_type_id" +
+            ")FROM sense_relation sr", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_sense_id,','," +
             "sr.parent_sense_id,','," +
-            "sr.relation_type_id,','," +
-            ")FROM SenseRelationEntity sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)", nativeQuery = true)
+            "sr.relation_type_id" +
+            ")FROM sense_relation sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)", nativeQuery = true)
     public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
 }

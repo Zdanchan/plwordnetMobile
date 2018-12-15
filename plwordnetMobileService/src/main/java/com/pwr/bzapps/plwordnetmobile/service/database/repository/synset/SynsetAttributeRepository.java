@@ -7,6 +7,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ *   `synset_id` bigint(20) NOT NULL,
+ *   `comment` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
+ *   `definition` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
+ *   `princeton_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'External original Princeton Id',
+ *   `owner_id` bigint(20) DEFAULT NULL COMMENT 'Synset owner',
+ *   `error_comment` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
+ *   `ili_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'OMW id',
+ * */
+
 public interface SynsetAttributeRepository extends CrudRepository<SynsetAttributeEntity, Integer> {
     @Query("SELECT sa FROM SynsetAttributeEntity sa WHERE sa.synset_id IN (:synset_ids)")
     public List<SynsetAttributeEntity> findMultipleBySynsetId(@Param("synset_ids") Integer[] synset_ids);
@@ -15,22 +25,21 @@ public interface SynsetAttributeRepository extends CrudRepository<SynsetAttribut
 
     @Query(value = "SELECT CONCAT(" +
             "sa.synset_id,','," +
-            "'\\'',sa.comment,'\\'',','," +
-            "'\\'',sa.definition,'\\'',','," +
-            "'\\'',sa.princeton_id,'\\'',','," +
-            "sa.owner_id,','," +
-            "'\\'',sa.error_comment,'\\'',','," +
-            "sa.ili_id,','" +
-            ")FROM SynsetAttributeEntity sa", nativeQuery = true)
+            "IF(sa.comment IS NULL, 'null','\"',sa.comment,'\"'),','," +
+            "IF(sa.definition IS NULL, 'null','\"',sa.definition,'\"'),','," +
+            "IF(sa.princeton_id IS NULL, 'null','\"',sa.princeton_id,'\"'),','," +
+            "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
+            "IF(sa.error_comment IS NULL, 'null','\"',sa.error_comment,'\"'),','," +
+            "IF(sa.ili_id IS NULL, 'null',sa.ili_id)" +
+            ")FROM synset_attributes sa", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
-            "sa.synset_id,','," +
-            "'\\'',sa.comment,'\\'',','," +
-            "'\\'',sa.definition,'\\'',','," +
-            "'\\'',sa.princeton_id,'\\'',','," +
-            "sa.owner_id,','," +
-            "'\\'',sa.error_comment,'\\'',','," +
-            "sa.ili_id,','" +
-            ")FROM SynsetAttributeEntity sa WHERE sa.sense_id IN (:synset_ids)", nativeQuery = true)
+            "IF(sa.comment IS NULL, 'null','\"',sa.comment,'\"'),','," +
+            "IF(sa.definition IS NULL, 'null','\"',sa.definition,'\"'),','," +
+            "IF(sa.princeton_id IS NULL, 'null','\"',sa.princeton_id,'\"'),','," +
+            "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
+            "IF(sa.error_comment IS NULL, 'null','\"',sa.error_comment,'\"'),','," +
+            "IF(sa.ili_id IS NULL, 'null',sa.ili_id)" +
+            ")FROM synset_attributes sa WHERE sa.sense_id IN (:synset_ids)", nativeQuery = true)
     public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
 }
