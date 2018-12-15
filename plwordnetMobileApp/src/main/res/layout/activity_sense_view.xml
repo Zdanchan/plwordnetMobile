@@ -315,8 +315,7 @@
                 android:layout_below="@id/sense_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginTop="15dp">
                 <RelativeLayout
                     android:id="@+id/emotional_annotations_header"
                     android:layout_width="0dp"
@@ -340,7 +339,7 @@
                             android:textColor="@color/colorMainText"
                     />
 
-                    <ImageButton
+                    <ImageView
                             android:id="@+id/drawer_icon"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
