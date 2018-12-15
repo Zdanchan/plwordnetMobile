@@ -41,6 +41,7 @@ import com.pwr.bzapps.plwordnetmobile.database.interpretation.EmotionalAnnotatio
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.RelationInterpreter;
 import com.pwr.bzapps.plwordnetmobile.layout.animator.ExpandableViewAnimator;
 import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
+import com.pwr.bzapps.plwordnetmobile.layout.listener.OnClickExpander;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class SenseViewActivity extends BackButtonActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_sense_view);
         super.onCreate(savedInstanceState);
+        ((TextView)findViewById(R.id.sense_attribute_synonyms)).setVisibility(View.GONE);
         progress_bar = findViewById(R.id.loading_spinner);
         bookmark_button = findViewById(R.id.bookmark_button);
         bookmark_tape = findViewById(R.id.bookmark_tape);
@@ -164,34 +166,9 @@ public class SenseViewActivity extends BackButtonActivity {
                 RelativeLayout type = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
                 ((TextView) type.findViewById(R.id.relation_type_name)).setText(RelationInterpreter.getRelationTypeLabel(getApplicationContext(),list.get(0).getSynset_relation_type_id().getId(),getPackageName()));
                 final LinearLayout cell_container = type.findViewById(R.id.relations_container);
-                final ImageButton expander = ((ImageButton) type.findViewById(R.id.drawer_icon));
-                expander.setOnClickListener(new View.OnClickListener() {
-                    private boolean isOpen = false;
-
-                    @Override
-                    public void onClick(View view) {
-                        if (isOpen) {
-                            isOpen = !isOpen;
-                            ExpandableViewAnimator.collapse(cell_container);
-                            //cell_container.setVisibility(View.GONE);
-                            //expander.setImageResource(R.drawable.drawer_open_icon);
-                            Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_back_180_anim);
-                            rotateAnimation.setFillBefore(true);
-                            rotateAnimation.setFillAfter(true);
-                            expander.startAnimation(rotateAnimation);
-
-                        } else {
-                            isOpen = !isOpen;
-                            ExpandableViewAnimator.expand(cell_container);
-                            //cell_container.setVisibility(View.VISIBLE);
-                            //expander.setImageResource(R.drawable.drawer_close_icon);
-                            Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_180_anim);
-                            rotateAnimation.setFillBefore(true);
-                            rotateAnimation.setFillAfter(true);
-                            expander.startAnimation(rotateAnimation);
-                        }
-                    }
-                });
+                final ImageView expander = ((ImageView) type.findViewById(R.id.drawer_icon));
+                //expander.setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
+                type.findViewById(R.id.relative_type_header).setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
                 for (SynsetRelationEntity relation : list) {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
                     Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
@@ -211,7 +188,7 @@ public class SenseViewActivity extends BackButtonActivity {
                     else {
                         String domain_label = getResources().getText(R.string.domain).toString().toLowerCase();
                         ((TextView) cell.findViewById(R.id.relation_description)).setText(domain_label + ": "
-                                + getResources().getString(getResources().getIdentifier("als_" + sense.getDomain_id().getName_id(), "string", getPackageName())));
+                                + getResources().getString(getResources().getIdentifier("dom_" + sense.getDomain_id().getName_id(), "string", getPackageName())));
                     }
                     cell_container.addView(cell);
                     cell.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +249,7 @@ public class SenseViewActivity extends BackButtonActivity {
         else{
             sense_description.setText(((ArrayList<SynsetAttributeEntity>)entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
         }
-        sense_domain.setText(getResources().getString(getResources().getIdentifier("als_" + entity.getDomain_id().getName_id(),"string", getPackageName())));
+        sense_domain.setText(getResources().getString(getResources().getIdentifier("dom_" + entity.getDomain_id().getId(),"string", getPackageName())));
         sense_source.setText(entity.getLexicon_id().getName());
 
         setExamples(sense_examples_container);
@@ -326,30 +303,9 @@ public class SenseViewActivity extends BackButtonActivity {
 
     private void setEmotionalAnnotations(final LinearLayout annotation_container){
         boolean no_emotions = true;
-        final ImageButton expander = ((ImageButton) findViewById(R.id.drawer_icon));
-        expander.setOnClickListener(new View.OnClickListener() {
-            private boolean isOpen = false;
-
-            @Override
-            public void onClick(View view) {
-                if (isOpen) {
-                    isOpen = !isOpen;
-                    ExpandableViewAnimator.collapse(annotation_container,3);
-                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_back_180_anim);
-                    rotateAnimation.setFillBefore(true);
-                    rotateAnimation.setFillAfter(true);
-                    expander.startAnimation(rotateAnimation);
-
-                } else {
-                    isOpen = !isOpen;
-                    ExpandableViewAnimator.expand(annotation_container,3);
-                    Animation rotateAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_180_anim);
-                    rotateAnimation.setFillBefore(true);
-                    rotateAnimation.setFillAfter(true);
-                    expander.startAnimation(rotateAnimation);
-                }
-            }
-        });
+        final ImageView expander = ((ImageView) findViewById(R.id.drawer_icon));
+        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
+        //expander.setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
 
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
             RelativeLayout annotation = (RelativeLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.emotional_annotation_template, null);
@@ -422,6 +378,7 @@ public class SenseViewActivity extends BackButtonActivity {
             synonyms_container.setVisibility(View.GONE);
         }
         else {
+            ((TextView)findViewById(R.id.sense_attribute_synonyms)).setVisibility(View.VISIBLE);
             for (final SenseEntity synonym : synonyms) {
                 if (!synonym.getWord_id().getWord().equals(entity.getWord_id().getWord())) {
                     RelativeLayout synonym_cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.synonym_template, null);

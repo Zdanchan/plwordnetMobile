@@ -27,7 +27,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorMainText"
         />
-        <ImageButton
+        <ImageView
                 android:id="@+id/drawer_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

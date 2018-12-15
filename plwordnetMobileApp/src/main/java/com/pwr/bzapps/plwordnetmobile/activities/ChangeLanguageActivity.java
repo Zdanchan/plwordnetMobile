@@ -45,5 +45,6 @@ public class ChangeLanguageActivity extends BackButtonActivity implements Adapte
         String[] locales = getApplicationContext().getResources().getStringArray(R.array.locales_symbols);
         Settings.setLocale(locales[i]);
         adapter.notifyDataSetChanged();
+        onBackPressed();
     }
 }

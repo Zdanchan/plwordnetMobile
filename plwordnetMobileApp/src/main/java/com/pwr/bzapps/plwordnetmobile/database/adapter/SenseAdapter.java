@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
-import com.pwr.bzapps.plwordnetmobile.database.aggregator.WordAggregator;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseAttributeEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;

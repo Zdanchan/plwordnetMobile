@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.activities.template;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -10,10 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.pwr.bzapps.plwordnetmobile.R;
+import com.pwr.bzapps.plwordnetmobile.activities.MainActivity;
 import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -42,6 +45,14 @@ public abstract class BackButtonActivity extends AppCompatActivity{
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         toolbarAppIcon = findViewById(R.id.toolbar_app_icon);
+        toolbarAppIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         centerToolbarAppIcon();
     }
 
