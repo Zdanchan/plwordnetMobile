@@ -1,8 +1,8 @@
 "use strict";
 
-import {apiConnector} from './api-connector';
-import {GraphCreator, consts} from "./graph-creator";
-import {Edge} from "./graph-edges-container";
+import {apiConnector} from './api-connector.js';
+import {GraphCreator, consts} from "./graph-creator.js";
+import {Edge} from "./graph-edges-container.js";
 
 let geoUtils = {};
 
@@ -65,6 +65,7 @@ const GraphNode = function(json, x, y, parent, graph,expandedTop, expandedRight,
     thisNode.id = json.id;
     thisNode.label = json.label;
     thisNode.partOfSpeechId = json.pos;
+    thisNode.lexicon = json.lex;
 
     thisNode.assignColorBasedFromPartOfSpeech();
 
@@ -269,8 +270,19 @@ GraphNode.prototype.unmarkSelected = function(){
 GraphNode.prototype.assignColorBasedFromPartOfSpeech = function () {
   const thisNode = this;
   let color;
-  if(!consts.partOfSpeech[thisNode.partOfSpeechId])
-    color = '#F0E68C'; // default
+  if(!consts.partOfSpeech[thisNode.partOfSpeechId]){
+    color = '#888888'; // default
+    //switch (thisNode.partOfSpeechId) {
+    //    case 1:
+    //        color =  "#FED25C";
+    //    case 2:
+    //        color =  "#8BDFAE";
+    //    case 3:
+    //        color =  "#8BDFAE";
+    //    case 4:
+    //        color =  "#678ADA";
+    //}
+  }
   else
     color = consts.partOfSpeech[thisNode.partOfSpeechId].color;
 
@@ -538,19 +550,24 @@ GraphNode.prototype.isNodeCumulator = function(){
 
 GraphNode.prototype.expandTriangleClick = function(graph, triangleHandle, place){
   const thisNode = this;
+
+
   const expandedIndicator = ['expandedTop', 'expandedRight', 'expandedBottom', 'expandedLeft'][place];
   const expandedFunction = ['expandTopClick', 'expandRightClick', 'expandBottomClick', 'expandLeftClick'][place];
   const children = ['childrenTop', 'childrenRight', 'childrenBottom', 'childrenLeft'][place];
 
   // if node at given position is not expanded
   if(!thisNode[expandedIndicator]){
+    thisNode.graph.showLoadingAnimation();
     thisNode[expandedFunction](graph.nodes, function (data) {
-      // if(!thisNode.childrenDownloaded)
-      thisNode.updateChildren(data, place);
 
+
+      thisNode.updateChildren(data, place);
       thisNode.updateChildrenPosition(place);
       graph.updateWithChildrenNodes(thisNode);
       d3.select(triangleHandle).classed("expanded", true);
+
+      thisNode.graph.hideLoadingAnimation();
     });
   }
   else {
@@ -558,8 +575,8 @@ GraphNode.prototype.expandTriangleClick = function(graph, triangleHandle, place)
 
     graph.removeNodeChildren(thisNode, place);
     d3.select(triangleHandle).classed("expanded", false);
+    thisNode.graph.hideLoadingAnimation();
   }
-
 };
 
 
@@ -569,6 +586,7 @@ const GraphNodeCumulator = function (json, parent, hiddenNodes, position) {
   GraphNode.call(this, json, 100, 100, parent, parent.graph);
 
   thisNode.hiddenNodes = hiddenNodes || [];
+  thisNode.grouppedHiddenNodes = thisNode.groupHiddenNodes();
   thisNode.positionRelativeToParent = position;
   thisNode.label = thisNode.hiddenNodes.length;
   thisNode.hiddenButVisible = 0;
@@ -582,6 +600,23 @@ const GraphNodeCumulator = function (json, parent, hiddenNodes, position) {
 GraphNodeCumulator.prototype = new GraphNode();
 GraphNodeCumulator.prototype.constructor = GraphNodeCumulator;
 GraphNodeCumulator.prototype.nodeType = 'cumulator';
+
+GraphNodeCumulator.prototype.groupHiddenNodes = function(){
+  const thisNode = this;
+
+  let groupedHiddenNodes = [];
+
+  // removing duplicates from the hidden list
+  thisNode.hiddenNodes= thisNode.hiddenNodes.reduce((x, y) => x.findIndex(e=>e.id ===y.id)<0 ? [...x, y]: x, []);
+
+  for (let node of thisNode.hiddenNodes) {
+    let relName = node.rel.filter(it => !!it).join(' - ');
+    if(! groupedHiddenNodes[relName])
+      groupedHiddenNodes[relName] = [];
+    groupedHiddenNodes[relName].push(node);
+  }
+  return groupedHiddenNodes;
+};
 
 GraphNodeCumulator.prototype.getType = function(){
   return "cumulator";
@@ -597,23 +632,27 @@ GraphNodeCumulator.prototype.updateCount = function(){
   thisNode.label = thisNode.hiddenNodes.length - thisNode.hiddenButVisible;
 };
 
-GraphNodeCumulator.prototype.decrementTitle = function(){
+GraphNodeCumulator.prototype.decrementTitle = function(htmlNodeRef){
   const thisNode = this;
 
   thisNode.label -= 1;
+
+  d3.select(htmlNodeRef.parentNode).select('text').text(thisNode.label + '...');
 
   if(thisNode.label === 0){
     this.graph.removeNode(thisNode);
   }
 };
 
-GraphNodeCumulator.prototype.expandHiddenNode = function(hiddenRef, cumulatorParent){
+GraphNodeCumulator.prototype.expandHiddenNode = function(hiddenRef, cumulatorParent, cumulatorHtmlRef){
   const thisNode = this;
 
-  thisNode.graph.hiddenList.style("display", "none");
+  thisNode.graph.hideHiddenList();
 
-  thisNode.api.getGraph(hiddenRef.id, function(data){
-    data.rel = hiddenRef.rel;
+  let node = hiddenRef[1];
+
+  thisNode.api.getGraph(node.id, function(data){
+    data.rel = node.rel;
     let newNode = new GraphNode(data, thisNode.x + 100 + Math.floor((Math.random() * 20) - 10), thisNode.y + 100 + + Math.floor((Math.random() * 20) - 10), thisNode.parent, thisNode.graph);
     newNode.childrenDownloaded = true;
 
@@ -624,9 +663,12 @@ GraphNodeCumulator.prototype.expandHiddenNode = function(hiddenRef, cumulatorPar
     thisNode.graph.nodes.set(newNode.id, newNode);
     let connection = thisNode.connectionPointTypes[thisNode.positionRelativeToParent];
 
-    thisNode.hiddenNodes.splice(thisNode.hiddenNodes.indexOf(hiddenRef), 1);
+    thisNode.hiddenNodes.splice(thisNode.hiddenNodes.indexOf(node), 1);
+    thisNode.grouppedHiddenNodes[hiddenRef[0]].splice(
+      thisNode.grouppedHiddenNodes[hiddenRef[0]].indexOf(node), 1
+    );
 
-    thisNode.decrementTitle();
+    thisNode.decrementTitle(cumulatorHtmlRef);
 
     thisNode.graph.edges.add(new Edge(thisNode.parent, newNode, connection, newNode.parentRel));
     thisNode.graph.addEdgesBetweenNewNodes([newNode]);
@@ -634,17 +676,22 @@ GraphNodeCumulator.prototype.expandHiddenNode = function(hiddenRef, cumulatorPar
   });
 };
 
-GraphNodeCumulator.prototype.addOnclickToCreatedNodes = function(graph, hiddenNodesIds, hiddenNodesRef){
+GraphNodeCumulator.prototype.addOnclickToCreatedNodes = function(graph, hiddenNodesIds, hiddenNodesRef, cumulatorHtmlRef){
   const thisNode = this;
 
   for(let i = 0; i < hiddenNodesIds.length; i++){
     (function(index) {
       let nodeId = hiddenNodesIds[index];
       d3.select(nodeId).on('click', function () {
-        thisNode.expandHiddenNode(hiddenNodesRef[index], thisNode);
+        thisNode.expandHiddenNode(hiddenNodesRef[index], thisNode, cumulatorHtmlRef);
       })
     })(i);
   }
+};
+
+GraphNodeCumulator.prototype.expandHiddenNodes = function(graph, hiddenNodesIds, hiddenNodesRef, cumulatorHtmlRef){
+    const thisNode = this;
+    thisNode.expandHiddenNode(hiddenNodesRef[hiddenNodesIds.length-1], thisNode, cumulatorHtmlRef);
 };
 
 GraphNodeCumulator.prototype.isNodeCumulator = function(){
@@ -658,21 +705,37 @@ GraphNodeCumulator.prototype.getHiddenListHtml = function(){
     createdIds: [],
     hiddenRef: []
   };
-  ret.html = "<ul class='hidden-nodes-list'>";
+
+  ret.html = '';
 
   thisNode.hiddenButVisible = 0;
-  thisNode.hiddenNodes.forEach((n, i) => {
-    if(thisNode.graph.nodes.has(n.id)){
-      thisNode.hiddenButVisible++;
-      return;
-    }
+  for (let key in thisNode.grouppedHiddenNodes){
+    let nodes = thisNode.grouppedHiddenNodes[key];
+    let appendHtml = '';
 
-    ret.html += "\n<li id='hidden-"+n.id+"'>" + n.label + "</li>";
-    ret.createdIds.push("#hidden-"+n.id);
-    ret.hiddenRef.push(thisNode.hiddenNodes[i]);
-  });
+    appendHtml += `
+    <div class="rel-group">
+    <h5 class="rel-group-name"><i>${key}:</i> <span class="not-expanded">▲</span><span class="expanded">▼</span></h5>
+    <ul class='hidden-nodes-list' style='max-height:${nodes.length * 44}px;'>`;
 
-  ret.html += "\n</ul>";
+    let atLeastOneInGroup = false;
+    nodes.forEach((n, i) => {
+      if(thisNode.graph.nodes.has(n.id)){
+        thisNode.hiddenButVisible++;
+        return;
+      }
+      appendHtml += "\n<li class='hidden-item' id='hidden-"+n.id+"'>" + n.label + "</li>";
+      atLeastOneInGroup = true;
+      ret.createdIds.push("#hidden-"+n.id);
+      ret.hiddenRef.push([key, n]);
+    });
+
+    appendHtml += `</div></ul>`;
+
+    if(atLeastOneInGroup)
+      ret.html += appendHtml;
+  }
+
   thisNode.updateCount();
   return ret;
 };
