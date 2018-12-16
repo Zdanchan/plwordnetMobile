@@ -43,7 +43,7 @@ public class SQLiteComponent {
     private static final String TMP_DIRECTORY = new File("").getAbsolutePath() +"/downloads/tmp/";
     private static final String SQLITE_DBS_DIRECTORY =  new File("").getAbsolutePath() + "/downloads/sqlite_dbs/";
     private static final String URL_TMP = "jdbc:sqlite:" + TMP_DIRECTORY;
-    private static final String FILENAME_BASE = "plwordnet";
+    public static final String FILENAME_BASE = "plwordnet";
 
     public void dumpSQLDBContentIntoSQLiteDB(String[] languages){
         String[] files = new String[languages.length+1];
@@ -87,8 +87,13 @@ public class SQLiteComponent {
             };
 
             for (int i = 0; i < classes.length; i++) {
+                if(isTableEmpty(conn,classes[i])) {
                 log.info("Inserting data for " + classes[i].getSimpleName());
                 executeQuery(conn, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
+                }
+                else{
+                    log.info("Table already filled, skipping insert for " + classes[i].getSimpleName());
+                }
             }
         }
         catch (Exception e){
@@ -133,11 +138,16 @@ public class SQLiteComponent {
             };
 
             for (int i = 0; i < classes.length; i++) {
-                log.info("Inserting data for " + classes[i].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]);
-                //bw.append("\n\n\n\n"+ classes[i].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                if(isTableEmpty(conn,classes[i])) {
+                    log.info("Inserting data for " + classes[i].getSimpleName());
+                    String query = helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]);
+                    //bw.append("\n\n\n\n"+ classes[i].getSimpleName() + "\n" + query);
+                    //bw.flush();
+                    executeQuery(conn, query);
+                }
+                else{
+                    log.info("Table already filled, skipping insert for " + classes[i].getSimpleName());
+                }
             }
 
             classes = new Class[]{
@@ -149,31 +159,83 @@ public class SQLiteComponent {
                     SenseRelationEntity.class
             };
             Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(language));
-            Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(lexicons);
             Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-            Integer[] synset_attributes = helper.getIdsOfSynsetAttributesByLanguage(lexicons);
+            Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
             Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
-            log.info("Inserting data for " + classes[0].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0], helper.getIdsOfSynsetsByLanguage(lexicons)), classes[0]));
-            log.info("Inserting data for " + classes[1].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], helper.getIdsOfSynsetsByLanguage(sense_attributes)), classes[1]));
-            log.info("Inserting data for " + classes[2].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], helper.getIdsOfSynsetsByLanguage(senses)), classes[2]));
-            log.info("Inserting data for " + classes[3].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], helper.getIdsOfSynsetsByLanguage(lexicons)), classes[3]));
-            log.info("Inserting data for " + classes[4].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], helper.getIdsOfSynsetsByLanguage(synset_attributes)), classes[4]));
-            log.info("Inserting data for " + classes[5].getSimpleName());
-            executeQuery(conn, helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], helper.getIdsOfSynsetsByLanguage(synsets)), classes[5]));
+            Integer[] synset_attributes = helper.getIdsOfSynsetAttributesByLanguage(synsets);
 
+            if(isTableEmpty(conn,classes[0])){
+                log.info("Inserting data for " + classes[0].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0], synsets), classes[0]);
+                //bw.append("\n\n\n\n"+ classes[0].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[0].getSimpleName());
+            }
+            if(isTableEmpty(conn,classes[1])){
+                log.info("Inserting data for " + classes[1].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synset_attributes), classes[1]);
+                //bw.append("\n\n\n\n"+ classes[1].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[1].getSimpleName());
+            }
+            if(isTableEmpty(conn,classes[2])){
+                log.info("Inserting data for " + classes[2].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synsets), classes[2]);
+                //bw.append("\n\n\n\n"+ classes[2].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[2].getSimpleName());
+            }
+            if(isTableEmpty(conn,classes[3])){
+                log.info("Inserting data for " + classes[3].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], senses), classes[3]);
+                //bw.append("\n\n\n\n"+ classes[3].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[3].getSimpleName());
+            }
+            if(isTableEmpty(conn,classes[4])){
+                log.info("Inserting data for " + classes[4].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], sense_attributes), classes[4]);
+                //bw.append("\n\n\n\n"+ classes[4].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[4].getSimpleName());
+            }
+            if(isTableEmpty(conn,classes[5])){
+                log.info("Inserting data for " + classes[5].getSimpleName());
+                String query = helper.generateSQLInsertForStrings(
+                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[5]);
+                //bw.append("\n\n\n\n"+ classes[5].getSimpleName() + "\n" + query);
+                //bw.flush();
+                executeQuery(conn,query);
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[5].getSimpleName());
+            }
         }catch (Exception e){
-            throw e;
+            //try {
+              throw e;
+            //} catch (IOException e1) {
+            //    e1.printStackTrace();
+            //}
         }
         finally {
             closeConnection(conn);
@@ -247,6 +309,27 @@ public class SQLiteComponent {
         executeQuery(conn, SQLExporter.getCreateSenseRelationQuery());
         log.info("Creating table: " + SQLExporter.EMOTIONAL_ANNOTATION_NAME);
         executeQuery(conn, SQLExporter.getCreateEmotionalAnnotationQuery());
+    }
+
+    private boolean isTableEmpty(Connection conn, Class clazz){
+        String table_name = SQLExporter.getTableNameForEntity(clazz);
+        String query = "SELECT COUNT(*) FROM " + table_name + ";";
+        Integer count = (Integer)executeQueryForResult(conn,query);
+        if(count==null)
+            return true;
+        return (count.intValue()==0);
+    }
+
+    public Object executeQueryForResult(Connection conn, String query) {
+        Object result = null;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            result = resultSet.getInt(1);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return result;
     }
 
     public void executeQuery(Connection conn, String query) {

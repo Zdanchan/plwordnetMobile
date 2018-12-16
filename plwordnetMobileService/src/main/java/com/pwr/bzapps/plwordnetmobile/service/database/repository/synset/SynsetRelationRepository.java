@@ -21,14 +21,14 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "sr.id,','," +
             "sr.child_synset_id,','," +
             "sr.parent_synset_id,','," +
-            "sr.relation_type_id,','," +
+            "sr.synset_relation_type_id" +
             ")FROM synset_relation sr", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
             "sr.parent_synset_id,','," +
-            "sr.synset_relation_type_id,','," +
+            "sr.synset_relation_type_id" +
             ")FROM synset_relation sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)", nativeQuery = true)
     public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
 }

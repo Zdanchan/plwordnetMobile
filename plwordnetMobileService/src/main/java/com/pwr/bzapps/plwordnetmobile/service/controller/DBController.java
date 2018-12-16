@@ -29,19 +29,20 @@ import com.pwr.bzapps.plwordnetmobile.service.database.repository.sense.SenseAtt
 import com.pwr.bzapps.plwordnetmobile.service.database.repository.sense.SenseRepository;
 import com.pwr.bzapps.plwordnetmobile.service.database.repository.synset.SynsetAttributeRepository;
 import com.pwr.bzapps.plwordnetmobile.service.database.repository.synset.SynsetRepository;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -50,7 +51,8 @@ import java.util.*;
 public class DBController {
 
     private Logger log = LoggerFactory.getLogger(DBController.class);
-    private final String QUERY_DIRECTORY = "/downloads/queries/";
+    private final String APPLICATION_ROOT_DIRECTORY = new File("").getAbsolutePath();
+    private final String DOWNLOADS_DIRECTORY = "/downloads/";
     private final String TMP_DIRECTORY = "/downloads/tmp/";
     private final String[] languages = {"polish", "english"};
 
@@ -64,7 +66,11 @@ public class DBController {
         String content = "generated files:\n";
         File[] files = (new File(new File("").getAbsolutePath() + TMP_DIRECTORY)).listFiles();
         for (File file : files){
-            content+=file.getAbsolutePath()+"\n";
+            String file_name = file.getAbsolutePath();
+            if(file_name.contains("/"))
+                content+=file_name.substring(file_name.lastIndexOf("/"))+"\n";
+            else
+                content+=file_name.substring(file_name.lastIndexOf("\\"))+"\n";
         }
         return content;
     }
@@ -74,13 +80,22 @@ public class DBController {
         return sqLiteComponent.testSQLiteDB();
     }
 
+    @GetMapping(path="/get_SQLite_last_update")
+    public @ResponseBody Long getSQLiteLastUpdate(@PathVariable("db_type") String db_type){
+        File db = getFileFor(db_type);
+        if(!db.exists()){
+            return Long.MIN_VALUE;
+        }
+        return db.lastModified();
+    }
+
     @GetMapping(path="/generate_SQLite_files")
     public @ResponseBody String generateSQLiteFiles(){
 
         String response = "";
-        ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
-        ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
         if(!Advisor.isQuery_generator_processing()){
+            ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
+            ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
             Advisor.setQuery_generator_processing(true);
             taskExecutor.execute(new Runnable() {
                 @Override
@@ -109,6 +124,33 @@ public class DBController {
             integers[i] = Integer.parseInt(strings[i]);
         }
         return  integers;
+    }
+
+    @RequestMapping(value = "/files", method = RequestMethod.GET)
+    @ResponseBody
+    public void getFile(@PathVariable("db_type") String db_type, HttpServletResponse response) {
+        try {
+            InputStream is = new FileInputStream(getFileFor(db_type));
+            IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (FileNotFoundException e) {
+            log.debug("FileNotFoundException while retrieving database a file by client: ",e);
+        } catch (IOException e) {
+            log.error("IOException while retrieving database a file by client: ",e);
+        }
+    }
+
+    private File getFileFor(String db_type){
+        String file = "err";
+
+        if(db_type.equals("all")){
+            file = SQLiteComponent.FILENAME_BASE+".db";
+        }
+        else {
+            file = SQLiteComponent.FILENAME_BASE+"_"+db_type+".db";
+        }
+
+        return new File(DOWNLOADS_DIRECTORY + file);
     }
 
     @GetMapping(path="/clear_cache")

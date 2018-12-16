@@ -13,15 +13,13 @@ public interface SenseExampleRepository extends CrudRepository<SenseExampleEntit
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.sense_attribute_id,','," +
-            "IF(se.example IS NULL,'null',CONCAT('\"',se.example,'\"')),','," +
-            "'\"',se.type,'\"'" +
-            ")FROM sense_examples se", nativeQuery = true)
+            "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
+            "'\"',se.type,'\"') FROM sense_examples se", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.sense_attribute_id,','," +
-            "IF(se.example IS NULL,'null',CONCAT('\"',se.example,'\"')),','," +
-            "'\"',se.type,'\"'" +
-            ")FROM sense_examples se WHERE se.sense_attribute_id IN (:sense_attribute_ids)", nativeQuery = true)
+            "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
+            "'\"',se.type,'\"') FROM sense_examples se WHERE se.sense_attribute_id IN (:sense_attribute_ids)", nativeQuery = true)
     public List<String> findAllForSenseAttributesAndParseString(@Param("sense_attribute_ids") Integer[] sense_attribute_ids);
 }

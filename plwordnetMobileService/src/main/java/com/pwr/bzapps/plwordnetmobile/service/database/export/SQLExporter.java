@@ -19,6 +19,7 @@ import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetEntit
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetRelationEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLExporter {
@@ -86,7 +87,7 @@ public class SQLExporter {
                         "[id],[word]",insert.substring(0,insert.length()-1));
             case "RelationTypeAllowedLexiconEntity":
                 return String.format(INSERT_PATTERN,RELATION_TYPE_ALLOWED_LEXICON_NAME,
-                        "][relation_type_id],[lexicon_id]",insert.substring(0,insert.length()-1));
+                        "[relation_type_id],[lexicon_id]",insert.substring(0,insert.length()-1));
             case "RelationTypeAllowedPartOfSpeechEntity":
                 return String.format(INSERT_PATTERN,RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME,
                         "[relation_type_id],[part_of_speech_id]",insert.substring(0,insert.length()-1));

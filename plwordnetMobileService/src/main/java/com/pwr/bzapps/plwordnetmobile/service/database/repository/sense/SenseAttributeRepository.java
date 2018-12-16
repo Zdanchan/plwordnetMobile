@@ -21,19 +21,19 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.aspect_id IS NULL,'null',sa.aspect_id),','," +
             "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
             "IF(sa.error_comment IS NULL,'null',CONCAT('\"',sa.error_comment,'\"')),','," +
-            "sa.proper_name" +
+            "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
-            "IF(sa.comment IS NULL,'null',CONCAT('\"',sa.comment,'\"')),','," +
-            "IF(sa.definition IS NULL,'null',CONCAT('\"',sa.definition,'\"')),','," +
-            "IF(sa.link IS NULL,'null',CONCAT('\"',sa.link,'\"')),','," +
+            "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
+            "IF(sa.definition IS NULL,'null',CONCAT('\"',REPLACE(sa.definition,'\"','####'),'\"')),','," +
+            "IF(sa.link IS NULL,'null',CONCAT('\"',REPLACE(sa.link,'\"','####'),'\"')),','," +
             "IF(sa.register_id IS NULL,'null',sa.register_id),','," +
             "IF(sa.aspect_id IS NULL,'null',sa.aspect_id),','," +
             "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
-            "IF(sa.error_comment IS NULL,'null',CONCAT('\"',sa.error_comment,'\"')),','," +
-            "sa.proper_name" +
+            "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
+            "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)", nativeQuery = true)
     public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
 }

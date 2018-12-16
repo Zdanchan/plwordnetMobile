@@ -29,7 +29,7 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
             "IF(s.split IS NULL, 'null', s.split),','," +
-            "s.lexicon_id.id,','," +
+            "s.lexicon_id,','," +
             "IF(s.status_id IS NULL, 'null', s.status_id),','," +
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
             ")FROM synset s", nativeQuery = true)
@@ -37,9 +37,9 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
             "IF(s.split IS NULL, 'null', s.split),','," +
-            "s.lexicon_id.id,','," +
+            "s.lexicon_id,','," +
             "IF(s.status_id IS NULL, 'null', s.status_id),','," +
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
-            ")FROM synset s WHERE s.lexicon_id.id  IN (:lexicon_ids)", nativeQuery = true)
+            ")FROM synset s WHERE s.lexicon_id  IN (:lexicon_ids)", nativeQuery = true)
     public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
 }

@@ -25,21 +25,22 @@ public interface SynsetAttributeRepository extends CrudRepository<SynsetAttribut
 
     @Query(value = "SELECT CONCAT(" +
             "sa.synset_id,','," +
-            "IF(sa.comment IS NULL, 'null','\"',sa.comment,'\"'),','," +
-            "IF(sa.definition IS NULL, 'null','\"',sa.definition,'\"'),','," +
-            "IF(sa.princeton_id IS NULL, 'null','\"',sa.princeton_id,'\"'),','," +
+            "IF(sa.comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
+            "IF(sa.definition IS NULL, 'null',CONCAT('\"',REPLACE(sa.definition,'\"','####'),'\"')),','," +
+            "IF(sa.princeton_id IS NULL, 'null',CONCAT('\"',REPLACE(sa.princeton_id,'\"','####'),'\"')),','," +
             "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
-            "IF(sa.error_comment IS NULL, 'null','\"',sa.error_comment,'\"'),','," +
-            "IF(sa.ili_id IS NULL, 'null',sa.ili_id)" +
+            "IF(sa.error_comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
+            "IF(sa.ili_id IS NULL, 'null',CONCAT('\"',sa.ili_id,'\"'))" +
             ")FROM synset_attributes sa", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
-            "IF(sa.comment IS NULL, 'null','\"',sa.comment,'\"'),','," +
-            "IF(sa.definition IS NULL, 'null','\"',sa.definition,'\"'),','," +
-            "IF(sa.princeton_id IS NULL, 'null','\"',sa.princeton_id,'\"'),','," +
+            "sa.synset_id,','," +
+            "IF(sa.comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
+            "IF(sa.definition IS NULL, 'null',CONCAT('\"',REPLACE(sa.definition,'\"','####'),'\"')),','," +
+            "IF(sa.princeton_id IS NULL, 'null',CONCAT('\"',REPLACE(sa.princeton_id,'\"','####'),'\"')),','," +
             "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
-            "IF(sa.error_comment IS NULL, 'null','\"',sa.error_comment,'\"'),','," +
-            "IF(sa.ili_id IS NULL, 'null',sa.ili_id)" +
-            ")FROM synset_attributes sa WHERE sa.sense_id IN (:synset_ids)", nativeQuery = true)
+            "IF(sa.error_comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
+            "IF(sa.ili_id IS NULL, 'null',CONCAT('\"',sa.ili_id,'\"'))" +
+            ")FROM synset_attributes sa WHERE sa.synset_id IN (:synset_ids)", nativeQuery = true)
     public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
 }

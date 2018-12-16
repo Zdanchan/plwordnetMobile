@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface RelationTypeRepository extends CrudRepository<RelationTypeEntity, Integer> {
     @Query(value = "SELECT CONCAT(rt.id,','" +
-            ",rt.auto_reverse,','" +
-            ",rt.multilingual,','" +
+            ",IF(rt.auto_reverse=1,1,0),','" +
+            ",IF(rt.multilingual=1,1,0),','" +
             ",IF(rt.description_id IS NULL, 'null', rt.description_id),','" +
             ",IF(rt.display_text_id IS NULL, 'null', rt.display_text_id),','" +
             ",IF(rt.name_id IS NULL, 'null', rt.name_id),','" +
