@@ -10,7 +10,9 @@
     <RelativeLayout
             android:id="@+id/clear_history"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true">
         <TextView
                 android:id="@+id/clear_history_text"
                 android:layout_width="wrap_content"
@@ -34,7 +36,9 @@
     <RelativeLayout
             android:id="@+id/clear_bookmarks"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true">
         <TextView
                 android:id="@+id/clear_bookmarks_text"
                 android:layout_width="wrap_content"

@@ -200,6 +200,21 @@
     <string name="clear_bookmarks">Clear bookmarks</string>
     <string name="clear_history_toast">Whole history has been removed</string>
     <string name="clear_bookmarks_toast">All bookmarks has been removed</string>
+    <string name="select_local_dictionaries">Select local dictionaries:</string>
+    <string name="dictionary_polish">Polish</string>
+    <string name="dictionary_english">English</string>
+    <string name="sync_db">Synchronize databases</string>
+    <string name="status_db">Status: </string>
+    <string name="status_up_to_date">Up to date</string>
+    <string name="status_needs_update">Needs update</string>
+    <string name="status_no_local_db">No local database available</string>
+    <string name="status_checking">Checking...</string>
+    <string name="status_synchronizing">Synchronizing</string>
+    <string name="status_connection_problem">Connection problem</string>
+    <string name="remove_local_db">Remove local database</string>
+    <string name="remove_local_db_toast">Local database has been removed</string>
+    <string name="sync_please_wait">Synchronizing, please wait...</string>
+    <string name="no_db_selected">No dictionary selected</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

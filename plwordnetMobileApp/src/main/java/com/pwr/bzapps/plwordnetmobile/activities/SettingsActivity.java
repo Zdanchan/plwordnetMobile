@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.database.access.task.CheckLocalSQLiteDBWithServerTask;
 import com.pwr.bzapps.plwordnetmobile.fragments.*;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 

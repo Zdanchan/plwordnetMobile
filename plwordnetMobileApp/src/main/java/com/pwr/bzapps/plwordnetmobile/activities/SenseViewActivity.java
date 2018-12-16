@@ -188,7 +188,7 @@ public class SenseViewActivity extends BackButtonActivity {
                     else {
                         String domain_label = getResources().getText(R.string.domain).toString().toLowerCase();
                         ((TextView) cell.findViewById(R.id.relation_description)).setText(domain_label + ": "
-                                + getResources().getString(getResources().getIdentifier("dom_" + sense.getDomain_id().getName_id(), "string", getPackageName())));
+                                + getResources().getString(getResources().getIdentifier("dom_" + sense.getDomain_id().getId(), "string", getPackageName())));
                     }
                     cell_container.addView(cell);
                     cell.setOnClickListener(new View.OnClickListener() {
