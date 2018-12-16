@@ -44,10 +44,7 @@ import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
 import com.pwr.bzapps.plwordnetmobile.layout.listener.OnClickExpander;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class SenseViewActivity extends BackButtonActivity {
 
@@ -151,17 +148,20 @@ public class SenseViewActivity extends BackButtonActivity {
     private void handleRelatedSenses(){
         LinearLayout sense_relations_container = findViewById(R.id.sense_relations_container);
 
-        Map<Integer,ArrayList<SynsetRelationEntity>> relations_sorted = new HashMap<>();
+        Map<Integer,ArrayList<SynsetRelationEntity>> relations_grouped = new HashMap<>();
 
         for(SynsetRelationEntity relation : relations){
-            if(!relations_sorted.containsKey(relation.getSynset_relation_type_id().getId())){
-                relations_sorted.put(relation.getSynset_relation_type_id().getId(), new ArrayList<SynsetRelationEntity>());
+            if(!relations_grouped.containsKey(relation.getSynset_relation_type_id().getId())){
+                relations_grouped.put(relation.getSynset_relation_type_id().getId(), new ArrayList<SynsetRelationEntity>());
             }
-            ArrayList<SynsetRelationEntity> list = relations_sorted.get(relation.getSynset_relation_type_id().getId());
+            ArrayList<SynsetRelationEntity> list = relations_grouped.get(relation.getSynset_relation_type_id().getId());
             list.add(relation);
         }
-
-        for(ArrayList<SynsetRelationEntity> list : relations_sorted.values()){
+        ArrayList<Integer> keys = new ArrayList<Integer>();
+        keys.addAll(relations_grouped.keySet());
+        Collections.sort(keys);
+        for(Integer key : keys){
+            ArrayList<SynsetRelationEntity> list = relations_grouped.get(key);
             if(getResources().getIdentifier("rel_type_" + list.get(0).getSynset_relation_type_id().getId(),"string",getPackageName())!=0) {
                 RelativeLayout type = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
                 ((TextView) type.findViewById(R.id.relation_type_name)).setText(RelationInterpreter.getRelationTypeLabel(getApplicationContext(),list.get(0).getSynset_relation_type_id().getId(),getPackageName()));

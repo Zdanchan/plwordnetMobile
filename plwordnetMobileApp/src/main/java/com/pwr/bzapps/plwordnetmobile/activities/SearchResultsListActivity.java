@@ -145,7 +145,7 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
                 word_related_senses.add(sense);
             }
         }
-        intent.putExtra("word_related_senses", word_related_senses);
+        //intent.putExtra("word_related_senses", word_related_senses);
         startActivity(intent);
     }
 
