@@ -143,13 +143,13 @@ public class ConnectionProvider{
     public Long getSQLiteLastUpdateOnServer(String db_type){
         try {
             
-            String url = context.getString(R.string.spring_interface_address) + "db_controller/get_SQLite_last_update/" + db_type;
+            String url = context.getString(R.string.spring_interface_address) + "db_controller/get_SQLite_last_update?db_type=" + db_type;
             
             RestTemplate restTemplate = new RestTemplate();
             
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            Long result = restTemplate.getForObject(url, Long.class);
+            Long result = Long.parseLong(restTemplate.getForObject(url, String.class));
 
             return result;
         }catch(ResourceAccessException e){

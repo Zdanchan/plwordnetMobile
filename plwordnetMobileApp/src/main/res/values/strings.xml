@@ -215,6 +215,8 @@
     <string name="remove_local_db_toast">Local database has been removed</string>
     <string name="sync_please_wait">Synchronizing, please wait...</string>
     <string name="no_db_selected">No dictionary selected</string>
+    <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
+    <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

@@ -21,11 +21,13 @@ public class Settings {
     private static int max_results_count = 50;
     private static boolean localeNeedsSync = false;
     private static boolean offlineMode = false;
+    private static int app_files_location = 0;
     private static String sqlite_db_file_location;
-    private static String local_db_langs = "none";
+    private static String db_type = "none";
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
-    public static final String FILE_NAME= "plwordnet.db";
+    public static final String FILE_NAME= "plwordnet";
+    public static final String[] POSSIBLE_DB_LANGS = {"polish","english", "all"};
 
 
 
@@ -45,8 +47,9 @@ public class Settings {
             editor.commit();
         }
         offlineMode = preferences.getBoolean("offline_mode", false);
-        sqlite_db_file_location = preferences.getString("sqlite_db_file_location", changeSqliteDbFileLocation(0));
-        local_db_langs = preferences.getString("local_db_langs", "none");
+        app_files_location = preferences.getInt("app_files_location", 0);
+        sqlite_db_file_location = preferences.getString("sqlite_db_file_location", changeSqliteDbFileLocation(app_files_location));
+        db_type = preferences.getString("db_type", "none");
         locale = new Locale(localeName.substring(0,localeName.indexOf('_')));
     }
 
@@ -232,32 +235,36 @@ public class Settings {
         return sqlite_db_file_location;
     }
 
+    public static String getSqliteDbFile() {
+        return sqlite_db_file_location + FILE_NAME + "_" + db_type + ".db";
+    }
+
     public static String changeSqliteDbFileLocation(int location){
         SharedPreferences.Editor editor = getEditor();
         if(location == SDCARD_LOCATION){
-            sqlite_db_file_location = "/sdcard/plWordNetGO/" + FILE_NAME;
-            File file = new File("/sdcard/plWordNetGO/");
+            sqlite_db_file_location = "/sdcard/plWordNetGO/";
+            File file = new File(sqlite_db_file_location);
             file.mkdirs();
         }
         else{
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/plWordNetGO/");
             file.mkdirs();
-            sqlite_db_file_location = file.getAbsolutePath() + FILE_NAME;
+            sqlite_db_file_location = file.getAbsolutePath();
         }
         editor.putString("sqlite_db_file_location", sqlite_db_file_location);
         editor.commit();
         return sqlite_db_file_location;
     }
 
-    public static String getLocal_db_langs() {
-        return local_db_langs;
+    public static String getDbType() {
+        return db_type;
     }
 
-    public static void setLocal_db_langs(String local_db_langs) {
+    public static void setDbType(String db_type) {
         SharedPreferences.Editor editor = getEditor();
-        editor.putString("local_db_langs", local_db_langs);
+        editor.putString("db_type", db_type);
         editor.commit();
-        Settings.local_db_langs = local_db_langs;
+        Settings.db_type = db_type;
     }
     
     private static SharedPreferences.Editor getEditor(){

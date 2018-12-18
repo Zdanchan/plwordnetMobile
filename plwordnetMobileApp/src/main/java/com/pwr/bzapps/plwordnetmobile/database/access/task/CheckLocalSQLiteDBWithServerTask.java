@@ -13,11 +13,9 @@ import com.pwr.bzapps.plwordnetmobile.fragments.SettingsLocalDatabaseFragment;
 public class CheckLocalSQLiteDBWithServerTask extends AsyncTask<String,Void,String> {
 
     private SettingsLocalDatabaseFragment fragment;
-    private RelativeLayout status_view;
     private Context context;
 
-    public CheckLocalSQLiteDBWithServerTask(RelativeLayout status_view, SettingsLocalDatabaseFragment fragment, Context context){
-        this.status_view=status_view;
+    public CheckLocalSQLiteDBWithServerTask(SettingsLocalDatabaseFragment fragment, Context context){
         this.fragment=fragment;
         this.context=context;
     }
@@ -43,26 +41,14 @@ public class CheckLocalSQLiteDBWithServerTask extends AsyncTask<String,Void,Stri
     }
 
     protected void onPostExecute(String result) {
-        if(status_view != null){
-            TextView value = status_view.findViewById(R.id.status_value);
-            if("ConnectionException".equals(result)) {
-                value.setText(R.string.status_connection_problem);
-                value.setTextColor(context.getColor(R.color.colorConnectionProblem));
+        if(fragment!=null) {
+            if ("ConnectionException".equals(result)) {
                 fragment.setStatus(3);
-            }
-            else if("up-to-date".equals(result)) {
-                value.setText(R.string.status_up_to_date);
-                value.setTextColor(context.getColor(R.color.colorUpToDate));
+            } else if ("up-to-date".equals(result)) {
                 fragment.setStatus(0);
-            }
-            else if("needs-update".equals(result)) {
-                value.setText(R.string.status_needs_update);
-                value.setTextColor(context.getColor(R.color.colorNeedsUpdate));
+            } else if ("needs-update".equals(result)) {
                 fragment.setStatus(1);
-            }
-            else if("no-local-db".equals(result)) {
-                value.setText(R.string.status_no_local_db);
-                value.setTextColor(context.getColor(R.color.colorNoLocalDB));
+            } else if ("no-local-db".equals(result)) {
                 fragment.setStatus(2);
             }
         }

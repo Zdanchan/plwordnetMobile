@@ -235,7 +235,7 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:indeterminate="false"
                 android:max="100"
-                android:progress="20"
+                android:progress="0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/status_text"
