@@ -81,8 +81,8 @@ public class DBController {
     }
 
     @GetMapping(path="/get_SQLite_last_update")
-    public @ResponseBody Long getSQLiteLastUpdate(@PathVariable("db_type") String db_type){
-        File db = getFileFor(db_type);
+    public @ResponseBody Long getSQLiteLastUpdate(@RequestParam("db_type") String db_type){
+        File db = sqLiteComponent.getFileFor(db_type);
         if(!db.exists()){
             return Long.MIN_VALUE;
         }
@@ -128,29 +128,8 @@ public class DBController {
 
     @RequestMapping(value = "/files", method = RequestMethod.GET)
     @ResponseBody
-    public void getFile(@PathVariable("db_type") String db_type, HttpServletResponse response) {
-        try {
-            InputStream is = new FileInputStream(getFileFor(db_type));
-            IOUtils.copy(is, response.getOutputStream());
-            response.flushBuffer();
-        } catch (FileNotFoundException e) {
-            log.debug("FileNotFoundException while retrieving database a file by client: ",e);
-        } catch (IOException e) {
-            log.error("IOException while retrieving database a file by client: ",e);
-        }
-    }
-
-    private File getFileFor(String db_type){
-        String file = "err";
-
-        if(db_type.equals("all")){
-            file = SQLiteComponent.FILENAME_BASE+".db";
-        }
-        else {
-            file = SQLiteComponent.FILENAME_BASE+"_"+db_type+".db";
-        }
-
-        return new File(DOWNLOADS_DIRECTORY + file);
+    public FileSystemResource getFile(@RequestParam("db_type") String db_type) {
+        return new FileSystemResource(sqLiteComponent.getFileFor(db_type));
     }
 
     @GetMapping(path="/clear_cache")

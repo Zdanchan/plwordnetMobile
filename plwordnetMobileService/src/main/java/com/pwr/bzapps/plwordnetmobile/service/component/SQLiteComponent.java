@@ -41,7 +41,7 @@ public class SQLiteComponent {
 
     private Logger log = LoggerFactory.getLogger(SQLiteComponent.class);
     private static final String TMP_DIRECTORY = new File("").getAbsolutePath() +"/downloads/tmp/";
-    private static final String SQLITE_DBS_DIRECTORY =  new File("").getAbsolutePath() + "/downloads/sqlite_dbs/";
+    public static final String SQLITE_DBS_DIRECTORY =  new File("").getAbsolutePath() + "/downloads/sqlite_dbs/";
     private static final String URL_TMP = "jdbc:sqlite:" + TMP_DIRECTORY;
     public static final String FILENAME_BASE = "plwordnet";
 
@@ -354,6 +354,8 @@ public class SQLiteComponent {
             File new_file =  new File(TMP_DIRECTORY + fileName);
             if(old_file.exists() && new_file.exists()){
                 old_file.delete();
+            }
+            if(new_file.exists()){
                 new_file.renameTo(new File(SQLITE_DBS_DIRECTORY + fileName));
             }
         }
@@ -380,5 +382,18 @@ public class SQLiteComponent {
             closeConnection(conn);
         }
         return "ERROR";
+    }
+
+    public File getFileFor(String db_type){
+        String file = "err";
+
+        if(db_type.equals("all")){
+            file = SQLiteComponent.FILENAME_BASE+".db";
+        }
+        else {
+            file = SQLiteComponent.FILENAME_BASE+"_"+db_type+".db";
+        }
+
+        return new File(SQLiteComponent.SQLITE_DBS_DIRECTORY + file);
     }
 }
