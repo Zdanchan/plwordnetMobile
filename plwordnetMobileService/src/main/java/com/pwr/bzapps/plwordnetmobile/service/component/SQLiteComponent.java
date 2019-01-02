@@ -49,10 +49,10 @@ public class SQLiteComponent {
         String[] files = new String[languages.length+1];
         for(int i=0; i<languages.length; i++){
             dumpLanuagePackSQLiteDB(languages[i]);
-            files[i]= TMP_DIRECTORY + FILENAME_BASE + "_" + languages[i] + ".db";
+            files[i]= FILENAME_BASE + "_" + languages[i] + ".db";
         }
         dumpFullSQLiteDB();
-        files[files.length-1]= TMP_DIRECTORY + FILENAME_BASE + ".db";
+        files[files.length-1]= FILENAME_BASE + ".db";
         migrateDBFilesFromTMP(files);
     }
 
