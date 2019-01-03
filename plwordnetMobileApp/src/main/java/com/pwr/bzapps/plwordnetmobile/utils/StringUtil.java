@@ -12,4 +12,12 @@ public class StringUtil {
         }
         return null;
     }
+
+    public static String parseIntegerArrayToString(Integer[] array){
+        String string = "";
+        for(int i=0; i<array.length; i++){
+            string+=array+",";
+        }
+        return string.substring(0,string.length()-1);
+    }
 }

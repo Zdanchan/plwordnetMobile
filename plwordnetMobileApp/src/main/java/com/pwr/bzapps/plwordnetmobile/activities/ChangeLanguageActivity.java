@@ -7,8 +7,8 @@ import android.widget.ListView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
-import com.pwr.bzapps.plwordnetmobile.settings.LanguageAdapter;
-import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageAdapter;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.ArrayList;

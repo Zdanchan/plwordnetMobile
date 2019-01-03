@@ -17,10 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.MainActivity;
-import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
-import com.pwr.bzapps.plwordnetmobile.settings.Settings;
-
-import java.util.Locale;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
 
 public abstract class BackButtonActivity extends AppCompatActivity{
 

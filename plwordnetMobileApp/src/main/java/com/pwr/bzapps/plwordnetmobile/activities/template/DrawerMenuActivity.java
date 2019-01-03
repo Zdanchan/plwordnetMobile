@@ -21,8 +21,7 @@ import android.widget.RelativeLayout;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.*;
-import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
-import com.pwr.bzapps.plwordnetmobile.settings.Settings;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
 
 public abstract class DrawerMenuActivity extends AppCompatActivity {
 

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
-import com.pwr.bzapps.plwordnetmobile.settings.LanguageManager;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public class MainActivity extends DrawerMenuActivity {

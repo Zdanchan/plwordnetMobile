@@ -3,9 +3,10 @@ package com.pwr.bzapps.plwordnetmobile.database.access.sqlite;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.File;
+import java.sql.*;
+import java.util.Collection;
 
 public class SQLiteDBFileManager {
-
     public static Long getLocalDBLastModifiedTime(){
         File local_db = new File(Settings.getSqliteDbFile());
         if(local_db.exists()){

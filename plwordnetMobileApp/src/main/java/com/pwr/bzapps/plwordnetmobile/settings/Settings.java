@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import android.os.Environment;
 import com.pwr.bzapps.plwordnetmobile.R;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
 
 import java.io.File;
 import java.util.ArrayList;

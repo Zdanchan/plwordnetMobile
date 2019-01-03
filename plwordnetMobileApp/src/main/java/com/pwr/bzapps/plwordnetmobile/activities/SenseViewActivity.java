@@ -39,6 +39,7 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.EmotionalAnnotationsInterpreter;
 import com.pwr.bzapps.plwordnetmobile.database.interpretation.RelationInterpreter;
+import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
 import com.pwr.bzapps.plwordnetmobile.layout.animator.ExpandableViewAnimator;
 import com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew;
 import com.pwr.bzapps.plwordnetmobile.layout.listener.OnClickExpander;
@@ -188,7 +189,7 @@ public class SenseViewActivity extends BackButtonActivity {
                     else {
                         String domain_label = getResources().getText(R.string.domain).toString().toLowerCase();
                         ((TextView) cell.findViewById(R.id.relation_description)).setText(domain_label + ": "
-                                + getResources().getString(getResources().getIdentifier("dom_" + sense.getDomain_id().getId(), "string", getPackageName())));
+                                + LanguageManager.getStringByResourceName(getApplicationContext(), "dom_" + sense.getDomain_id().getId()));
                     }
                     cell_container.addView(cell);
                     cell.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +250,7 @@ public class SenseViewActivity extends BackButtonActivity {
         else{
             sense_description.setText(((ArrayList<SynsetAttributeEntity>)entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
         }
-        sense_domain.setText(getResources().getString(getResources().getIdentifier("dom_" + entity.getDomain_id().getId(),"string", getPackageName())));
+        sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomain_id().getId()));
         sense_source.setText(entity.getLexicon_id().getName());
 
         setExamples(sense_examples_container);
@@ -326,7 +327,7 @@ public class SenseViewActivity extends BackButtonActivity {
 
                 if (emo.getEmotions() != null && !"".equals(emo.getEmotions())) {
                     TextView emotions_value = (TextView)annotation_attributes.findViewById(R.id.emotions_value);
-                    emotions_value.setText(EmotionalAnnotationsInterpreter.interpretEmotions(getApplicationContext(), emo.getEmotions()));
+                    emotions_value.setText(EmotionalAnnotationsInterpreter.interpretEmotions(emo.getEmotions()));
                     if(counter%2==0)
                         emotions_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
                     counter++;
@@ -338,7 +339,7 @@ public class SenseViewActivity extends BackButtonActivity {
 
                 if (emo.getValuations() != null && !"".equals(emo.getValuations())) {
                     TextView valuations_value = (TextView)annotation_attributes.findViewById(R.id.valuations_value);
-                    valuations_value.setText(EmotionalAnnotationsInterpreter.interpretValuations(getApplicationContext(), emo.getValuations()));
+                    valuations_value.setText(EmotionalAnnotationsInterpreter.interpretValuations(emo.getValuations()));
                     if(counter%2==0)
                         valuations_value.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBackgroundAccent));
                     counter++;
