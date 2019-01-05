@@ -9,10 +9,15 @@ import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.SearchResultsListActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
+import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
 
@@ -20,16 +25,19 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
     private TextView message_view;
     private Context context;
     private SearchResultsListActivity searchResultsListActivity;
+    private Object resultHolder;
 
     public RetrieveSensesTask(Context context, SenseAdapter adapter){
         this.adapter=adapter;
         this.context=context;
+        resultHolder = null;
     }
 
     public RetrieveSensesTask(Context context, SenseAdapter adapter, TextView message_view){
         this.context=context;
         this.adapter=adapter;
         this.message_view = message_view;
+        resultHolder = null;
     }
 
     public RetrieveSensesTask(Context context, SenseAdapter adapter, TextView message_view, SearchResultsListActivity searchResultsListActivity){
@@ -37,6 +45,7 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         this.adapter=adapter;
         this.message_view = message_view;
         this.searchResultsListActivity=searchResultsListActivity;
+        resultHolder = null;
     }
 
     @Override
@@ -44,30 +53,41 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         if(searchResultsListActivity!=null){
             searchResultsListActivity.setProgressBarVisibility(View.VISIBLE);
         }
-        String result = ConnectionProvider.getInstance(context).getSensesForWord(strings[0]);
+        String result = null;
+        if(Settings.isOfflineMode()) {
+            resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],50));
+            Collections.sort((ArrayList<SenseEntity>) resultHolder);
+        }
+        else
+            result = ConnectionProvider.getInstance(context).getSensesForWord(strings[0]);
         return result;
     }
 
     protected void onPostExecute(String result) {
-        if("ConnectionException".equals(result)){
-            if(message_view !=null){
-                message_view.setText(context.getResources().getString(R.string.no_connection));
+        ArrayList<SenseEntity> results_list = null;
+        if(Settings.isOfflineMode())
+            results_list = (ArrayList<SenseEntity>) resultHolder;
+        else {
+            if("ConnectionException".equals(result)){
+                if(message_view !=null){
+                    message_view.setText(context.getResources().getString(R.string.no_connection));
+                }
+                if(searchResultsListActivity!=null){
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                }
+                return;
             }
-            if(searchResultsListActivity!=null){
-                searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+            else if("{\"content\":[]}".equals(result) || result==null){
+                if(message_view !=null){
+                    message_view.setText(context.getResources().getString(R.string.no_results));
+                }
+                if(searchResultsListActivity!=null){
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                }
+                return;
             }
-            return;
+            results_list = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
         }
-        else if("{\"content\":[]}".equals(result) || result==null){
-            if(message_view !=null){
-                message_view.setText(context.getResources().getString(R.string.no_results));
-            }
-            if(searchResultsListActivity!=null){
-                searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
-            }
-            return;
-        }
-        ArrayList<SenseEntity> results_list = JSONParser.parseJSONqueryArrayResponse(result,SenseEntity.class);
         //Collections.sort(results_list);
         adapter.getData().addAll(results_list);
         adapter.notifyDataSetChanged();

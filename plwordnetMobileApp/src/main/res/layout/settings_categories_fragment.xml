@@ -49,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?android:attr/selectableItemBackground"
-            android:clickable="true">
+            android:clickable="true"
+            android:visibility="gone">
         <ImageView
                 android:id="@+id/visual_icon"
                 android:layout_width="30dp"

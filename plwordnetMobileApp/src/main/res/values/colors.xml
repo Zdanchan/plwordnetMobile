@@ -28,6 +28,13 @@
     <color name="colorButton1_pressed">#202020</color>
     <color name="colorButton2_pressed">#252525</color>
     <color name="colorButton3_pressed">#303030</color>
+    <color name="colorButton4_1">#8e0707</color>
+    <color name="colorButton4_2">#8c0505</color>
+    <color name="colorButton4_1_focused">#9e1717</color>
+    <color name="colorButton4_2_focused">#9c1515</color>
+    <color name="colorButton4_1_pressed">#5e0202</color>
+    <color name="colorButton4_2_pressed">#5c0000</color>
+    <color name="colorButton4_stroke">#6c0000</color>
     <color name="colorGraphButton">#8e0707</color>
     <color name="colorGraphButton_focused">#9e1717</color>
     <color name="colorGraphButton_pressed">#6e0000</color>

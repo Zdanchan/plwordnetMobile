@@ -35,6 +35,7 @@
     <!---->
     <!--Search results massages-->
     <string name="no_connection">Brak połączenia z bazą danych</string>
+    <string name="no_local_database_installed">Nie zainstalowano żadnej lokalnej bazy danych</string>
     <string name="no_results">Brak wyników</string>
     <string name="searching">Wyszukiwanie</string>
     <!---->
@@ -84,6 +85,8 @@
     <string name="other_senses">Inne znaczenia</string>
     <string name="graph_view">Wizualizacja grafu</string>
     <string name="search">Szukaj</string>
+    <string name="connection_required">Połączenie wymagane</string>
+    <string name="connection_required_reason">Aby przeglądać strukturę grafu wymagane jest połączenie z internetem, proszę włączyć tryb online w ustawieniach aplikacji.</string>
     <!---->
     <!--Settings strings-->
     <string name="offline_mode">Tryb offline</string>

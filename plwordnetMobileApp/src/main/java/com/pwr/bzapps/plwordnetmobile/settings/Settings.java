@@ -237,7 +237,7 @@ public class Settings {
     }
 
     public static String getSqliteDbFile() {
-        return sqlite_db_file_location + FILE_NAME + "_" + db_type + ".db";
+        return sqlite_db_file_location + "/" + FILE_NAME + "_" + db_type + ".db";
     }
 
     public static String changeSqliteDbFileLocation(int location){

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public class MainActivity extends DrawerMenuActivity {
@@ -29,6 +30,8 @@ public class MainActivity extends DrawerMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ConnectionProvider.setContext(getApplicationContext());
+        if(!"none".equals(Settings.getDbType()))
+            SQLiteConnector.reloadInstance(getApplicationContext());
         Settings.loadSettings(getApplicationContext());
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);

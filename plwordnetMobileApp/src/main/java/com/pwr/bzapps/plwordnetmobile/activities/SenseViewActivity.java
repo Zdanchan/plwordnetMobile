@@ -98,7 +98,7 @@ public class SenseViewActivity extends BackButtonActivity {
         retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
-            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord());
+            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord(), entity.getLexicon_id().getLanguage_name());
         }
         bookmark_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,11 +244,12 @@ public class SenseViewActivity extends BackButtonActivity {
         sense_part_of_speech.setText(SenseAdapter.getPartOfSpeechString(entity.getPart_of_speech_id().getId(), getApplicationContext()).toUpperCase());
         String language = entity.getLexicon_id().getLanguage_name();
         language_flag.setImageResource(SenseAdapter.getFlagResource(language));
-        if("Polish".equals(language)){
-            sense_description.setText(((ArrayList<SenseAttributeEntity>)entity.getSense_attributes()).get(0).getDefinition());
-        }
-        else{
-            sense_description.setText(((ArrayList<SynsetAttributeEntity>)entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
+        if(!entity.getSense_attributes().isEmpty()) {
+            if ("Polish".equals(language)) {
+                sense_description.setText(((ArrayList<SenseAttributeEntity>) entity.getSense_attributes()).get(0).getDefinition());
+            } else {
+                sense_description.setText(((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
+            }
         }
         sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomain_id().getId()));
         sense_source.setText(entity.getLexicon_id().getName());
@@ -262,7 +263,12 @@ public class SenseViewActivity extends BackButtonActivity {
     }
 
     private void setExamples(LinearLayout sense_examples_container){
-        if("Polish".equals(entity.getLexicon_id().getLanguage_name())){
+        if(entity.getSense_attributes().isEmpty()){
+            ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
+            sense_examples_container.setVisibility(View.GONE);
+        }
+        else if("Polish".equals(entity.getLexicon_id().getLanguage_name())){
             ArrayList<SenseExampleEntity> examples = (ArrayList<SenseExampleEntity>)((ArrayList<SenseAttributeEntity>)entity.getSense_attributes())
                     .get(0).getSense_examples();
             if(examples.size()<1){
@@ -490,9 +496,27 @@ public class SenseViewActivity extends BackButtonActivity {
         view_graph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GraphBrowserActivity.class);
-                intent.putExtra("synset_id",entity.getSynset_id().getId().intValue());
-                startActivity(intent);
+                if(Settings.isOfflineMode()){
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View convertView = (View) inflater.inflate(R.layout.connection_required_popup, null);
+                    Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+                    builder.setView(convertView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), GraphBrowserActivity.class);
+                    intent.putExtra("synset_id", entity.getSynset_id().getId().intValue());
+                    startActivity(intent);
+                }
             }
         });
 

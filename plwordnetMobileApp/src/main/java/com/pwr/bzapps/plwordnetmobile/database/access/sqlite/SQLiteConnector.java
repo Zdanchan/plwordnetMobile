@@ -1,5 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import com.pwr.bzapps.plwordnetmobile.activities.MainActivity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -7,75 +12,62 @@ import java.io.File;
 import java.sql.*;
 import java.util.Collection;
 
-public class SQLiteConnector {
+public class SQLiteConnector extends SQLiteOpenHelper {
 
-    public static <T extends Entity> T getResultForQuery(String query, Class<T> clazz){
-        Connection conn = connectToDatabaseFile();
-        Statement statement = null;
+    private static SQLiteConnector instance;
+    private static Context context;
+
+    public SQLiteConnector(Context context) {
+        super(context, new File(Settings.getSqliteDbFile()).getAbsolutePath(), null, 1);
+    }
+
+    public static SQLiteConnector getInstance() {
+        if(instance==null)
+            reloadInstance(context);
+        return instance;
+    }
+
+    public static SQLiteConnector reloadInstance(Context context){
+        SQLiteConnector.context = context;
+        instance = new SQLiteConnector(context);
+        return instance;
+    }
+
+    public <T extends Entity> T getResultForQuery(String query, Class<T> clazz){
+        SQLiteDatabase db = this.getWritableDatabase();
         T result = null;
-        try {
-            statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            result = SQLiteEntityWrapper.wrapResultSetWithEntity(resultSet, clazz);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        result = SQLiteEntityWrapper.wrapWithEntity(cursor, clazz);
+        cursor.close();
         return result;
     }
 
-    public static <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz, int resultLimit){
-        Connection conn = connectToDatabaseFile();
-        Statement statement = null;
+    public <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz, int resultLimit){
+        SQLiteDatabase db = this.getWritableDatabase();
         Collection<T> results = null;
-        try {
-            statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            results = SQLiteEntityWrapper.wrapResultSetCollectionWithEntity(resultSet, clazz, resultLimit);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Cursor cursor = db.rawQuery(query, null);
+        results = SQLiteEntityWrapper.wrapWithEntityCollection(cursor, clazz, resultLimit);
+        cursor.close();
         return results;
     }
 
-    public static <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz){
-        Connection conn = connectToDatabaseFile();
-        Statement statement = null;
+    public <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz){
+        SQLiteDatabase db = this.getWritableDatabase();
         Collection<T> results = null;
-        try {
-            statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            results = SQLiteEntityWrapper.wrapResultSetCollectionWithEntity(resultSet, clazz);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Cursor cursor = db.rawQuery(query, null);
+        results = SQLiteEntityWrapper.wrapWithEntityCollection(cursor, clazz);
+        cursor.close();
         return results;
     }
 
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-    private static Connection connectToDatabaseFile() {
-        if(!new File(Settings.getSqliteDbFileLocation()).exists()){
-            new File(Settings.getSqliteDbFileLocation()).mkdirs();
-        }
-        String url = "jdbc:sqlite:" + Settings.getSqliteDbFile();
-        Connection conn;
-        try {
-            conn = DriverManager.getConnection(url);
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-            }
-            return conn;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
-    private static void closeConnection(Connection conn){
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 }

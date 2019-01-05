@@ -1,5 +1,6 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite;
 
+import android.database.Cursor;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application.DomainDAO;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application.LexiconDAO;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.grammar.EmotionalAnnotationDAO;
@@ -33,150 +34,142 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class SQLiteEntityWrapper {
 
-    public static <T extends Entity> T wrapResultSetWithEntity(ResultSet resultSet, Class<T> clazz){
-        try {
-            switch (clazz.getSimpleName()) {
-                case "ApplicationLocalisedStringEntity":
-                    return ((T) wrapApplicationLocalisedStringEntity(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3)));
-                case "DictionaryEntity":
-                    return ((T) wrapDictionaryEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getLong(4),
-                            resultSet.getInt(5),
-                            resultSet.getInt(6)));
-                case "DomainEntity":
-                    return ((T) wrapDomainEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3)));
-                case "LexiconEntity":
-                    return ((T) wrapLexiconEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getString(4),
-                            resultSet.getString(5)));
-                case "EmotionalAnnotationEntity":
-                    return ((T) wrapEmotionalAnnotationEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getBoolean(3),
-                            resultSet.getString(4),
-                            resultSet.getBoolean(5),
-                            resultSet.getString(6),
-                            resultSet.getString(7),
-                            resultSet.getString(8),
-                            resultSet.getInt(9)));
-                case "PartOfSpeechEntity":
-                    return ((T) wrapPartOfSpeechEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getInt(3)));
-                case "WordEntity":
-                    return ((T) wrapWordEntity(resultSet.getInt(1),
-                            resultSet.getString(2)));
-                case "RelationTypeAllowedLexiconEntity":
-                    return ((T) wrapRelationTypeAllowedLexiconEntity(resultSet.getInt(1),
-                            resultSet.getInt(2)));
-                case "RelationTypeAllowedPartOfSpeechEntity":
-                    return ((T) wrapRelationTypeAllowedPartOfSpeechEntity(resultSet.getInt(1),
-                            resultSet.getInt(2)));
-                case "RelationTypeEntity":
-                    return ((T) wrapRelationTypeEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getString(3),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            resultSet.getBoolean(6),
-                            resultSet.getBoolean(7),
-                            resultSet.getInt(8),
-                            resultSet.getInt(9),
-                            resultSet.getInt(10),
-                            resultSet.getInt(11),
-                            resultSet.getInt(12),
-                            resultSet.getInt(13)));
-                case "SenseAttributeEntity":
-                    return ((T) wrapSenseAttributeEntity(resultSet.getInt(1),
-                            resultSet.getBoolean(2),
-                            resultSet.getString(3),
-                            resultSet.getInt(4),
-                            resultSet.getInt(5),
-                            resultSet.getInt(6),
-                            resultSet.getString(7),
-                            resultSet.getString(8),
-                            resultSet.getString(9)));
-                case "SenseEntity":
-                    return ((T) wrapSenseEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(4),
-                            resultSet.getInt(5),
-                            resultSet.getInt(6),
-                            resultSet.getInt(7),
-                            resultSet.getInt(8),
-                            resultSet.getInt(9)));
-                case "SenseExampleEntity":
-                    return ((T) wrapSenseExampleEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getInt(4)));
-                case "SenseRelationEntity":
-                    return ((T) wrapSenseRelationEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(4)));
-                case "SynsetAttributeEntity":
-                    return ((T) wrapSynsetAttributeEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            resultSet.getInt(6),
-                            resultSet.getString(7)));
-                case "SynsetEntity":
-                    return ((T) wrapSynsetEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(4),
-                            resultSet.getInt(5)));
-                case "SynsetExampleEntity":
-                    return ((T) wrapSynsetExampleEntity(resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getInt(4)));
-                case "SynsetRelationEntity":
-                    return ((T) wrapSynsetRelationEntity(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(4)));
-            }
-        }catch (SQLException e){
-            return null;
+    public static <T extends Entity> T wrapWithEntity(Cursor cursor, Class<T> clazz){
+        switch (clazz.getSimpleName()) {
+            case "ApplicationLocalisedStringEntity":
+                return ((T) wrapApplicationLocalisedStringEntity(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2)));
+            case "DictionaryEntity":
+                return ((T) wrapDictionaryEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getLong(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5)));
+            case "DomainEntity":
+                return ((T) wrapDomainEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2)));
+            case "LexiconEntity":
+                return ((T) wrapLexiconEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)));
+            case "EmotionalAnnotationEntity":
+                return ((T) wrapEmotionalAnnotationEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2) == 1,
+                        cursor.getString(3),
+                        cursor.getInt(4) == 1,
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getInt(8)));
+            case "PartOfSpeechEntity":
+                return ((T) wrapPartOfSpeechEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2)));
+            case "WordEntity":
+                return ((T) wrapWordEntity(cursor.getInt(0),
+                        cursor.getString(1)));
+            case "RelationTypeAllowedLexiconEntity":
+                return ((T) wrapRelationTypeAllowedLexiconEntity(cursor.getInt(0),
+                        cursor.getInt(1)));
+            case "RelationTypeAllowedPartOfSpeechEntity":
+                return ((T) wrapRelationTypeAllowedPartOfSpeechEntity(cursor.getInt(0),
+                        cursor.getInt(1)));
+            case "RelationTypeEntity":
+                return ((T) wrapRelationTypeEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5) == 1,
+                        cursor.getInt(6) == 1,
+                        cursor.getInt(7),
+                        cursor.getInt(8),
+                        cursor.getInt(9),
+                        cursor.getInt(10),
+                        cursor.getInt(11),
+                        cursor.getInt(12)));
+            case "SenseAttributeEntity":
+                return ((T) wrapSenseAttributeEntity(cursor.getInt(0),
+                        cursor.getInt(1) == 1,
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getString(8)));
+            case "SenseEntity":
+                return ((T) wrapSenseEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(6),
+                        cursor.getInt(7),
+                        cursor.getInt(8)));
+            case "SenseExampleEntity":
+                return ((T) wrapSenseExampleEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3)));
+            case "SenseRelationEntity":
+                return ((T) wrapSenseRelationEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getInt(3)));
+            case "SynsetAttributeEntity":
+                return ((T) wrapSynsetAttributeEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        cursor.getString(6)));
+            case "SynsetEntity":
+                return ((T) wrapSynsetEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getInt(3),
+                        cursor.getInt(4)));
+            case "SynsetExampleEntity":
+                return ((T) wrapSynsetExampleEntity(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3)));
+            case "SynsetRelationEntity":
+                return ((T) wrapSynsetRelationEntity(cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getInt(3)));
         }
         return null;
     }
 
-    public static <T extends Entity> Collection<T> wrapResultSetCollectionWithEntity(ResultSet resultSet, Class<T> clazz, int resultsLimit){
-        Collection<T> results = new LinkedList<T>();
-        try {
-            for(int i=0; i<resultsLimit && resultSet.next(); i++) {
-                results.add(wrapResultSetWithEntity(resultSet, clazz));
-            }
-        }catch (SQLException e){
-            return null;
+    public static <T extends Entity> Collection<T> wrapWithEntityCollection(Cursor cursor, Class<T> clazz, int resultsLimit){
+        Collection<T > results = new ArrayList<T>();
+        for(int i=0; (i<resultsLimit || resultsLimit==-1) && cursor.moveToNext(); i++) {
+            results.add(wrapWithEntity(cursor, clazz));
         }
         return results;
     }
 
-    public static <T extends Entity> Collection<T> wrapResultSetCollectionWithEntity(ResultSet resultSet, Class<T> clazz){
-        return wrapResultSetCollectionWithEntity(resultSet, clazz, Integer.MAX_VALUE);
+    public static <T extends Entity> Collection<T> wrapWithEntityCollection(Cursor cursor, Class<T> clazz){
+        return wrapWithEntityCollection(cursor, clazz, -1);
     }
 
     public static ApplicationLocalisedStringEntity wrapApplicationLocalisedStringEntity(Integer id, String language, String value){
@@ -379,7 +372,8 @@ public class SQLiteEntityWrapper {
             senseAttributeEntity.setDefinition(definition);
             senseAttributeEntity.setComment(comment);
 
-            senseAttributeEntity.setSense_examples(senseExampleDAO.findAllForSenseAttribute(sense_id));
+            senseAttributeEntity.setSense_examples(new ArrayList<SenseExampleEntity>(
+                    senseExampleDAO.findAllForSenseAttribute(sense_id)));
 
             EntityManager.putEntity(senseAttributeEntity);
             return senseAttributeEntity;
@@ -411,8 +405,9 @@ public class SQLiteEntityWrapper {
             senseEntity.setLexicon_id(lexiconDAO.findById(lexicon_id));
             senseEntity.setWord_id(wordDAO.findById(word_id));
             senseEntity.setPart_of_speech_id(partOfSpeechDAO.findById(part_of_speech_id));
-            senseEntity.setSense_attributes(senseAttributeDAO.findAllForSenseId(id));
-            senseEntity.setEmotional_annotations(emotionalAnnotationDAO.findAllForSenseId(id));
+            senseEntity.setSense_attributes(new ArrayList<SenseAttributeEntity>(senseAttributeDAO.findAllForSenseId(id)));
+            senseEntity.setEmotional_annotations(new ArrayList<EmotionalAnnotationEntity>(
+                    emotionalAnnotationDAO.findAllForSenseId(id)));
 
             EntityManager.putEntity(senseEntity);
             return senseEntity;
@@ -469,7 +464,8 @@ public class SQLiteEntityWrapper {
             synsetAttributeEntity.setIli_id(ili_id);
             synsetAttributeEntity.setOwner_id(owner_id);
             synsetAttributeEntity.setPrinceton_id(princeton_id);
-            synsetAttributeEntity.setSynset_examples(synsetExampleDAO.findAllForSynsetAttribute(synset_id));
+            synsetAttributeEntity.setSynset_examples(new ArrayList<SynsetExampleEntity>(
+                    synsetExampleDAO.findAllForSynsetAttribute(synset_id)));
 
             EntityManager.putEntity(synsetAttributeEntity);
             return synsetAttributeEntity;
@@ -489,11 +485,14 @@ public class SQLiteEntityWrapper {
             synsetEntity.setId(id);
             synsetEntity.setSplit(handleNullableValue(split));
             synsetEntity.setStatus_id(handleNullableValue(status_id));
-            synsetEntity.setAbstract(handleNullableValue(abstract_).shortValue());
+            synsetEntity.setAbstract(handleNullableValue(abstract_.shortValue()));
             synsetEntity.setLexicon_id(lexiconDAO.findById(lexicon_id));
-            synsetEntity.setRelation_parent(synsetRelationDAO.findChildrenByParentId(id));
-            synsetEntity.setRelation_child(synsetRelationDAO.findParentsByChildId(id));
-            synsetEntity.setSynset_attributes(synsetAttributeDAO.findAllForSynsetId(id));
+            synsetEntity.setRelation_parent(new ArrayList<SynsetRelationEntity>(
+                    synsetRelationDAO.findChildrenByParentId(id)));
+            synsetEntity.setRelation_child(new ArrayList<SynsetRelationEntity>(
+                    synsetRelationDAO.findParentsByChildId(id)));
+            synsetEntity.setSynset_attributes(new ArrayList<SynsetAttributeEntity>(
+                    synsetAttributeDAO.findAllForSynsetId(id)));
 
             EntityManager.putEntity(synsetEntity);
             return synsetEntity;
@@ -536,7 +535,11 @@ public class SQLiteEntityWrapper {
     }
 
     private static Integer handleNullableValue(Integer value){
-        return value.intValue()!=0 ? null : value.intValue();
+        return value.intValue()==0 ? null : value.intValue();
+    }
+
+    private static Short handleNullableValue(Short value){
+        return value.shortValue()==0 ? null : value.shortValue();
     }
 
 }

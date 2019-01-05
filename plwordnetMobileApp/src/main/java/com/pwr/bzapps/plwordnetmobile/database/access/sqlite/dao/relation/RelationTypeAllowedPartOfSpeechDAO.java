@@ -7,11 +7,12 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeAllow
 import java.util.Collection;
 
 public class RelationTypeAllowedPartOfSpeechDAO {
-    static final String HEADER = "SELECT * FROM " + SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME;
+    static final String HEADER = "SELECT part_of_speech_id, relation_type_id FROM " + SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME;
 
     public Collection<RelationTypeAllowedPartOfSpeechEntity> getAll(){
         String query = HEADER;
-        Collection<RelationTypeAllowedPartOfSpeechEntity> results = SQLiteConnector.getResultListForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
+        Collection<RelationTypeAllowedPartOfSpeechEntity> results = SQLiteConnector.getInstance()
+                .getResultListForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
         return results;
     }
 
@@ -19,7 +20,8 @@ public class RelationTypeAllowedPartOfSpeechDAO {
         String query = HEADER
                 + " WHERE relation_type_id = " + relation_type_id
                 + " AND part_of_speech_id = " + part_of_speech_id;
-        RelationTypeAllowedPartOfSpeechEntity result = SQLiteConnector.getResultForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
+        RelationTypeAllowedPartOfSpeechEntity result = SQLiteConnector.getInstance()
+                .getResultForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
         return result;
     }
 }

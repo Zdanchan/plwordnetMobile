@@ -16,6 +16,7 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
     }
 
     public void setBookmarksData(List<SenseEntity> data){
+        Collections.sort(data);
         this.data.addAll(data);
         listView.setAdapter(adapter);
         if(data.isEmpty()){
@@ -68,6 +70,10 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
 
     public void informAboutConnectionProblems(){
         message_text.setText(R.string.no_connection);
+    }
+
+    public void informThereIsNoLocalDatabase(){
+        message_text.setText(R.string.no_local_database_installed);
     }
 
     private String arrayToString(Integer[] array){

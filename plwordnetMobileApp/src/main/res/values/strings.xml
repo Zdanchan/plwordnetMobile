@@ -50,6 +50,7 @@
     <!---->
     <!--Search results messages-->
     <string name="no_connection">No connection to database</string>
+    <string name="no_local_database_installed">No local database installed</string>
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
     <!---->
@@ -190,6 +191,8 @@
     <string name="other_senses">Other senses</string>
     <string name="graph_view">View graph</string>
     <string name="search">Search</string>
+    <string name="connection_required">Connection required</string>
+    <string name="connection_required_reason">Internet connection is required to browse graph structure, please switch to online mode in settings panel.</string>
     <!---->
     <!--Settings strings-->
     <string name="offline_mode">Offline mode</string>
