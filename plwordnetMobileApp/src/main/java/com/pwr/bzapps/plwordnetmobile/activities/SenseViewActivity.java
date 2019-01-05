@@ -377,6 +377,7 @@ public class SenseViewActivity extends BackButtonActivity {
     }
 
     public void setSynonyms(ArrayList<SenseEntity> synonyms){
+        Collections.sort((ArrayList<SenseEntity>) synonyms);
         this.synonyms=synonyms;
         LinearLayout synonyms_container = findViewById(R.id.sense_synonyms_container);
         if(synonyms.size()<2){
@@ -413,6 +414,7 @@ public class SenseViewActivity extends BackButtonActivity {
     }
 
     public void setWordRelatedSenses(final ArrayList<SenseEntity> word_related_senses){
+        Collections.sort((ArrayList<SenseEntity>) word_related_senses);
         this.word_related_senses=word_related_senses;
         Button other_senses = findViewById(R.id.other_senses_button);
         other_senses.setText(entity.getVariant() + "/" + word_related_senses.size());
