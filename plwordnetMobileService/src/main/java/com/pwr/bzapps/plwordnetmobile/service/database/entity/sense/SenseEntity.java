@@ -209,10 +209,10 @@ public class SenseEntity implements Comparable<SenseEntity>{
             }
         }
         if(comparison==0){
-            if(this.getPart_of_speech_id().getId()<entity.getPart_of_speech_id().getId()){
+            if(this.getLexicon_id().getId()<entity.getLexicon_id().getId()){
                 comparison = -1;
             }
-            else if(this.getPart_of_speech_id().getId()>entity.getPart_of_speech_id().getId()){
+            else if(this.getLexicon_id().getId()>entity.getLexicon_id().getId()){
                 comparison = 1;
             }
             else{
@@ -220,10 +220,10 @@ public class SenseEntity implements Comparable<SenseEntity>{
             }
         }
         if(comparison==0){
-            if(this.getLexicon_id().getId()<entity.getLexicon_id().getId()){
+            if(this.getPart_of_speech_id().getId()<entity.getPart_of_speech_id().getId()){
                 comparison = -1;
             }
-            else if(this.getLexicon_id().getId()>entity.getLexicon_id().getId()){
+            else if(this.getPart_of_speech_id().getId()>entity.getPart_of_speech_id().getId()){
                 comparison = 1;
             }
             else{

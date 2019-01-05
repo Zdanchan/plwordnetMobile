@@ -24,6 +24,10 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
     @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word)")
     public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word);
 
+    @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word) " +
+            "AND LOWER(lexicon_id.language_name) = LOWER(:language)")
+    public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word, @Param("language")String language);
+
     @Query("SELECT s FROM SenseEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
     public List<SenseEntity> findAllForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
 

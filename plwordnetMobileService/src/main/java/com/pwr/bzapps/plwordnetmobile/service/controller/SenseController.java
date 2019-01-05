@@ -63,6 +63,12 @@ public class SenseController {
         return new Response<Iterable<SenseEntity>>(repository.findRelatedSensesByWord(word));
     }
 
+    @GetMapping(path="/findRelatedSensesByWordAndLanguage")
+    private @ResponseBody Response<Iterable<SenseEntity>> findRelatedSensesByWordAndLanguage(@RequestParam String word,
+                                                                                  @RequestParam String language){
+        return new Response<Iterable<SenseEntity>>(repository.findRelatedSensesByWord(word,language));
+    }
+
     @GetMapping(path="/findAll")
     private @ResponseBody Response<Iterable<SenseEntity>> findSenseAll(){
         return new Response<Iterable<SenseEntity>>(repository.findAll());
