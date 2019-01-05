@@ -31,14 +31,28 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <WebView
-        android:id="@+id/web_graph_view"
+    <RelativeLayout
         android:layout_below="@id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <!--Insert Layout code here-->
-
-    </WebView>
-
+        <WebView
+                android:id="@+id/web_graph_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <ImageButton
+                android:id="@+id/toolbar_hide_button"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:src="@drawable/arrow_up_icon"
+                android:tint="@android:color/black"
+                android:background="@color/alpha"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"/>
+    </RelativeLayout>
 </RelativeLayout>

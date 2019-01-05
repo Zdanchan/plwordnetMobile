@@ -24,6 +24,10 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
     @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word)")
     public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word);
 
+    @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word) " +
+            "AND LOWER(lexicon_id.language_name) = LOWER(:language)")
+    public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word, @Param("language")String language);
+
     @Query("SELECT s FROM SenseEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
     public List<SenseEntity> findAllForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
 
@@ -32,26 +36,26 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
-            "s.synset_position,','," +
+            "IF(s.synset_position IS NULL,'null',s.synset_position),','," +
             "s.variant,','," +
-            "s.domain_id.id,','," +
-            "s.lexicon_id.id,','," +
-            "s.part_of_speech_id.id,','," +
-            "s.synset_id.id,','," +
-            "s.word_id.id,','," +
-            "s.status_id,','," +
-            ")FROM SenseEntity s", nativeQuery = true)
+            "s.domain_id,','," +
+            "s.lexicon_id,','," +
+            "s.part_of_speech_id,','," +
+            "IF(s.synset_id IS NULL,'null',s.synset_id),','," +
+            "s.word_id,','," +
+            "IF(s.status_id IS NULL,'null',s.status_id)" +
+            ")FROM sense s", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
-            "s.synset_position,','," +
+            "IF(s.synset_position IS NULL,'null',s.synset_position),','," +
             "s.variant,','," +
-            "s.domain_id.id,','," +
-            "s.lexicon_id.id,','," +
-            "s.part_of_speech_id.id,','," +
-            "s.synset_id.id,','," +
-            "s.word_id.id,','," +
-            "s.status_id,','," +
-            ")FROM SenseEntity s WHERE s.lexicon_id.id  IN (:lexicon_ids)", nativeQuery = true)
+            "s.domain_id,','," +
+            "s.lexicon_id,','," +
+            "s.part_of_speech_id,','," +
+            "IF(s.synset_id IS NULL,'null',s.synset_id),','," +
+            "s.word_id,','," +
+            "IF(s.status_id IS NULL,'null',s.status_id)" +
+            ")FROM sense s WHERE s.lexicon_id  IN (:lexicon_ids)", nativeQuery = true)
     public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
 }

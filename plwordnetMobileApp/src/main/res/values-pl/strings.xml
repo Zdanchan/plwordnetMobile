@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">plWordNetMobile</string>
+    <string name="app_name">plWordNet GO!</string>
     <string name="main_title">PLWORDNET</string>
     <string name="wordnet">SŁOWOSIEĆ</string>
     <string name="sub_title">wielka sieć wyrazów</string>
@@ -35,6 +35,7 @@
     <!---->
     <!--Search results massages-->
     <string name="no_connection">Brak połączenia z bazą danych</string>
+    <string name="no_local_database_installed">Nie zainstalowano żadnej lokalnej bazy danych</string>
     <string name="no_results">Brak wyników</string>
     <string name="searching">Wyszukiwanie</string>
     <!---->
@@ -58,6 +59,15 @@
     <!--Relation types-->
 
     <!---->
+    <!--About us-->
+    <string name="team">ZESPÓŁ</string>
+    <string name="leader_label">Kierownik projektu</string>
+    <string name="coordinators_label">Koordynatorzy prac lingwistycznych</string>
+    <string name="consultants_label">Konsultanci</string>
+    <string name="linguists_label">Lingwiści</string>
+    <string name="developers_label">Programiści</string>
+    <string name="mobile_developers_label">Programiści aplikacji \'plWordNet GO!\'</string>
+    <!---->
     <!--Emotional markedness types-->
     <string name="ambiguous">Niejednoznaczne</string>
     <string name="weak_negative">Słabe negatywne</string>
@@ -75,6 +85,8 @@
     <string name="other_senses">Inne znaczenia</string>
     <string name="graph_view">Wizualizacja grafu</string>
     <string name="search">Szukaj</string>
+    <string name="connection_required">Połączenie wymagane</string>
+    <string name="connection_required_reason">Aby przeglądać strukturę grafu wymagane jest połączenie z internetem, proszę włączyć tryb online w ustawieniach aplikacji.</string>
     <!---->
     <!--Settings strings-->
     <string name="offline_mode">Tryb offline</string>
@@ -85,6 +97,23 @@
     <string name="clear_bookmarks">Wyczyść zakładki</string>
     <string name="clear_history_toast">Cała historia wyszukiwania została usunięta</string>
     <string name="clear_bookmarks_toast">Wszystkie zakładki zostały usunięte</string>
+    <string name="select_local_dictionaries">Wybierz lokalne słowniki:</string>
+    <string name="dictionary_polish">Polski</string>
+    <string name="dictionary_english">Angielski</string>
+    <string name="sync_db">Synchronizuj bazy danych</string>
+    <string name="status_db">Status: </string>
+    <string name="status_up_to_date">Aktualna</string>
+    <string name="status_needs_update">Wymaga aktualizacji</string>
+    <string name="status_no_local_db">Brak lokalnej bazy danych</string>
+    <string name="status_checking">Sprawdzanie...</string>
+    <string name="status_synchronizing">Synchronizowanie</string>
+    <string name="status_connection_problem">Brak połączenia</string>
+    <string name="remove_local_db">Usuń lokalną bazę danych</string>
+    <string name="remove_local_db_toast">Lokalna baza danych została usunięta</string>
+    <string name="sync_please_wait">Synchronizowanie, proszę czekać...</string>
+    <string name="no_db_selected">Nie wybrano żadnych słowników</string>
+    <string name="requires_permissions">Akcja przerwana gdyż wymaga ona pozwolenia na zapis i odczyt danych</string>
+    <string name="acquired_permissions">Uzyskano pozwolenie, proszę uruchomić synchronizację ponownie</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">czasownik</string>

@@ -1,26 +1,7 @@
-body{
-    margin: 0;
-    padding: 0;
-    overflow:hidden;
-    background-color: #aaaaaa;
+.clarin-graph-visualization{
+    overflow: hidden;
 }
-
-p{
-     text-align: center;
-     /*overflow: overlay;*/
-     position: relative;
-}
-
-body{
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-#toolbox{
+.clarin-graph-visualization #toolbox{
     position: absolute;
     top: 0;
     margin-left: 25%;
@@ -32,23 +13,22 @@ body{
     padding: 7px 20px 20px 20px;
     margin-bottom: 10px;
 }
-#toolbox:hover{
+.clarin-graph-visualization #toolbox:hover{
     background-color: #fff;
 }
-#toolbox input{
+.clarin-graph-visualization #toolbox input{
     background-color: inherit;
 }
-#toolbox:hover input{
+.clarin-graph-visualization #toolbox:hover input{
     min-width: 300px;
     opacity: 1;
 }
-#toolbox:hover{
+.clarin-graph-visualization #toolbox:hover{
     opacity: 1;
     cursor: pointer;
-    /*padding-bottom: 40px;*/
 }
 
-#inspected-word{
+.clarin-graph-visualization #inspected-word{
     min-width: 200px;
     min-height: 40px;
     font-size: 16px;
@@ -59,7 +39,7 @@ body{
     transition: min-width 0.3s;
 }
 
-#inspected-word-btn {
+.clarin-graph-visualization #inspected-word-btn {
     min-height: 40px;
     background-color: white;
     color: black;
@@ -68,125 +48,141 @@ body{
     transition-duration: 0.4s;
 }
 
-#inspected-word-btn:hover {
+.clarin-graph-visualization #inspected-word-btn:hover {
     background-color: #555555; /* Green */
     color: white;
 }
 
-#hidden-file-upload{
+.clarin-graph-visualization #hidden-file-upload{
     display: none;
 }
 
-#download-input{
+.clarin-graph-visualization #download-input{
     margin: 0 0.5em;
 }
 
-#possible-senses{
+.clarin-graph-visualization #possible-senses{
     list-style-type: none;
     margin: 0;
     padding: 0;
     max-height: 400px;
     overflow-y: scroll;
 }
-#possible-senses li{
+.clarin-graph-visualization #possible-senses li{
     padding: 5px;
 }
-#possible-senses li:hover{
+.clarin-graph-visualization #possible-senses li:hover{
     background-color: #eee;
 }
 
-.conceptG text{
+.clarin-graph-visualization .conceptG text{
     pointer-events: none;
 }
 
-marker{
+.clarin-graph-visualization marker{
     fill: #333;
 }
 
-g.conceptG circle{
-    fill: #aaffaf;
-    /*stroke: #333;*/
-    /*stroke-width: 2px;*/
-}
-
-/*g.conceptG:hover circle{*/
-    /*fill: rgb(200, 238, 241);*/
-/*}*/
-
-/*g.selected circle{*/
-    /*fill: rgb(250, 232, 255);*/
-/*}*/
-/*g.selected:hover circle{*/
-    /*fill: rgb(250, 232, 255);*/
-/*}*/
-
-path.link {
+.clarin-graph-visualization path.link {
     fill: none;
     /*stroke: #000;*/
     stroke-width: 2px;
     cursor: default;
 }
 
-path.dotted {
+.clarin-graph-visualization path.link{
+    stroke-dasharray: 1000;
+    animation: dash 1s linear forwards, dasharray 0s 1s linear forwards;
+}
+@keyframes dasharray {
+    from {
+        stroke-dasharray: 1000;
+    }
+    to {
+        stroke-dasharray: 0;
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.clarin-graph-visualization path.dotted {
     stroke-dasharray: 6, 3;
 }
 
-path.link:hover{
-    stroke: rgb(94, 196, 204);
-}
-
-g.connect-node circle{
+.clarin-graph-visualization g.connect-node circle{
     fill: #BEFFFF;
 }
 
-path.link.hidden{
+.clarin-graph-visualization path.link.hidden{
     stroke-width: 0;
 }
 
-path.link.selected {
+.clarin-graph-visualization path.link.selected {
     stroke: rgb(229, 172, 247);
 }
 
-polyline.expanded {
-  fill: red;
+.clarin-graph-visualization polyline.inner-node,
+.clarin-graph-visualization rect.inner-node,
+.clarin-graph-visualization circle.inner-node {
+    color: white;
+
+    -webkit-animation-name: fade-in;
+    -webkit-animation-duration: .5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
 }
 
-polyline.inner-node,
-circle.inner-node {
-    stroke: black;
-    stroke-width: 1px;
+
+
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-/* marking selected nodes */
-g.node-selected polyline.inner-node,
-g.node-selected circle.inner-node {
-    fill: rgb(255,255,48);
-}
-
-text.relation-text{
+.clarin-graph-visualization text.relation-text{
     font-size: .8em;
+    -webkit-animation-name: fade-in;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    /*-webkit-animation-delay: 1s;*/
+
 }
 
-.hidden-list{
+.clarin-graph-visualization .hidden-list{
     background-color: whitesmoke;
     overflow-y: scroll;
     min-width: 50px;
-    max-height: 200px;
+    max-height: 300px;
+    border: 1px solid #ccc;
 }
-.hidden-list ul {
+.clarin-graph-visualization .hidden-list ul {
     list-style: none;
     padding-left: 0;
 }
 
-.hidden-list ul li {
+.clarin-graph-visualization .hidden-list ul li {
     cursor: pointer;
     padding: 5px;
 }
-.hidden-list ul li:hover {
+.clarin-graph-visualization .hidden-list ul li:hover {
     background-color: #aaa;
 }
 
-#node-tooltip{
+.clarin-graph-visualization #node-tooltip{
+    bottom: 0;
+    right: 0;
+    left: 0;
     position: absolute;
     color: #fff;
     text-align: center;
@@ -198,24 +194,49 @@ text.relation-text{
     pointer-events: none;
 }
 
-#node-tooltip::after {
+/*.clarin-graph-visualization #node-tooltip::after {
     content: " ";
     opacity: inherit;
     position: absolute;
     top: 50%;
-    right: 100%; /* To the left of the tooltip */
+    right: 100%;
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: transparent black transparent transparent;
+}*/
+
+.clarin-graph-visualization .graph-loader{
+    display: block;
+    z-index: 100;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    transition: background-color 150ms linear;
+    position: absolute;
+    text-align: center;
 }
 
-#loader {
+.clarin-graph-visualization .graph-loader.hidden{
+    display: block !important; /* protect against bootstrap styles override*/
+    z-index: -1;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.clarin-graph-visualization .graph-loader.hidden .spin{
+    display: none;
+}
+
+.clarin-graph-visualization .spin {
     border: 5px solid #f3f3f3;
     -webkit-animation: spin 1s linear infinite;
     animation: spin 1s linear infinite;
     border-top: 5px solid #555;
     border-radius: 50%;
+
+    margin-top:25%;
+    display: inline-block;
+
     width: 50px;
     height: 50px;
 }
@@ -225,26 +246,26 @@ text.relation-text{
     100% { transform: rotate(360deg); }
 }
 
-#download-picture {
+.clarin-graph-visualization #download-picture {
     position: absolute;
     bottom: 10px;
     right: 10px;
     border: none;
     background-color: transparent;
-    background-image: url('../img/download-icon.png');
+    background-image: asset-data-url("download-icon.png");
     background-size: 50px 50px;
     height: 50px;
     width: 55px;
 }
-#download-picture:hover{
+.clarin-graph-visualization #download-picture:hover{
     background-size: 55px 55px;
     height: 55px;
     width: 60px;
 }
 
 
-.inner-graph-container{
-    background-color: white;
+.clarin-graph-visualization .inner-graph-container{
+    position: absolute;
 }
 
 
@@ -253,19 +274,132 @@ text.relation-text{
     =========================
 */
 
-.canvas {
+.clarin-graph-visualization.canvas {
     overflow: hidden;
     background-color: rgba(236, 236, 236, 0.9);
-
-    -webkit-box-shadow: 0px 0px 15px 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0px 0px 15px 3px rgba(0,0,0,0.5);
-    box-shadow: 0px 0px 15px 3px rgba(0,0,0,0.5);
 }
 
-.canvas .minimap .frame .background {
+.clarin-graph-visualization.canvas .minimap .frame .background {
     stroke: #111111;
     stroke-width: 4px;
     fill-opacity: 0.1;
     fill: #000000;
     cursor: move;
 }
+
+.clarin-graph-visualization.legend-card{
+    padding: 10px;
+    background-color: rgba(236, 236, 236, 0.9);
+}
+
+.clarin-graph-visualization.legend-card ul{
+    list-style: none;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.clarin-graph-visualization.legend-card ul li{
+    padding: 3px;
+}
+
+.clarin-graph-visualization.legend-card .color-demo{
+    padding-right: 20px;
+    margin-right: 5px;
+    display: inline;
+}
+
+.clarin-graph-visualization.legend-card .close-btn{
+    cursor: pointer;
+    position: absolute;
+    padding: 5px 10px;
+    top:0;
+    right:0;
+    background-color: rgba(246,124,129,0.9);
+}
+
+.clarin-graph-visualization .rel-group .hidden-nodes-list{
+    padding: 5px;
+}
+/*.clarin-graph-visualization .rel-group:nth-child(odd),*/
+/*.clarin-graph-visualization .rel-group .hidden-nodes-list:nth-child(odd)*/
+.clarin-graph-visualization .rel-group,
+.clarin-graph-visualization .rel-group .hidden-nodes-list
+{
+    border-radius: 4px;
+    background-color: #dbdbdb;
+}
+.clarin-graph-visualization ul.hidden-nodes-list li{
+    border-radius: 2px;
+}
+
+.clarin-graph-visualization #filter-search-bar{
+    width: 100%;
+    min-height: 2.5em;
+    padding-left: 10px;
+    border: 1px solid #555;
+    border-radius: 2px;
+}
+
+.clarin-graph-visualization .rel-group-name{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.clarin-graph-visualization .rel-group-name:hover{
+    background-color: #ccc;
+}
+
+.clarin-graph-visualization .rel-group-name span{
+    float:right;
+}
+.clarin-graph-visualization .rel-group .hidden-nodes-list {
+    overflow-y: hidden;
+    transition: max-height .3s ease-in-out;
+}
+
+.clarin-graph-visualization .rel-group span.not-expanded{
+    display: none;
+}
+
+.clarin-graph-visualization .rel-group.minified span.expanded{
+    display: none;
+}
+.clarin-graph-visualization .rel-group.minified span.not-expanded{
+    display: inline;
+}
+
+.clarin-graph-visualization .rel-group.minified .hidden-nodes-list{
+    margin: 0;
+    padding: 0;
+    max-height: 0 !important;
+}
+
+/* SELECTED GRAPH MODES SPECIFIC STYLES */
+.clarin-graph-visualization.style-yiddish circle.expanded{
+    fill: #527ae0;
+}
+.clarin-graph-visualization.style-plWordNet polyline.expanded {
+    fill: red;
+}
+
+/* marking selected nodes */
+.clarin-graph-visualization.style-yiddish g.node-selected rect.inner-node,
+.clarin-graph-visualization.style-yiddish g.node-selected polyline.inner-node,
+.clarin-graph-visualization.style-yiddish g.node-selected circle.inner-node {
+    fill: #5e8fff;
+}
+.clarin-graph-visualization.style-plWordNet g.node-selected rect.inner-node,
+.clarin-graph-visualization.style-plWordNet g.node-selected polyline.inner-node,
+.clarin-graph-visualization.style-plWordNet g.node-selected circle.inner-node {
+    fill: rgb(255,255,48);
+}
+
+.clarin-graph-visualization.style-yiddish g.conceptG circle.inner-node{
+    fill: #a8b5d6;
+}
+
+.clarin-graph-visualization.style-plWordNet g.conceptG circle.inner-node{
+    fill: #aaffaf;
+}
+
+

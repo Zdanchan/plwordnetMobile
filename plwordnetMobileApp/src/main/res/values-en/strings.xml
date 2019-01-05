@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">plWordNetMobile</string>
+    <string name="app_name">plWordNet GO!</string>
     <string name="main_title">PLWORDNET</string>
     <string name="wordnet">WORDNET</string>
     <string name="sub_title">a large network of words</string>
@@ -16,7 +16,7 @@
         <string name="lang_pol">Polish</string>
     <!---->
     <!--Main activity strings-->
-    <string name="search_text_edit">Type word...</string>
+    <string name="search_text_edit">Type a word...</string>
     <string name="thanks_to">Project is developed\n thanks to:</string>
         <!--Infos box informations-->
         <string name="words_count">words</string>
@@ -35,6 +35,7 @@
     <!---->
     <!--Search results massages-->
     <string name="no_connection">No connection to database</string>
+    <string name="no_local_database_installed">No local database installed</string>
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
     <!---->
@@ -58,6 +59,15 @@
     <!--Relation types-->
 
     <!---->
+    <!--About us-->
+    <string name="team">TEAM</string>
+    <string name="leader_label">Leader</string>
+    <string name="coordinators_label">Coordinators</string>
+    <string name="consultants_label">Consultants</string>
+    <string name="linguists_label">Linguists</string>
+    <string name="developers_label">Developers</string>
+    <string name="mobile_developers_label">Developers of \'plWordNet GO!\'</string>
+    <!---->
     <!--Emotional markedness types-->
     <string name="ambiguous">Ambiguous</string>
     <string name="weak_negative">Weak negative</string>
@@ -75,6 +85,8 @@
     <string name="other_senses">Other senses</string>
     <string name="graph_view">View graph</string>
     <string name="search">Search</string>
+    <string name="connection_required">Connection required</string>
+    <string name="connection_required_reason">Internet connection is required to browse graph structure, please switch to online mode in settings panel.</string>
     <!---->
     <!--Settings strings-->
     <string name="offline_mode">Offline mode</string>
@@ -85,6 +97,23 @@
     <string name="clear_bookmarks">Clear bookmarks</string>
     <string name="clear_history_toast">Whole history has been removed</string>
     <string name="clear_bookmarks_toast">All bookmarks has been removed</string>
+    <string name="select_local_dictionaries">Select local dictionaries:</string>
+    <string name="dictionary_polish">Polish</string>
+    <string name="dictionary_english">English</string>
+    <string name="sync_db">Synchronize databases</string>
+    <string name="status_db">Status: </string>
+    <string name="status_up_to_date">Up to date</string>
+    <string name="status_needs_update">Needs update</string>
+    <string name="status_no_local_db">No local database available</string>
+    <string name="status_checking">Checking...</string>
+    <string name="status_synchronizing">Synchronizing</string>
+    <string name="status_connection_problem">Connection problem</string>
+    <string name="remove_local_db">Remove local database</string>
+    <string name="remove_local_db_toast">Local database has been removed</string>
+    <string name="sync_please_wait">Synchronizing, please wait...</string>
+    <string name="no_db_selected">No dictionary selected</string>
+    <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
+    <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

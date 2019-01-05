@@ -41,6 +41,7 @@ import com.pwr.bzapps.plwordnetmobile.service.database.repository.synset.SynsetR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -189,6 +190,8 @@ public class DBHelperComponent {
         return null;
     }
     public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids){
+        if(ids.length==0)
+            return new ArrayList<String>();
         switch(clazz.getSimpleName()){
             case "SenseAttributeEntity":
                 return ((List<String>)senseAttributeRepository.findAllForSensesAndParseString(ids));
@@ -270,7 +273,17 @@ public class DBHelperComponent {
     }
 
     public <T> String generateSQLInsertForStrings(List<String> entities, Class<T> clazz){
-        return SQLExporter.createInsertQueryWithStrings(entities,clazz);
+        if(entities.size()==0)
+            return "SELECT 1 FROM dual";
+        String query = SQLExporter.createInsertQueryWithStrings(entities,clazz);
+        if(clazz.getSimpleName().equals("WordEntity")
+                || clazz.getSimpleName().equals("SenseExampleEntity")
+                || clazz.getSimpleName().equals("SenseAttributeEntity")
+                || clazz.getSimpleName().equals("SynsetExampleEntity")
+                || clazz.getSimpleName().equals("SynsetAttributeEntity") ){
+            query = query.replaceAll("####","<\'>"); //had to replace every '"' simbol to be able to properly insert data into SQLite db
+        }
+        return query;
     }
 
     public List<SynsetRelationEntity> getSynsetRelationsByRelationIds(Integer[] relation_ids){

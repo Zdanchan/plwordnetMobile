@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">plWordNetMobile</string>
+    <string name="app_name">plWordNet GO!</string>
     <string name="preference_file_key" translatable="false">com.pwr.bzapps.plwordnetmobile</string>
     <string name="main_title">PLWORDNET</string>
     <string name="wordnet">WORDNET</string>
@@ -17,7 +17,7 @@
         <string name="lang_pol">Polish</string>
     <!---->
     <!--Main activity strings-->
-    <string name="search_text_edit">Type word...</string>
+    <string name="search_text_edit">Type a word...</string>
     <string name="thanks_to">Project is developed\n thanks to:</string>
     <string name="copyright_wordnet" translatable="false">Copyright © 2006-2018 Wrocław University of Technology\nEnglish data comes from Princeton Wordnet 3.1 (© 2014 The Trustees of Princeton University)\nDuring the works on the mapping between plWordNet and Princeton WordNet 3.1 the Polish-English dictionary of TiP Ltd. was used following the TiP kind consent.\nLogo design: Merhab Studio</string>
     <!--Infos box informations-->
@@ -50,6 +50,7 @@
     <!---->
     <!--Search results messages-->
     <string name="no_connection">No connection to database</string>
+    <string name="no_local_database_installed">No local database installed</string>
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
     <!---->
@@ -73,6 +74,106 @@
     <!--Relation types-->
 
     <!---->
+    <!--About us-->
+    <string name="team">TEAM</string>
+    <string name="leader_label">Leader</string>
+    <string name="coordinators_label">Coordinators</string>
+    <string name="consultants_label">Consultants</string>
+    <string name="linguists_label">Linguists</string>
+    <string name="developers_label">Developers</string>
+    <string name="mobile_developers_label">\'plWordNet GO!\' developers</string>
+    <string name="leader_names" translatable="false">Maciej Piasecki</string>
+    <string name="coordinators_names" translatable="false">Agnieszka Dziob
+        (2016 - obecnie)
+        \nEwa Rudnicka
+        (2012 - obecnie)
+        \nMagdalena Derwojedowa
+        (2006 - 2009)
+        \nBożena Hojka
+        (2010 - 2011)
+        \nMarek Maziarz
+        (2010 - 2016)
+        \nJoanna Rabiega-Wiśniewska
+        (2009 - 2010)
+        \nMagdalena Zawisławska
+        (2006 - 2009)
+    </string>
+    <string name="consultants_names" translatable="false">Stanisław Szpakowicz
+        \nTadeusz Piotrowski</string>
+    <string name="linguists_names" translatable="false">Kinga Banderowicz
+        \nMagdalena Bańka-Kowalczyk
+        \nJan Bieda
+        \nAmelia Biegalska
+        \nJoanna Bilińska
+        \nMarta Błaszczak
+        \nMarta Dobrowolska-Pigoń
+        \nElżbieta Filipczuk
+        \nMaria Głąbska
+        \nEwa Gwiazdecka
+        \nKatarzyna Hołojda
+        \nAmelia Kiełbawska
+        \nDorota Lewandowska
+        \nJustyna Wieczorek
+        \nPaulina Łazarewicz
+        \nNatalia Kaśków
+        \nJan Klajn
+        \nKatarzyna Klajn
+        \nMałgorzata Kościelniak
+        \nKatarzyna Kowol
+        \nPatrycja Krysiak
+        \nKamil Kurpiel
+        \nJadwiga Maksym
+        \nJustyna Markowicz
+        \nKacper Paszke
+        \nAleksandra Pawlikowska
+        \nNatalia Podbielska
+        \nKatarzyna Podlaska
+        \nMarek Pustowaruk
+        \nAnna Romańska
+        \nKamila Rozenek
+        \nUrszula Rezler
+        \nMałgorzata Skibińska
+        \nJakub Skurtys-Idczak
+        \nJoanna Stankiewicz
+        \nTomasz Stępień
+        \nJan Wieczorek
+        \nJoanna Wieczorek
+        \nWojciech Witkowski
+        \nBeata Wójtowicz
+        \nMałgorzata Ohia-Nowak
+        \nPaweł Nowak
+        \nAnna Łach
+        \nAnna Śliwicka
+        \nKamila Wojda
+        \nAleksander Wiśniowski</string>
+    <string name="developers_names" translatable="false">Łukasz Biłeńkij
+        \nJacek Bochenek
+        \nBartosz Broda
+        \nŁukasz Burdka
+        \nŁukasz Jastrzębski
+        \nMichał Kaliński
+        \nPaweł Kędzia
+        \nJan Kocoń
+        \nPaweł Koczan
+        \nRoman Kurc
+        \nMichał Marcińczuk
+        \nWojciech Mazur
+        \nAdam Musiał
+        \nAdam Pawlaczek
+        \nMaciej Piasecki
+        \nMarcin Ptak
+        \nAdam Radziszewski
+        \nRadosław Ramocki
+        \nBłażej Ryśnik
+        \nMichał Stanek
+        \nAdam Stankiewicz
+        \nTomasz Śniatowski
+        \nTomasz Naskręt
+        \nWojciech Rauk
+        \nRoman Dyszlewski</string>
+    <string name="mobile_developers_names" translatable="false">Karolina Bill
+        \nJakub Zdanowicz</string>
+    <!---->
     <!--Emotional markedness types-->
     <string name="ambiguous">Ambiguous</string>
     <string name="weak_negative">Weak negative</string>
@@ -90,6 +191,8 @@
     <string name="other_senses">Other senses</string>
     <string name="graph_view">View graph</string>
     <string name="search">Search</string>
+    <string name="connection_required">Connection required</string>
+    <string name="connection_required_reason">Internet connection is required to browse graph structure, please switch to online mode in settings panel.</string>
     <!---->
     <!--Settings strings-->
     <string name="offline_mode">Offline mode</string>
@@ -100,6 +203,23 @@
     <string name="clear_bookmarks">Clear bookmarks</string>
     <string name="clear_history_toast">Whole history has been removed</string>
     <string name="clear_bookmarks_toast">All bookmarks has been removed</string>
+    <string name="select_local_dictionaries">Select local dictionaries:</string>
+    <string name="dictionary_polish">Polish</string>
+    <string name="dictionary_english">English</string>
+    <string name="sync_db">Synchronize databases</string>
+    <string name="status_db">Status: </string>
+    <string name="status_up_to_date">Up to date</string>
+    <string name="status_needs_update">Needs update</string>
+    <string name="status_no_local_db">No local database available</string>
+    <string name="status_checking">Checking...</string>
+    <string name="status_synchronizing">Synchronizing</string>
+    <string name="status_connection_problem">Connection problem</string>
+    <string name="remove_local_db">Remove local database</string>
+    <string name="remove_local_db_toast">Local database has been removed</string>
+    <string name="sync_please_wait">Synchronizing, please wait...</string>
+    <string name="no_db_selected">No dictionary selected</string>
+    <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
+    <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

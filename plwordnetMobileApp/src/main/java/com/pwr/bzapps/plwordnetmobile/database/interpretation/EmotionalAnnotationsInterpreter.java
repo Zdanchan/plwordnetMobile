@@ -25,7 +25,7 @@ public class EmotionalAnnotationsInterpreter {
         return "";
     }
 
-    public static String interpretEmotions(Context context, String emotions_string){
+    public static String interpretEmotions(String emotions_string){
         String[] emotions_array = emotions_string.split(";");
         String result = "";
         for(String emotion : emotions_array){
@@ -37,7 +37,7 @@ public class EmotionalAnnotationsInterpreter {
         return result;
     }
 
-    public static String interpretValuations(Context context, String valuations_string){
+    public static String interpretValuations(String valuations_string){
         String[] valuations_array = valuations_string.split(";");
         String result = "";
         for(String valuation : valuations_array){

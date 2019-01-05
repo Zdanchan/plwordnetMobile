@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
-import com.pwr.bzapps.plwordnetmobile.database.aggregator.WordAggregator;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseAttributeEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;
@@ -53,16 +52,16 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
         rowResultItem.word_name.setText(senseEntity.getWord_id().getWord() + "-" + senseEntity.getVariant());
         //rowResultItem.word_meaning_id.setText("-" + senseEntity.getVariant());
         rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPart_of_speech_id().getId()));
+        String description = "";
         if(senseEntity.getSense_attributes().size()>0 && ((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0)!=null){
-            String description = "";
             if("Polish".equals(senseEntity.getLexicon_id().getLanguage_name())){
                 description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0).getDefinition());
             }
             else {
                 description = shortenDescription(((ArrayList<SynsetAttributeEntity>)(senseEntity.getSynset_id().getSynset_attributes())).get(0).getDefinition());
             }
-            rowResultItem.short_description.setText(description);
         }
+        rowResultItem.short_description.setText(description);
         rowResultItem.language_icon.setImageResource(getFlagResource(senseEntity.getLexicon_id().getLanguage_name()));
         return convertView;
     }

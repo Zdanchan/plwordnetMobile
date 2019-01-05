@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
+import com.pwr.bzapps.plwordnetmobile.database.access.task.CheckLocalSQLiteDBWithServerTask;
 import com.pwr.bzapps.plwordnetmobile.fragments.*;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -38,6 +40,8 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
 
     public void onBackPressed() {
         Settings.saveSettings(getApplication());
+        if(!"none".equals(Settings.getDbType()))
+            SQLiteConnector.reloadInstance(getApplicationContext());
         if (settingsCategoriesFragment != null && settingsCategoriesFragment.isVisible()) {
             super.onBackPressed();
         }

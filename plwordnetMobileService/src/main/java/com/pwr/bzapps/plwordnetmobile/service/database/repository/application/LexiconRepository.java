@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LexiconRepository extends CrudRepository<LexiconEntity, Integer> {
 
-    @Query(value = "SELECT CONCAT(le.id,',','\\'',le.identifier,'\\'',',','\\'',le.language_name,'\\'',',','\\'',le.name,'\\'',',','\\'',le.lexicon_version,'\\'') FROM LexiconEntity le", nativeQuery = true)
+    @Query(value = "SELECT CONCAT(le.id,',','\"',le.identifier,'\"',',','\"',le.language_name,'\"',',','\"',le.name,'\"',',','\"',le.lexicon_version,'\"') FROM wordnet.lexicon le", nativeQuery = true)
     public List<String> findAllAndParseString();
 
     @Query("SELECT le FROM LexiconEntity le WHERE LOWER(le.language_name) LIKE LOWER(:language)")

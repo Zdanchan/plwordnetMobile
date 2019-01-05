@@ -10,7 +10,9 @@
     <RelativeLayout
             android:id="@+id/local_database"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true">
         <ImageView
                 android:id="@+id/database_icon"
                 android:layout_width="30dp"
@@ -45,7 +47,10 @@
     <RelativeLayout
             android:id="@+id/visual"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:visibility="gone">
         <ImageView
                 android:id="@+id/visual_icon"
                 android:layout_width="30dp"
@@ -81,7 +86,9 @@
     <RelativeLayout
             android:id="@+id/history_and_bookmarks"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true">
         <ImageView
                 android:id="@+id/history_and_bookmarks_icon"
                 android:layout_width="30dp"

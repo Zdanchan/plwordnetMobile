@@ -22,16 +22,12 @@ public class ConnectionProvider{
 
     public String getAllApplicationLocalisedStrings(){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/ApplicationLocalisedStringsController/findAll";
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -42,16 +38,12 @@ public class ConnectionProvider{
 
     public String getSensesForWord(String word){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findByWord?word=" + word;
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -62,16 +54,29 @@ public class ConnectionProvider{
 
     public String getRelatedSensesForWord(String word){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findRelatedSensesByWord?word=" + word;
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
+            String result = restTemplate.getForObject(url, String.class);
+
+            return result;
+        }catch(ResourceAccessException e){
+            return "ConnectionException";
+        }
+    }
+
+    public String getRelatedSensesForWord(String word, String language){
+        try {
+            String url = context.getString(R.string.spring_interface_address)
+                    + "/sense/findRelatedSensesByWordAndLanguage?word=" + word + "&language=" + language;
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -82,16 +87,12 @@ public class ConnectionProvider{
 
     public String getSenseById(int id){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findById?id=" + id;
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -102,18 +103,14 @@ public class ConnectionProvider{
 
     public String getSensesByIds(String ids){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findMultipleByIds?ids=" + ids;
             url = url.replace("[","");
             url = url.replace("]","");
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -126,18 +123,14 @@ public class ConnectionProvider{
         try {
             if("[]".equals(ids))
                 return "{\"content\":[]}";
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findMultipleBySynsetIds?ids=" + ids;
             url = url.replace("[","");
             url = url.replace("]","");
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -148,21 +141,36 @@ public class ConnectionProvider{
 
     public String getSynonymsBySynsetId(String id){
         try {
-            // The connection URL
             String url = context.getString(R.string.spring_interface_address) + "/sense/findSynonymsBySynsetId?id=" + id;
 
-            // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
 
-            // Add the String message converter
+            
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            // Make the HTTP GET request, marshaling the response to a String
+            
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
         }catch(ResourceAccessException e){
             return "ConnectionException";
+        }
+    }
+
+    public Long getSQLiteLastUpdateOnServer(String db_type){
+        try {
+            
+            String url = context.getString(R.string.spring_interface_address) + "db_controller/get_SQLite_last_update?db_type=" + db_type;
+            
+            RestTemplate restTemplate = new RestTemplate();
+            
+            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+            Long result = Long.parseLong(restTemplate.getForObject(url, String.class));
+
+            return result;
+        }catch(ResourceAccessException e){
+            return Long.MIN_VALUE;
         }
     }
 

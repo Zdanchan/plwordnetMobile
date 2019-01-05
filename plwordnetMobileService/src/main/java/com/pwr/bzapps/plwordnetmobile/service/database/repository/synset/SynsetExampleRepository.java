@@ -13,15 +13,15 @@ public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEnt
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.synset_attributes_id,','," +
-            "'\\'',se.example,'\\'',','," +
-            "'\\'',se.type,'\\'',','" +
-            ")FROM SynsetExampleEntity se", nativeQuery = true)
+            "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
+            "IF(se.type IS NULL,'null',CONCAT('\"',se.type,'\"'))" +
+            ") FROM synset_examples se", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.synset_attributes_id,','," +
-            "'\\'',se.example,'\\'',','," +
-            "'\\'',se.type,'\\'',','" +
-            ")FROM SynsetExampleEntity se WHERE se.sense_attribute_id IN (:synset_attribute_ids)", nativeQuery = true)
+            "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
+            "IF(se.type IS NULL,'null',CONCAT('\"',se.type,'\"'))" +
+            ") FROM synset_examples se WHERE se.synset_attributes_id IN (:synset_attribute_ids)", nativeQuery = true)
     public List<String> findAllForSynsetAttributesAndParseString(@Param("synset_attribute_ids") Integer[] synset_attribute_ids);
 }

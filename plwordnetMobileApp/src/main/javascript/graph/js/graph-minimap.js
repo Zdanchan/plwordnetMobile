@@ -55,7 +55,7 @@ d3.minimap = function() {
     zoom.on("zoom", zoomHandler);
 
     var container = selection.append("g")
-      .attr("class", "minimap");
+      .attr("class", "minimap clarin-graph-visualization");
 
     container.call(zoom);
 

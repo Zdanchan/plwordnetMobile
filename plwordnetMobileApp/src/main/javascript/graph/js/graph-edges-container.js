@@ -1,9 +1,9 @@
 "use strict";
 
-import {apiConnector} from './api-connector';
+import {apiConnector} from './api-connector.js';
 
 export
-function Edge(sourceNode, targetNode, connectionType, relationText, color, dotted,){
+function Edge(sourceNode, targetNode, connectionType, relationText, color, dotted){
   this.connectionPoints = connectionType;
 
   this.pathTextSrc = relationText[0];
@@ -23,6 +23,8 @@ function Edge(sourceNode, targetNode, connectionType, relationText, color, dotte
 }
 
 Edge.prototype.api = apiConnector; // new ApiConnector();
+
+Edge.prototype.settings = apiConnector.getSettings();
 
 Edge.prototype.initColor = function(){
   const self = this;
@@ -45,7 +47,9 @@ Edge.prototype.initColor = function(){
   if(self.api.hasInCache(self.api.entryPoints.settings)){
     callback(self.api.getFromCache(self.api.entryPoints.settings));
   } else {
-    self.api.getSettings(callback);
+    self.settings.then( settings => {
+      callback(settings);
+    });
   }
 
 };
@@ -70,7 +74,9 @@ Edge.prototype.initDotted = function(){
   if(self.api.hasInCache(self.api.entryPoints.settings)){
     callback(self.api.getFromCache(self.api.entryPoints.settings));
   } else {
-    self.api.getSettings(callback);
+    self.settings.then( settings => {
+      callback(settings);
+    });
   }
 
 };

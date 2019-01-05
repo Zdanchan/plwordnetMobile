@@ -4,15 +4,41 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="graph/css/graph-creator.css" />
+    <link rel="stylesheet" href="bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      body{
+          margin: 0;
+          padding: 0;
+          overflow:hidden;
+          background-color: #aaaaaa;
+      }
+
+      p{
+          text-align: center;
+          position: relative;
+      }
+
+      body{
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+      }
+
+      .inner-graph-container{
+          background-color: #f3f3f3;
+      }
+    </style>
+      <link rel="stylesheet" href="graph/css/graph-creator.css" />
   </head>
 
   <body>
     <div class="container">
       <div class="row">
         <div class="col-xs-12" style="min-height:1000px">
-          <div id="graph-container"></div>
+          <div class="clarin-graph-visualization" id="graph-container"></div>
 
         </div>
       </div>
@@ -23,43 +49,94 @@
     <!--<script src="graph/js/d3.v5.min.js"></script>-->
     <script src="dist/graph-creator.js"></script>
 
-    <!--<script src="graph/js/canvas-toBlob.js"></script>-->
-    <!--<script src="graph/js/FileSaver.min.js"></script>-->
-    <!--<script src="graph/js/api-connector.js"></script>-->
-    <!--<script src="graph/js/graph-edges-container.js"></script>-->
-    <!--<script src="graph/js/graph-node.js"></script>-->
-    <!--<script src="graph/js/graph-minimap.js"></script>-->
-    <!--<script src="graph/js/graph-creator.js"></script>-->
+    <!--<script type=module src="graph/js/canvas-toBlob.js"></script>-->
+    <!--<script type=module src="graph/js/FileSaver.min.js"></script>-->
+    <!--<script type=module src="graph/js/api-connector.js"></script>-->
+    <!--<script type=module src="graph/js/graph-edges-container.js"></script>-->
+    <!--<script type=module src="graph/js/graph-node.js"></script>-->
+    <!--<script type=module src="graph/js/graph-minimap.js"></script>-->
+    <!--<script type=module src="graph/js/graph-creator.js"></script>-->
 
-    <script>
-      let width = window.innerWidth, //|| docEl.clientWidth || bodyEl.clientWidth,
-        height = window.innerHeight; //|| docEl.clientHeight || bodyEl.clientHeight;
-
-      var vars = {};
-      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-          vars[key] = value;
-      });
-
-      var synset_id = vars["synset_id"];
-
-      width = document.getElementById('graph-container').offsetWidth;
-
-      const showSearchBox = false;
-
-      const graph = new GraphCreator.GraphCreator("graph-container", showSearchBox,width, height);
-      //const graph = new GraphCreator("graph-container", showSearchBox,width, height);
+    <script type=module>
+      // COMMENT OUT TO DO DEBUGGING
+      //import {GraphCreator} from "./graph/js/graph-creator.js";
+//
+      //function isConstructor(obj) {
+      //  return !!obj.prototype && !!obj.prototype.constructor.name;
+      //}
+//
+      //let width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
+      //  height = window.innerHeight || docEl.clientHeight || bodyEl.clientHeight;
+//
+//
+      //width = document.getElementById('graph-container').offsetWidth;
+//
+      //const showSearchBox = false;
+//
+      //let graph = null;
+      //if(!isConstructor(GraphCreator)){
+//
+      //  graph = new GraphCreator.GraphCreator("graph-container", showSearchBox,width, height);
+      //}
+      //else{
+      //  graph = new GraphCreator("graph-container", showSearchBox,width, height);
+      //}
+//    //  const graph = new GraphCreator("graph-container", showSearchBox,width, height);
+//
+//
+      //// graph.setVisualSettings('plWordNet');
+      //// graph.setVisualSettings('yiddish');
+//
+      //graph.setLanguage('en');
+//
       //graph.showMiniMap(.25, document.body,0, 0);
+      //graph.showLegend( document.body, height * .25 + 10 + 'px', 0);
+//
+      //// graph.initializeFromSynsetId(6047);
+      //graph.initializeFromSynsetId(6047);
+//
+      //// graph.initializeFromSynsetId(5994);
+//
+//
+      //// setTimeout(function(){
+      ////   graph.initializeFromSynsetId(5994);
+      ////
+      ////   // graph.initializeFromSynsetId(6047);
+      //// }, 1000);
+//
+//
+//
+      //document.addEventListener("nodeClicked", function(e) {
+      //  console.log(e); // Prints "Example of an event"
+      //});
+      //window.graph = graph;
+    </script>
+    <script>
 
-      graph.initializeFromSynsetId(synset_id);
-      //setTimeout(()=>{
-      //  graph.initializeFromSynsetId(6047);
-      //}, 5000);
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
 
+        var synset_id = vars["synset_id"];
+        var language = vars[language];
 
+        let width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
+            height = window.innerHeight || docEl.clientHeight || bodyEl.clientHeight;
+        const showSearchBox = false;
+        graph = new GraphCreator.GraphCreator("graph-container", showSearchBox,width, height);
+        if(language==null){
+            graph.setLanguage('en');
+        }
+        else {
+            graph.setLanguage(language);
+        }
 
-      document.addEventListener("nodeClicked", function(e) {
-        console.log(e); // Prints "Example of an event"
-      });
+        graph.setVisualSettings('plwordnet_mobile');
+        //graph.setVisualSettings('plWordNet');
+        //graph.setVisualSettings('yiddish');
+
+        graph.initializeFromSynsetId(synset_id);
     </script>
   </body>
 
