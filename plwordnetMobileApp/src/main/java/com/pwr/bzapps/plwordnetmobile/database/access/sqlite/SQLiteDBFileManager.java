@@ -21,11 +21,11 @@ public class SQLiteDBFileManager {
     }
 
     public static void removeLocalDB(){
-        File pl_local_db = new File(Settings.getSqliteDbFileLocation() + Settings.FILE_NAME + "_"
+        File pl_local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
                 + Settings.POSSIBLE_DB_LANGS[0] + ".db");
-        File en_local_db = new File(Settings.getSqliteDbFileLocation() + Settings.FILE_NAME + "_"
+        File en_local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
                 + Settings.POSSIBLE_DB_LANGS[1] + ".db");
-        File local_db = new File(Settings.getSqliteDbFileLocation() + Settings.FILE_NAME + "_"
+        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
                 + Settings.POSSIBLE_DB_LANGS[2] + ".db");
         if(local_db.exists()){
             local_db.delete();

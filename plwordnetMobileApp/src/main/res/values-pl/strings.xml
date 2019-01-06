@@ -122,6 +122,7 @@
     <string name="no_db_selected">Nie wybrano żadnych słowników</string>
     <string name="requires_permissions">Akcja przerwana gdyż wymaga ona pozwolenia na zapis i odczyt danych</string>
     <string name="acquired_permissions">Uzyskano pozwolenie, proszę uruchomić synchronizację ponownie</string>
+    <string name="unavailable_in_online">Niedostępne w trybie online</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">czasownik</string>

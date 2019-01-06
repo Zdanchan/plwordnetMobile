@@ -170,7 +170,7 @@ public class ConnectionProvider{
 
             return result;
         }catch(ResourceAccessException e){
-            return Long.MIN_VALUE;
+            return Long.MAX_VALUE;
         }
     }
 

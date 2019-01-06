@@ -229,6 +229,7 @@
     <string name="no_db_selected">No dictionary selected</string>
     <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
     <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
+    <string name="unavailable_in_online">Unavailable in online mode</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

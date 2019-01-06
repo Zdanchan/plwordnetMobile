@@ -43,7 +43,7 @@ public class CheckLocalSQLiteDBWithServerTask extends AsyncTask<String,Void,Stri
     protected void onPostExecute(String result) {
         if(fragment!=null) {
             if ("ConnectionException".equals(result)) {
-                fragment.setStatus(3);
+                fragment.setStatus(5);
             } else if ("up-to-date".equals(result)) {
                 fragment.setStatus(0);
             } else if ("needs-update".equals(result)) {

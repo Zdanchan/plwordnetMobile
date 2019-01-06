@@ -59,8 +59,9 @@ public class RetrieveSelectedSensesTask extends AsyncTask<String,Void,String> {
                 }
             }
             if (bookmarksActivity != null) {
+                resultHolder = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
                 Collections.sort((ArrayList<SenseEntity>) resultHolder);
-                bookmarksActivity.setBookmarksData(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
+                bookmarksActivity.setBookmarksData((ArrayList<SenseEntity>)resultHolder);
             }
         }
     }

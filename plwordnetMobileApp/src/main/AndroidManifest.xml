@@ -12,7 +12,7 @@
         android:largeHeap="true"
         android:theme="@style/AppThemeSplash">
         <activity android:name=".activities.MainActivity"
-            android:configChanges="layoutDirection|locale">
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,7 +22,7 @@
             android:configChanges="layoutDirection|locale">
         </activity>
         <activity android:name=".activities.BookmarksActivity"
-                  android:configChanges="layoutDirection|locale">
+            android:configChanges="layoutDirection|locale">
         </activity>
         <activity android:name=".activities.RecentSearchesActivity"
             android:configChanges="layoutDirection|locale">
@@ -31,7 +31,7 @@
             android:configChanges="layoutDirection|locale">
         </activity>
         <activity android:name=".activities.SettingsActivity"
-            android:configChanges="layoutDirection|locale">
+            android:configChanges="locale">
         </activity>
         <activity android:name=".activities.AboutUsActivity"
             android:configChanges="layoutDirection|locale">
@@ -43,7 +43,7 @@
             android:configChanges="layoutDirection|locale">
         </activity>
         <activity android:name=".activities.GraphBrowserActivity"
-            android:configChanges="layoutDirection|locale">
+            android:configChanges="locale">
         </activity>
 
         <service android:name=".service.DownloadService"/>
