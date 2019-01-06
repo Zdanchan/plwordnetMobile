@@ -122,7 +122,7 @@ public class DBController {
 
     @GetMapping(path="/SQLite_generator_status")
     public @ResponseBody String SQLiteGeneratorStatus(){
-        if(!Advisor.isQuery_generator_processing()){
+        if(Advisor.isQuery_generator_processing()){
             return "SQLite generator is running";
         }
         return "SQLite generator is currently off";
