@@ -136,7 +136,7 @@ public class Settings {
         if(historyList.contains(entry.toLowerCase())){
             historyList.remove(historyList.indexOf(entry.toLowerCase()));
         }
-        historyList.addFirst(entry.toLowerCase());
+        historyList.addFirst(entry.toLowerCase().trim());
 
         if(historyList.size()>=80){
             historyList.remove(historyList.size()-1);
