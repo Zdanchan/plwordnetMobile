@@ -271,6 +271,39 @@ public class SQLiteComponent {
                 log.info("Inserting data for " + classes[5].getSimpleName());
                 Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
                 if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[3]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[5]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
+                                senses, ind, ind+batch_size), classes[5]));
+                    }
+                }
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[3].getSimpleName());
+            }
+            if(isTableEmpty(db_path,classes[4])){
+                log.info("Inserting data for " + classes[4].getSimpleName());
+                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
+                Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], sense_attributes), classes[4]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[4]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4],
+                                sense_attributes, ind, ind+batch_size), classes[4]));
+                    }
+                }
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[4].getSimpleName());
+            }
+            if(isTableEmpty(db_path,classes[5])){
+                log.info("Inserting data for " + classes[5].getSimpleName());
+                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
+                if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[5]));
                 else{
                     int max_index = helper.getMaxIndexForEntity(classes[5]);
@@ -282,39 +315,6 @@ public class SQLiteComponent {
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[5].getSimpleName());
-            }
-            if(isTableEmpty(db_path,classes[6])){
-                log.info("Inserting data for " + classes[6].getSimpleName());
-                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6], sense_attributes), classes[6]));
-                else{
-                    int max_index = helper.getMaxIndexForEntity(classes[6]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6],
-                                sense_attributes, ind, ind+batch_size), classes[6]));
-                    }
-                }
-            }
-            else{
-                log.info("Table already filled, skipping insert for " + classes[6].getSimpleName());
-            }
-            if(isTableEmpty(db_path,classes[7])){
-                log.info("Inserting data for " + classes[7].getSimpleName());
-                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7], senses), classes[7]));
-                else{
-                    int max_index = helper.getMaxIndexForEntity(classes[7]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7],
-                                senses, ind, ind+batch_size), classes[7]));
-                    }
-                }
-            }
-            else{
-                log.info("Table already filled, skipping insert for " + classes[7].getSimpleName());
             }
         }catch (Exception e){
             //try {
