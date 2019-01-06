@@ -189,6 +189,88 @@ public class DBHelperComponent {
         }
         return null;
     }
+    public <T> List<String> findAllForEntityAndParseString(Class<T> clazz, int begin, int end){
+        switch(clazz.getSimpleName()){
+            case "ApplicationLocalisedStringEntity":
+                return ((List<String>)applicationLocalisedStringRepository.findAllAndParseStringBatch(begin, end));
+            case "DictionaryEntity":
+                return ((List<String>)dictionaryRepository.findAllAndParseStringBatch(begin, end));
+            case "DomainEntity":
+                return ((List<String>)domainRepository.findAllAndParseStringBatch(begin, end));
+            case "LexiconEntity":
+                return ((List<String>)lexiconRepository.findAllAndParseStringBatch(begin, end));
+            case "EmotionalAnnotationEntity":
+                return ((List<String>)emotionalAnnotationRepository.findAllAndParseStringBatch(begin, end));
+            case "PartOfSpeechEntity":
+                return ((List<String>)partOfSpeechRepository.findAllAndParseStringBatch(begin, end));
+            case "WordEntity":
+                return ((List<String>)wordRepository.findAllAndParseStringBatch(begin, end));
+            case "RelationTypeAllowedLexiconEntity":
+                return ((List<String>)relationTypeAllowedLexiconRepository.findAllAndParseString());
+            case "RelationTypeAllowedPartOfSpeechEntity":
+                return ((List<String>)relationTypeAllowedPartOfSpeechRepository.findAllAndParseString());
+            case "RelationTypeEntity":
+                return ((List<String>)relationTypeRepository.findAllAndParseStringBatch(begin, end));
+            case "SenseAttributeEntity":
+                return ((List<String>)senseAttributeRepository.findAllAndParseStringBatch(begin, end));
+            case "SenseEntity":
+                return ((List<String>)senseRepository.findAllAndParseStringBatch(begin, end));
+            case "SenseExampleEntity":
+                return ((List<String>)senseExampleRepository.findAllAndParseStringBatch(begin, end));
+            case "SenseRelationEntity":
+                return ((List<String>)senseRelationRepository.findAllAndParseStringBatch(begin, end));
+            case "SynsetAttributeEntity":
+                return ((List<String>)synsetAttributeRepository.findAllAndParseStringBatch(begin, end));
+            case "SynsetEntity":
+                return ((List<String>)synsetRepository.findAllAndParseStringBatch(begin, end));
+            case "SynsetExampleEntity":
+                return ((List<String>)synsetExampleRepository.findAllAndParseStringBatch(begin, end));
+            case "SynsetRelationEntity":
+                return ((List<String>)synsetRelationRepository.findAllAndParseStringBatch(begin, end));
+        }
+        return null;
+    }
+    public <T> int getMaxIndexForEntity(Class<T> clazz){
+        switch(clazz.getSimpleName()){
+            case "ApplicationLocalisedStringEntity":
+                return (applicationLocalisedStringRepository.getMaxIndex());
+            case "DictionaryEntity":
+                return (dictionaryRepository.getMaxIndex());
+            case "DomainEntity":
+                return (domainRepository.getMaxIndex());
+            case "LexiconEntity":
+                return (lexiconRepository.getMaxIndex());
+            case "EmotionalAnnotationEntity":
+                return (emotionalAnnotationRepository.getMaxIndex());
+            case "PartOfSpeechEntity":
+                return (partOfSpeechRepository.getMaxIndex());
+            case "WordEntity":
+                return (wordRepository.getMaxIndex());
+            case "RelationTypeAllowedLexiconEntity":
+                return Integer.MAX_VALUE;
+            case "RelationTypeAllowedPartOfSpeechEntity":
+                return Integer.MAX_VALUE;
+            case "RelationTypeEntity":
+                return (relationTypeRepository.getMaxIndex());
+            case "SenseAttributeEntity":
+                return (senseAttributeRepository.getMaxIndex());
+            case "SenseEntity":
+                return (senseRepository.getMaxIndex());
+            case "SenseExampleEntity":
+                return (senseExampleRepository.getMaxIndex());
+            case "SenseRelationEntity":
+                return (senseRelationRepository.getMaxIndex());
+            case "SynsetAttributeEntity":
+                return (synsetAttributeRepository.getMaxIndex());
+            case "SynsetEntity":
+                return (synsetRepository.getMaxIndex());
+            case "SynsetExampleEntity":
+                return (synsetExampleRepository.getMaxIndex());
+            case "SynsetRelationEntity":
+                return (synsetRelationRepository.getMaxIndex());
+        }
+        return Integer.MAX_VALUE;
+    }
     public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids){
         if(ids.length==0)
             return new ArrayList<String>();
@@ -209,6 +291,29 @@ public class DBHelperComponent {
                 return ((List<String>)synsetExampleRepository.findAllForSynsetAttributesAndParseString(ids));
             case "SynsetRelationEntity":
                 return ((List<String>)synsetRelationRepository.findAllForSynsetsAndParseString(ids));
+        }
+        return null;
+    }
+    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids, int begin, int end){
+        if(ids.length==0)
+            return new ArrayList<String>();
+        switch(clazz.getSimpleName()){
+            case "SenseAttributeEntity":
+                return ((List<String>)senseAttributeRepository.findAllForSensesAndParseStringBatch(ids, begin, end));
+            case "SenseEntity":
+                return ((List<String>)senseRepository.findAllForLexiconsAndParseStringBatch(ids, begin, end));
+            case "SenseExampleEntity":
+                return ((List<String>)senseExampleRepository.findAllForSenseAttributesAndParseStringBatch(ids, begin, end));
+            case "SenseRelationEntity":
+                return ((List<String>)senseRelationRepository.findAllForSensesAndParseStringBatch(ids, begin, end));
+            case "SynsetAttributeEntity":
+                return ((List<String>)synsetAttributeRepository.findAllForSynsetsAndParseStringBatch(ids, begin, end));
+            case "SynsetEntity":
+                return ((List<String>)synsetRepository.findAllForLexiconsAndParseStringBatch(ids, begin, end));
+            case "SynsetExampleEntity":
+                return ((List<String>)synsetExampleRepository.findAllForSynsetAttributesAndParseStringBatch(ids, begin, end));
+            case "SynsetRelationEntity":
+                return ((List<String>)synsetRelationRepository.findAllForSynsetsAndParseStringBatch(ids, begin, end));
         }
         return null;
     }
@@ -274,7 +379,7 @@ public class DBHelperComponent {
 
     public <T> String generateSQLInsertForStrings(List<String> entities, Class<T> clazz){
         if(entities.size()==0)
-            return "SELECT 1 FROM dual";
+            return "";
         String query = SQLExporter.createInsertQueryWithStrings(entities,clazz);
         if(clazz.getSimpleName().equals("WordEntity")
                 || clazz.getSimpleName().equals("SenseExampleEntity")
@@ -283,6 +388,7 @@ public class DBHelperComponent {
                 || clazz.getSimpleName().equals("SynsetAttributeEntity") ){
             query = query.replaceAll("####","<\'>"); //had to replace every '"' simbol to be able to properly insert data into SQLite db
         }
+        entities.clear();
         return query;
     }
 

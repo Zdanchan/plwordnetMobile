@@ -3,6 +3,7 @@ package com.pwr.bzapps.plwordnetmobile.service.database.repository.application;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DomainEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,4 +15,11 @@ import java.util.List;
 public interface DomainRepository extends CrudRepository<DomainEntity, Integer>{
     @Query(value = "SELECT CONCAT(do.id,',',do.description_id,',',do.name_id) FROM domain do ", nativeQuery = true)
     public List<String> findAllAndParseString();
+
+    @Query(value = "SELECT CONCAT(do.id,',',do.description_id,',',do.name_id) FROM domain do " +
+            " WHERE do.id>=:begin AND do.id<:end", nativeQuery = true)
+    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+
+    @Query(value = "SELECT MAX(id) FROM domain", nativeQuery = true)
+    public Integer getMaxIndex();
 }

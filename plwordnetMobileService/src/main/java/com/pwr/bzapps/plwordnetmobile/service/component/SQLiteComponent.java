@@ -56,15 +56,30 @@ public class SQLiteComponent {
         migrateDBFilesFromTMP(files);
     }
 
+    public void dumpSQLDBContentIntoSQLiteDBInBatches(String[] languages, int batch_size){
+        String[] files = new String[languages.length+1];
+        for(int i=0; i<languages.length; i++){
+            dumpLanuagePackSQLiteDB(languages[i], batch_size);
+            files[i]= FILENAME_BASE + "_" + languages[i] + ".db";
+        }
+        dumpFullSQLiteDB(batch_size);
+        files[files.length-1]= FILENAME_BASE + ".db";
+        migrateDBFilesFromTMP(files);
+    }
+
     private void dumpFullSQLiteDB(){
+        dumpFullSQLiteDB(-1);
+    }
+
+    private void dumpFullSQLiteDB(int batch_size){
         log.info("Started SQLite db full file generation");
         if (new File(URL_TMP + FILENAME_BASE + ".db").exists())
         {
             new File(URL_TMP + FILENAME_BASE +  ".db").delete();
         }
-        Connection conn = connectToDatabaseFile(FILENAME_BASE + ".db");
+        String db_path = FILENAME_BASE + ".db";
         try {
-            createTables(conn); //create tables
+            createTables(db_path); //create tables
 
             Class[] classes = {
                     ApplicationLocalisedStringEntity.class,
@@ -87,9 +102,16 @@ public class SQLiteComponent {
             };
 
             for (int i = 0; i < classes.length; i++) {
-                if(isTableEmpty(conn,classes[i])) {
-                log.info("Inserting data for " + classes[i].getSimpleName());
-                executeQuery(conn, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
+                if(isTableEmpty(db_path,classes[i])) {
+                    log.info("Inserting data for " + classes[i].getSimpleName());
+                    int max_index = helper.getMaxIndexForEntity(classes[i]);
+                    if(batch_size == -1 || max_index==Integer.MAX_VALUE)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
+                    else {
+                        for(int ind=0; ind<max_index; ind+=batch_size) {
+                            executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i], ind, ind+batch_size), classes[i]));
+                        }
+                    }
                 }
                 else{
                     log.info("Table already filled, skipping insert for " + classes[i].getSimpleName());
@@ -99,13 +121,14 @@ public class SQLiteComponent {
         catch (Exception e){
             throw e;
         }
-        finally {
-            closeConnection(conn);
-        }
         log.info("Finished SQLite db full file generation");
     }
 
     private void dumpLanuagePackSQLiteDB(String language){
+        dumpLanuagePackSQLiteDB(language,-1);
+    }
+
+    private void dumpLanuagePackSQLiteDB(String language, int batch_size){
         log.info("Started SQLite db " + language + " file generation");
         if (new File(URL_TMP + FILENAME_BASE + "_" + language + ".db").exists()) {
             new File(URL_TMP + FILENAME_BASE + "_" + language + ".db").delete();
@@ -119,9 +142,9 @@ public class SQLiteComponent {
         //    bw = new OutputStreamWriter (new FileOutputStream(log_file), StandardCharsets.UTF_8);
         //} catch (IOException e) {
         //}
-        Connection conn = connectToDatabaseFile(FILENAME_BASE + "_" + language + ".db");
+        String db_path = FILENAME_BASE + "_" + language + ".db";
         try {
-            createTables(conn); //create tables
+            createTables(db_path); //create tables
 
             Class[] classes = {
                     ApplicationLocalisedStringEntity.class,
@@ -138,12 +161,16 @@ public class SQLiteComponent {
             };
 
             for (int i = 0; i < classes.length; i++) {
-                if(isTableEmpty(conn,classes[i])) {
+                if(isTableEmpty(db_path,classes[i])) {
                     log.info("Inserting data for " + classes[i].getSimpleName());
-                    String query = helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]);
-                    //bw.append("\n\n\n\n"+ classes[i].getSimpleName() + "\n" + query);
-                    //bw.flush();
-                    executeQuery(conn, query);
+                    int max_index = helper.getMaxIndexForEntity(classes[i]);
+                    if(batch_size == -1 || max_index==Integer.MAX_VALUE)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
+                    else {
+                        for(int ind=0; ind<max_index; ind+=batch_size) {
+                            executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i], ind, ind+batch_size), classes[i]));
+                        }
+                    }
                 }
                 else{
                     log.info("Table already filled, skipping insert for " + classes[i].getSimpleName());
@@ -158,74 +185,103 @@ public class SQLiteComponent {
                     SenseExampleEntity.class,
                     SenseRelationEntity.class
             };
-            Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(language));
-            Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-            Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
-            Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
-            Integer[] synset_attributes = helper.getIdsOfSynsetAttributesByLanguage(synsets);
 
-            if(isTableEmpty(conn,classes[0])){
+            Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(language));
+
+            if(isTableEmpty(db_path,classes[0])){
                 log.info("Inserting data for " + classes[0].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                    helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0], synsets), classes[0]);
-                //bw.append("\n\n\n\n"+ classes[0].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0], synsets), classes[0]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[0]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0],
+                                synsets, ind, ind+batch_size), classes[0]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[0].getSimpleName());
             }
-            if(isTableEmpty(conn,classes[1])){
+            if(isTableEmpty(db_path,classes[1])){
                 log.info("Inserting data for " + classes[1].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synset_attributes), classes[1]);
-                //bw.append("\n\n\n\n"+ classes[1].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
+                Integer[] synset_attributes = helper.getIdsOfSynsetAttributesByLanguage(synsets);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synset_attributes), classes[1]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[1]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1],
+                                synset_attributes, ind, ind+batch_size), classes[1]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[1].getSimpleName());
             }
-            if(isTableEmpty(conn,classes[2])){
+            if(isTableEmpty(db_path,classes[2])){
                 log.info("Inserting data for " + classes[2].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synsets), classes[2]);
-                //bw.append("\n\n\n\n"+ classes[2].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synsets), classes[2]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[2]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2],
+                                synsets, ind, ind+batch_size), classes[2]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[2].getSimpleName());
             }
-            if(isTableEmpty(conn,classes[3])){
+            if(isTableEmpty(db_path,classes[3])){
                 log.info("Inserting data for " + classes[3].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], senses), classes[3]);
-                //bw.append("\n\n\n\n"+ classes[3].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], senses), classes[3]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[3]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3],
+                                senses, ind, ind+batch_size), classes[3]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[3].getSimpleName());
             }
-            if(isTableEmpty(conn,classes[4])){
+            if(isTableEmpty(db_path,classes[4])){
                 log.info("Inserting data for " + classes[4].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], sense_attributes), classes[4]);
-                //bw.append("\n\n\n\n"+ classes[4].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
+                Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], sense_attributes), classes[4]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[4]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4],
+                                sense_attributes, ind, ind+batch_size), classes[4]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[4].getSimpleName());
             }
-            if(isTableEmpty(conn,classes[5])){
+            if(isTableEmpty(db_path,classes[5])){
                 log.info("Inserting data for " + classes[5].getSimpleName());
-                String query = helper.generateSQLInsertForStrings(
-                        helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[5]);
-                //bw.append("\n\n\n\n"+ classes[5].getSimpleName() + "\n" + query);
-                //bw.flush();
-                executeQuery(conn,query);
+                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
+                if(batch_size==-1)
+                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[5]));
+                else{
+                    int max_index = helper.getMaxIndexForEntity(classes[5]);
+                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
+                                senses, ind, ind+batch_size), classes[5]));
+                    }
+                }
             }
             else{
                 log.info("Table already filled, skipping insert for " + classes[5].getSimpleName());
@@ -236,9 +292,6 @@ public class SQLiteComponent {
             //} catch (IOException e1) {
             //    e1.printStackTrace();
             //}
-        }
-        finally {
-            closeConnection(conn);
         }
         log.info("Finished SQLite db " + language + " file generation");
     }
@@ -253,8 +306,8 @@ public class SQLiteComponent {
             conn = DriverManager.getConnection(URL_TMP + fileName);
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                log.info("The driver name is " + meta.getDriverName());
-                log.info("Established connection to SQLite database file: " + URL_TMP + fileName);
+                log.debug("The driver name is " + meta.getDriverName());
+                log.debug("Established connection to SQLite database file: " + URL_TMP + fileName);
             }
             return conn;
 
@@ -272,55 +325,64 @@ public class SQLiteComponent {
         }
     }
 
-    private void createTables(Connection conn){
-        log.info("Creating table: " + SQLExporter.APPLICATION_LOCALISED_STRING_NAME);
-        executeQuery(conn, SQLExporter.getCreateApplicationLocalisedQuery());
-        log.info("Creating table: " + SQLExporter.DICTIONARY_NAME);
-        executeQuery(conn, SQLExporter.getCreateDictionaryQuery());
-        log.info("Creating table: " + SQLExporter.DOMAIN_NAME);
-        executeQuery(conn, SQLExporter.getCreateDomainQuery());
-        log.info("Creating table: " + SQLExporter.LEXICON_NAME);
-        executeQuery(conn, SQLExporter.getCreateLexiconQuery());
-        log.info("Creating table: " + SQLExporter.PART_OF_SPEECH_NAME);
-        executeQuery(conn, SQLExporter.getCreatePartOfSpeechQuery());
-        log.info("Creating table: " + SQLExporter.WORD_NAME);
-        executeQuery(conn, SQLExporter.getCreateWordQuery());
-        log.info("Creating table: " + SQLExporter.RELATION_TYPE_NAME);
-        executeQuery(conn, SQLExporter.getCreateRelationTypeQuery());
-        log.info("Creating table: " + SQLExporter.RELATION_TYPE_ALLOWED_LEXICON_NAME);
-        executeQuery(conn, SQLExporter.getCreateRelationTypeAllowedLexiconQuery());
-        log.info("Creating table: " + SQLExporter.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME);
-        executeQuery(conn, SQLExporter.getCreateRelationTypeAllowedPartOfSpeechQuery());
-        log.info("Creating table: " + SQLExporter.SYNSET_NAME);
-        executeQuery(conn, SQLExporter.getCreateSynsetQuery());
-        log.info("Creating table: " + SQLExporter.SYNSET_ATTRIBUTE_NAME);
-        executeQuery(conn, SQLExporter.getCreateSynsetAttributeQuery());
-        log.info("Creating table: " + SQLExporter.SYNSET_EXAMPLE_NAME);
-        executeQuery(conn, SQLExporter.getCreateSynsetExampleQuery());
-        log.info("Creating table: " + SQLExporter.SYNSET_RELATION_NAME);
-        executeQuery(conn, SQLExporter.getCreateSynsetRelationQuery());
-        log.info("Creating table: " + SQLExporter.SENSE_NAME);
-        executeQuery(conn, SQLExporter.getCreateSenseQuery());
-        log.info("Creating table: " + SQLExporter.SENSE_ATTRIBUTE_NAME);
-        executeQuery(conn, SQLExporter.getCreateSenseAttributeQuery());
-        log.info("Creating table: " + SQLExporter.SENSE_EXAMPLE_NAME);
-        executeQuery(conn, SQLExporter.getCreateSenseExampleQuery());
-        log.info("Creating table: " + SQLExporter.SENSE_RELATION_NAME);
-        executeQuery(conn, SQLExporter.getCreateSenseRelationQuery());
-        log.info("Creating table: " + SQLExporter.EMOTIONAL_ANNOTATION_NAME);
-        executeQuery(conn, SQLExporter.getCreateEmotionalAnnotationQuery());
+    private void commitTransaction(Connection conn){
+        try {
+            conn.commit();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
     }
 
-    private boolean isTableEmpty(Connection conn, Class clazz){
+    private void createTables(String db_path){
+        log.info("Creating table: " + SQLExporter.APPLICATION_LOCALISED_STRING_NAME);
+        executeQuery(db_path, SQLExporter.getCreateApplicationLocalisedQuery());
+        log.info("Creating table: " + SQLExporter.DICTIONARY_NAME);
+        executeQuery(db_path, SQLExporter.getCreateDictionaryQuery());
+        log.info("Creating table: " + SQLExporter.DOMAIN_NAME);
+        executeQuery(db_path, SQLExporter.getCreateDomainQuery());
+        log.info("Creating table: " + SQLExporter.LEXICON_NAME);
+        executeQuery(db_path, SQLExporter.getCreateLexiconQuery());
+        log.info("Creating table: " + SQLExporter.PART_OF_SPEECH_NAME);
+        executeQuery(db_path, SQLExporter.getCreatePartOfSpeechQuery());
+        log.info("Creating table: " + SQLExporter.WORD_NAME);
+        executeQuery(db_path, SQLExporter.getCreateWordQuery());
+        log.info("Creating table: " + SQLExporter.RELATION_TYPE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateRelationTypeQuery());
+        log.info("Creating table: " + SQLExporter.RELATION_TYPE_ALLOWED_LEXICON_NAME);
+        executeQuery(db_path, SQLExporter.getCreateRelationTypeAllowedLexiconQuery());
+        log.info("Creating table: " + SQLExporter.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME);
+        executeQuery(db_path, SQLExporter.getCreateRelationTypeAllowedPartOfSpeechQuery());
+        log.info("Creating table: " + SQLExporter.SYNSET_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSynsetQuery());
+        log.info("Creating table: " + SQLExporter.SYNSET_ATTRIBUTE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSynsetAttributeQuery());
+        log.info("Creating table: " + SQLExporter.SYNSET_EXAMPLE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSynsetExampleQuery());
+        log.info("Creating table: " + SQLExporter.SYNSET_RELATION_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSynsetRelationQuery());
+        log.info("Creating table: " + SQLExporter.SENSE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSenseQuery());
+        log.info("Creating table: " + SQLExporter.SENSE_ATTRIBUTE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSenseAttributeQuery());
+        log.info("Creating table: " + SQLExporter.SENSE_EXAMPLE_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSenseExampleQuery());
+        log.info("Creating table: " + SQLExporter.SENSE_RELATION_NAME);
+        executeQuery(db_path, SQLExporter.getCreateSenseRelationQuery());
+        log.info("Creating table: " + SQLExporter.EMOTIONAL_ANNOTATION_NAME);
+        executeQuery(db_path, SQLExporter.getCreateEmotionalAnnotationQuery());
+    }
+
+    private boolean isTableEmpty(String db_path, Class clazz){
         String table_name = SQLExporter.getTableNameForEntity(clazz);
         String query = "SELECT COUNT(*) FROM " + table_name + ";";
-        Integer count = (Integer)executeQueryForResult(conn,query);
+        Integer count = (Integer)executeQueryForResult(db_path,query);
         if(count==null)
             return true;
         return (count.intValue()==0);
     }
 
-    public Object executeQueryForResult(Connection conn, String query) {
+    public Object executeQueryForResult(String db_path, String query) {
+        Connection conn = connectToDatabaseFile(db_path);
         Object result = null;
         try {
             Statement statement = conn.createStatement();
@@ -329,16 +391,21 @@ public class SQLiteComponent {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
+        closeConnection(conn);
         return result;
     }
 
-    public void executeQuery(Connection conn, String query) {
+    public void executeQuery(String db_path, String query) {
+        if("".equals(query))
+            return;
+        Connection conn = connectToDatabaseFile(db_path);
         try {
             Statement statement = conn.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
+        closeConnection(conn);
     }
 
     private void migrateDBFilesFromTMP(String[] fileNames){

@@ -58,4 +58,33 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
             "IF(s.status_id IS NULL,'null',s.status_id)" +
             ")FROM sense s WHERE s.lexicon_id  IN (:lexicon_ids)", nativeQuery = true)
     public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+
+    @Query(value = "SELECT CONCAT(" +
+            "s.id,','," +
+            "IF(s.synset_position IS NULL,'null',s.synset_position),','," +
+            "s.variant,','," +
+            "s.domain_id,','," +
+            "s.lexicon_id,','," +
+            "s.part_of_speech_id,','," +
+            "IF(s.synset_id IS NULL,'null',s.synset_id),','," +
+            "s.word_id,','," +
+            "IF(s.status_id IS NULL,'null',s.status_id)" +
+            ")FROM sense s" +
+            " WHERE s.id>=:begin AND s.id<:end", nativeQuery = true)
+    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    @Query(value = "SELECT CONCAT(" +
+            "s.id,','," +
+            "IF(s.synset_position IS NULL,'null',s.synset_position),','," +
+            "s.variant,','," +
+            "s.domain_id,','," +
+            "s.lexicon_id,','," +
+            "s.part_of_speech_id,','," +
+            "IF(s.synset_id IS NULL,'null',s.synset_id),','," +
+            "s.word_id,','," +
+            "IF(s.status_id IS NULL,'null',s.status_id)" +
+            ")FROM sense s WHERE s.lexicon_id  IN (:lexicon_ids)" +
+            " AND s.id>=:begin AND s.id<:end", nativeQuery = true)
+    public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    @Query(value = "SELECT MAX(id) FROM sense", nativeQuery = true)
+    public Integer getMaxIndex();
 }
