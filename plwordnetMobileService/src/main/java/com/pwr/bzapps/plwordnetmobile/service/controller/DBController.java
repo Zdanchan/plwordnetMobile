@@ -120,6 +120,20 @@ public class DBController {
         return response;
     }
 
+    @GetMapping(path="/remove_tmp_SQLite_files")
+    public @ResponseBody String removeTmpSQLiteFiles(){
+
+        String response = "";
+        if(!Advisor.isQuery_generator_processing()){
+            sqLiteComponent.removeTMPfiles();
+            response = "SQLite files removed";
+        }
+        else{
+            response = "SQLite generator is already running";
+        }
+        return response;
+    }
+
     private Integer[] parseStringList(String[] strings){
         Integer[] integers = new Integer[strings.length];
         for(int i=0; i<integers.length; i++){

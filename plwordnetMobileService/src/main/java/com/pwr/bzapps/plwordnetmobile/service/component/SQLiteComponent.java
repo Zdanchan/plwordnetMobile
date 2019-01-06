@@ -408,6 +408,20 @@ public class SQLiteComponent {
         closeConnection(conn);
     }
 
+    public void removeTMPfiles(){
+        String[] files = {
+                FILENAME_BASE + ".db",
+                FILENAME_BASE + "_polish.db",
+                FILENAME_BASE + "_english.db"
+        };
+        for(String fileName : files){
+            File file =  new File(TMP_DIRECTORY + fileName);
+            if(file.exists()){
+                file.delete();
+            }
+        }
+    }
+
     private void migrateDBFilesFromTMP(String[] fileNames){
         if(!new File(TMP_DIRECTORY).exists()){
             new File(TMP_DIRECTORY).mkdirs();
