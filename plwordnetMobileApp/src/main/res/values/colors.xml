@@ -48,5 +48,6 @@
     <color name="colorSynchronizing">#555555</color>
     <color name="colorInactive">#AAAAAA</color>
     <color name="colorTextInactive">#666666</color>
+    <color name="colorFAQQuestionBackground">#666666</color>
     <color name="alpha">#00FFFFFF</color>
 </resources>
