@@ -24,6 +24,16 @@ public class OnClickExpander implements View.OnClickListener {
         this.isButtonBellow=false;
     }
 
+    public OnClickExpander(boolean isOpen, View container, View button, Context context, boolean isButtonBellow){
+        this.isOpen=isOpen;
+        this.container=container;
+        this.button=button;
+        this.context=context;
+        this.speed_close = 0.5f;
+        this.speed_open = 0.33f;
+        this.isButtonBellow=isButtonBellow;
+    }
+
     public OnClickExpander(boolean isOpen, View container, View button, Context context, float speed_open, float speed_close){
         this.isOpen=isOpen;
         this.container=container;
@@ -48,12 +58,12 @@ public class OnClickExpander implements View.OnClickListener {
     public void onClick(View view) {
         if (isOpen) {
             isOpen = !isOpen;
-            ExpandableViewAnimator.collapse(container,speed_close);
+            ExpandableViewAnimator.collapse(container, speed_close);
             button.startAnimation(getRotateAnimation());
 
         } else {
             isOpen = !isOpen;
-            ExpandableViewAnimator.expand(container,speed_open);
+            ExpandableViewAnimator.expand(container, speed_open);
             button.startAnimation(getRotateAnimation());
         }
     }
@@ -61,28 +71,28 @@ public class OnClickExpander implements View.OnClickListener {
     private Animation getRotateAnimation(){
         Animation rotateAnimation = null;
         if(isOpen){
-            //if(isButtonBellow){
-                rotateAnimation = (Animation) AnimationUtils.loadAnimation(context,R.anim.rotate_180_anim);
-                rotateAnimation.setFillBefore(true);
-                rotateAnimation.setFillAfter(true);
-            //}
-            //else{
-            //    rotateAnimation = (Animation) AnimationUtils.loadAnimation(context, R.anim.rotate_back_180_anim);
-            //    rotateAnimation.setFillBefore(true);
-            //    rotateAnimation.setFillAfter(true);
-            //}
-        }
-        else{
-            //if(isButtonBellow){
+            if(isButtonBellow){
                 rotateAnimation = (Animation) AnimationUtils.loadAnimation(context, R.anim.rotate_back_180_anim);
                 rotateAnimation.setFillBefore(true);
                 rotateAnimation.setFillAfter(true);
-            //}
-            //else{
-            //    rotateAnimation = (Animation) AnimationUtils.loadAnimation(context,R.anim.rotate_180_anim);
-            //    rotateAnimation.setFillBefore(true);
-            //    rotateAnimation.setFillAfter(true);
-            //}
+            }
+            else{
+                rotateAnimation = (Animation) AnimationUtils.loadAnimation(context,R.anim.rotate_180_anim);
+                rotateAnimation.setFillBefore(true);
+                rotateAnimation.setFillAfter(true);
+            }
+        }
+        else{
+            if(isButtonBellow){
+                rotateAnimation = (Animation) AnimationUtils.loadAnimation(context,R.anim.rotate_180_anim);
+                rotateAnimation.setFillBefore(true);
+                rotateAnimation.setFillAfter(true);
+            }
+            else{
+                rotateAnimation = (Animation) AnimationUtils.loadAnimation(context, R.anim.rotate_back_180_anim);
+                rotateAnimation.setFillBefore(true);
+                rotateAnimation.setFillAfter(true);
+            }
         }
         return rotateAnimation;
     }

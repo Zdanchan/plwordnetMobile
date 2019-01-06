@@ -103,9 +103,8 @@ public class MainActivity extends DrawerMenuActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(Settings.doesLocaleNeedsSync()) {
+        if (Settings.getLocaleName()!=this.curr_language) {
             recreate();
-            Settings.unflagLocaleSync();
         }
         if(!wentToNextActivity){
             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);

@@ -8,108 +8,132 @@
     android:id="@+id/top_view"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <RelativeLayout
-            android:id="@+id/back_menu_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true">
-            <ImageView
-                android:id="@+id/toolbar_app_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/wordnet_logo_remastered" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
-    <RelativeLayout
-        android:layout_below="@id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <RelativeLayout
-            android:id="@+id/search_box"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/search_edit"
-                android:layout_weight="1"
-                android:layout_toLeftOf="@+id/search_button"
-                android:layout_alignParentLeft="true"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:singleLine="true"
-                android:hint="@string/search_text_edit" />
-            <ImageButton
-                android:id="@+id/clear_text_button"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignRight="@id/search_edit"
-                android:layout_alignTop="@id/search_edit"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/icon_cross"
-                android:tint="@android:color/black"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="@color/alpha"/>
-            <ImageButton
-                android:id="@+id/search_button"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="2dp"
-                android:layout_weight="0"
-                android:src="@drawable/search_icon"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"/>
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/separator"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@id/search_box"
-            android:background="@color/colorMainSeparator"/>
-
-
-        <ListView
-            android:id="@+id/results_list"
+    <android.support.v4.widget.DrawerLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/separator">
-        </ListView>
+            android:id="@+id/main_drawer">
 
-        <TextView
-            android:id="@+id/message_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorDescriptionText"
-            android:textSize="16dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-        <ProgressBar
-            android:id="@+id/loading_spinner"
-            style="?android:progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <RelativeLayout
+                    android:id="@+id/back_menu_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true">
+                    <ImageView
+                        android:id="@+id/toolbar_app_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/wordnet_logo_remastered" />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
+                <RelativeLayout
+                    android:id="@+id/search_box"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/search_edit"
+                        android:layout_weight="1"
+                        android:layout_toLeftOf="@+id/search_button"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:singleLine="true"
+                        android:hint="@string/search_text_edit" />
+                    <ImageButton
+                        android:id="@+id/clear_text_button"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignRight="@id/search_edit"
+                        android:layout_alignTop="@id/search_edit"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/icon_cross"
+                        android:tint="@android:color/black"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:background="@color/alpha"/>
+                    <ImageButton
+                        android:id="@+id/search_button"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/search_icon"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"/>
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/search_box"
+                    android:background="@color/colorMainSeparator"/>
+
+
+                <ListView
+                    android:id="@+id/results_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/separator">
+                </ListView>
+
+                <TextView
+                    android:id="@+id/message_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/colorDescriptionText"
+                    android:textSize="16dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"/>
+
+                <ProgressBar
+                    android:id="@+id/loading_spinner"
+                    style="?android:progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- The navigation drawer -->
+        <android.support.design.widget.NavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:fitsSystemWindows="true"
+                android:background="@color/colorDrawer"
+                app:itemIconTint="@color/colorNavigationViewIcon"
+                app:itemTextColor="@color/colorNavigationViewText"
+                app:menu="@menu/drawer_menu_main"
+                app:headerLayout="@layout/navigation_bar_header"/>
+
+    </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

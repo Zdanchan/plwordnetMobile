@@ -7,6 +7,7 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.layout.listener.OnClickExpander;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -26,6 +27,6 @@ public class GraphBrowserActivity extends BackButtonActivity{
         int synset_id = getIntent().getExtras().getInt("synset_id",2914);
         webView.loadUrl("file:///android_asset/index.html?synset_id=" + synset_id + "&language=" + Settings.getShortLocalName());
         toolbar_hide_button = findViewById(R.id.toolbar_hide_button);
-        toolbar_hide_button.setOnClickListener(new OnClickExpander(true,findViewById(R.id.main_toolbar),toolbar_hide_button,getApplicationContext()));
+        toolbar_hide_button.setOnClickListener(new OnClickExpander(true,findViewById(R.id.main_toolbar),toolbar_hide_button,getApplicationContext(),true));
     }
 }

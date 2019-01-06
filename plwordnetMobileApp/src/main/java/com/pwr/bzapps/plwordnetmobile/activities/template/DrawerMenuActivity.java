@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.*;
 import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public abstract class DrawerMenuActivity extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
     protected ActionBar actionbar;
     protected ImageView toolbarAppIcon;
     protected boolean wentToNextActivity=false;
+    protected String curr_language;
 
     protected DrawerMenuActivity(){
         super();
@@ -43,6 +45,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         toolbarMain = findViewById(R.id.main_toolbar);
         mDrawerMain = findViewById(R.id.main_drawer);
+        curr_language = Settings.getLocaleName();
 
         mDrawerMain.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override

@@ -8,495 +8,521 @@
     android:id="@+id/top_view"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <RelativeLayout
-            android:id="@+id/back_menu_ll"
-            android:layout_width="wrap_content"
+    <android.support.v4.widget.DrawerLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true">
-            <ImageView
-                android:id="@+id/toolbar_app_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            android:id="@+id/main_drawer">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            <RelativeLayout
+                android:id="@+id/back_menu_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/wordnet_logo_remastered" />
-            <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp">
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true">
                 <ImageView
-                        android:id="@+id/bookmark_tape"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/bookmark_tape"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"/>
-                <ImageButton
-                        android:id="@+id/bookmark_button"
+                    android:id="@+id/toolbar_app_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/wordnet_logo_remastered" />
+                <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:src="@drawable/bookmark_button_icon"
-                        android:background="@color/alpha"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"/>
-            </FrameLayout>
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
-    <ScrollView
-        android:layout_below="@id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp">
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/sense_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp">
-                <TextView
-                    android:id="@+id/sense_attribute_part_of_speech"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginRight="2dp"
-                    android:text="PART OF SPEECH"
-                    android:textColor="@color/colorSenseAttributeLabel"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/first_row"
-                    />
-                <TextView
-                    android:id="@+id/sense_attribute_domain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/sense_attribute_part_of_speech"
-                    android:text="@string/domain"
-                    android:textColor="@color/colorSenseAttributeLabel"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/domain_row"
-                    />
-                <TextView
-                    android:id="@+id/sense_attribute_examples"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/sense_attribute_domain"
-                    android:text="@string/examples"
-                    android:textColor="@color/colorSenseAttributeLabel"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/examples_row"
-                    />
-                <TextView
-                    android:id="@+id/sense_attribute_synonyms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/sense_attribute_examples"
-                    android:text="@string/synonyms"
-                    android:textColor="@color/colorSenseAttributeLabel"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/synonyms_row"
-
-                    />
-                <TextView
-                    android:id="@+id/sense_attribute_source"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/sense_attribute_synonyms"
-                    android:text="@string/source"
-                    android:textColor="@color/colorSenseAttributeLabel"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/source_row"
-
-                    />
-                <android.support.constraint.Barrier
-                    android:id="@+id/attributes_barrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:barrierDirection="right"
-                    app:constraint_referenced_ids="sense_attribute_part_of_speech,sense_attribute_domain,sense_attribute_examples,sense_attribute_synonyms,sense_attribute_source"/>
-                <RelativeLayout
-                    android:id="@+id/first_row"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
-                    app:layout_constraintRight_toRightOf="parent">
-                    <RelativeLayout
-                        android:id="@+id/sense_line_one"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true">
-                        <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
-                            android:id="@+id/sense_word"
+                        android:layout_marginRight="12dp">
+                    <ImageView
+                            android:id="@+id/bookmark_tape"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:text="Word"
-                            android:textColor="@color/colorMainText"
-                            android:textSize="14dp"
-                            android:textStyle="bold"/>
-                        <ImageView
-                            android:id="@+id/language_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:minWidth="20dp"
-                            android:layout_toRightOf="@id/sense_word"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="2dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/bookmark_tape"
+                            android:scaleType="fitCenter"
+                            android:adjustViewBounds="true"/>
+                    <ImageButton
+                            android:id="@+id/bookmark_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"
-                            android:src="@drawable/flag_unknown" />
-                    </RelativeLayout>
-                    <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
-                        android:id="@+id/sense_description"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@id/sense_line_one"
-                        android:layout_marginBottom="3dp"
-                        android:textColor="@color/colorDescriptionText"
-                        android:text="description"
-                        android:textSize="14dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:elevation="2dp"
-                        android:layout_below="@id/sense_description"
-                        android:background="@color/colorPrimaryDark"
-                        />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/domain_row"
-                    android:layout_below="@id/first_row"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/first_row">
-                    <TextView
-                        android:id="@+id/sense_domain"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="3dp"
-                        android:textColor="@color/colorDescriptionText"
-                        android:text="domain"
-                        android:textSize="14dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:elevation="2dp"
-                        android:layout_below="@id/sense_domain"
-                        android:background="@color/colorPrimaryDark" />
-                </RelativeLayout>
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:src="@drawable/bookmark_button_icon"
+                            android:background="@color/alpha"
+                            android:scaleType="fitCenter"
+                            android:adjustViewBounds="true"/>
+                </FrameLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
 
-                <RelativeLayout
-                    android:id="@+id/examples_row"
-                    android:layout_below="@id/domain_row"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/domain_row">
-                    <LinearLayout
-                        android:id="@+id/sense_examples_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:elevation="2dp"
-                        android:layout_below="@id/sense_examples_container"
-                        android:background="@color/colorPrimaryDark" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/synonyms_row"
-                    android:layout_below="@id/examples_row"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/examples_row">
-                    <LinearLayout
-                        android:id="@+id/sense_synonyms_container"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="3dp"
-                        android:orientation="vertical">
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:elevation="2dp"
-                        android:layout_below="@id/sense_synonyms_container"
-                        android:background="@color/colorPrimaryDark" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/source_row"
-                    android:layout_below="@id/synonyms_row"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/synonyms_row">
-                    <TextView
-                        android:id="@+id/sense_source"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="3dp"
-                        android:text="source"
-                        android:textColor="@color/colorDescriptionText"
-                        android:textSize="14dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:elevation="2dp"
-                        android:layout_below="@id/sense_source"
-                        android:background="@color/colorPrimaryDark" />
-                </RelativeLayout>
-            </android.support.constraint.ConstraintLayout>
-
+        <ScrollView
+            android:layout_below="@id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <RelativeLayout
-                android:id="@+id/emotional_annotations_view"
-                android:layout_below="@id/sense_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-                <RelativeLayout
-                    android:id="@+id/emotional_annotations_header"
-                    android:layout_width="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/sense_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/colorSenseRelationAccent">
+                    android:layout_marginLeft="10dp">
                     <TextView
-                            android:id="@+id/emotional_annotation_attribute"
-                            android:layout_width="match_parent"
+                        android:id="@+id/sense_attribute_part_of_speech"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="2dp"
+                        android:text="PART OF SPEECH"
+                        android:textColor="@color/colorSenseAttributeLabel"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/first_row"
+                        />
+                    <TextView
+                        android:id="@+id/sense_attribute_domain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/sense_attribute_part_of_speech"
+                        android:text="@string/domain"
+                        android:textColor="@color/colorSenseAttributeLabel"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/domain_row"
+                        />
+                    <TextView
+                        android:id="@+id/sense_attribute_examples"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/sense_attribute_domain"
+                        android:text="@string/examples"
+                        android:textColor="@color/colorSenseAttributeLabel"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/examples_row"
+                        />
+                    <TextView
+                        android:id="@+id/sense_attribute_synonyms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/sense_attribute_examples"
+                        android:text="@string/synonyms"
+                        android:textColor="@color/colorSenseAttributeLabel"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/synonyms_row"
+
+                        />
+                    <TextView
+                        android:id="@+id/sense_attribute_source"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/sense_attribute_synonyms"
+                        android:text="@string/source"
+                        android:textColor="@color/colorSenseAttributeLabel"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/source_row"
+
+                        />
+                    <android.support.constraint.Barrier
+                        android:id="@+id/attributes_barrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:barrierDirection="right"
+                        app:constraint_referenced_ids="sense_attribute_part_of_speech,sense_attribute_domain,sense_attribute_examples,sense_attribute_synonyms,sense_attribute_source"/>
+                    <RelativeLayout
+                        android:id="@+id/first_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                        app:layout_constraintRight_toRightOf="parent">
+                        <RelativeLayout
+                            android:id="@+id/sense_line_one"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toLeftOf="@+id/drawer_icon"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/emotional_annotation"
-                            android:textSize="20dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorMainText"
-                    />
-
-                    <ImageView
-                            android:id="@+id/drawer_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:minWidth="20dp"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="15dp"
-                            android:src="@drawable/drawer_open_icon"
-                            android:tint="@android:color/black"
-                            android:scaleType="fitCenter"
-                            android:adjustViewBounds="true"
-                            android:background="@color/alpha"
-                    />
+                            android:layout_alignParentTop="true">
+                            <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
+                                android:id="@+id/sense_word"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Word"
+                                android:textColor="@color/colorMainText"
+                                android:textSize="14dp"
+                                android:textStyle="bold"/>
+                            <ImageView
+                                android:id="@+id/language_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:minWidth="20dp"
+                                android:layout_toRightOf="@id/sense_word"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/flag_unknown" />
+                        </RelativeLayout>
+                        <com.pwr.bzapps.plwordnetmobile.layout.custom.WrapedMultilineTextWiew
+                            android:id="@+id/sense_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/sense_line_one"
+                            android:layout_marginBottom="3dp"
+                            android:textColor="@color/colorDescriptionText"
+                            android:text="description"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:elevation="2dp"
+                            android:layout_below="@id/sense_description"
+                            android:background="@color/colorPrimaryDark"
+                            />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/domain_row"
+                        android:layout_below="@id/first_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/first_row">
+                        <TextView
+                            android:id="@+id/sense_domain"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="3dp"
+                            android:textColor="@color/colorDescriptionText"
+                            android:text="domain"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:elevation="2dp"
+                            android:layout_below="@id/sense_domain"
+                            android:background="@color/colorPrimaryDark" />
+                    </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/examples_row"
+                        android:layout_below="@id/domain_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/domain_row">
+                        <LinearLayout
+                            android:id="@+id/sense_examples_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:elevation="2dp"
+                            android:layout_below="@id/sense_examples_container"
+                            android:background="@color/colorPrimaryDark" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/synonyms_row"
+                        android:layout_below="@id/examples_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/examples_row">
+                        <LinearLayout
+                            android:id="@+id/sense_synonyms_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="3dp"
+                            android:orientation="vertical">
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:elevation="2dp"
+                            android:layout_below="@id/sense_synonyms_container"
+                            android:background="@color/colorPrimaryDark" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/source_row"
+                        android:layout_below="@id/synonyms_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintLeft_toRightOf="@id/attributes_barrier"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/synonyms_row">
+                        <TextView
+                            android:id="@+id/sense_source"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="3dp"
+                            android:text="source"
+                            android:textColor="@color/colorDescriptionText"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:elevation="2dp"
+                            android:layout_below="@id/sense_source"
+                            android:background="@color/colorPrimaryDark" />
+                    </RelativeLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/emotional_annotations_view"
+                    android:layout_below="@id/sense_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+                    <RelativeLayout
+                        android:id="@+id/emotional_annotations_header"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/colorSenseRelationAccent">
+                        <TextView
+                                android:id="@+id/emotional_annotation_attribute"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_toLeftOf="@+id/drawer_icon"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/emotional_annotation"
+                                android:textSize="20dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorMainText"
+                        />
+
+                        <ImageView
+                                android:id="@+id/drawer_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:minWidth="20dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="15dp"
+                                android:src="@drawable/drawer_open_icon"
+                                android:tint="@android:color/black"
+                                android:scaleType="fitCenter"
+                                android:adjustViewBounds="true"
+                                android:background="@color/alpha"
+                        />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/emotional_annotations_container"
+                        android:layout_below="@id/emotional_annotations_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/emotional_annotations_container"
-                    android:layout_below="@id/emotional_annotations_header"
+                    android:id="@+id/sense_relations_container"
+                    android:layout_below="@id/emotional_annotations_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                 </LinearLayout>
-            </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/sense_relations_container"
-                android:layout_below="@id/emotional_annotations_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/loading_spinner"
-                style="?android:progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sense_relations_container"
-                android:layout_marginTop="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
-            <View
-                android:layout_below="@id/sense_relations_container"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"/>
-        </RelativeLayout>
-    </ScrollView>
-    <RelativeLayout
-        android:id="@+id/lower_bar"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:elevation="10dp"
-        android:background="@color/alpha">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentBottom="true">
-            <RelativeLayout
-                android:layout_alignParentLeft="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp">
-                <Button
-                    android:id="@+id/other_senses_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="#/#"
-                    android:background="@drawable/button"
-                    android:textSize="12dp"
-                    android:textColor="@color/colorMainBrightText"
-                    android:paddingRight="0dp"
-                    android:paddingLeft="0dp"
-                    android:adjustViewBounds="true"
-                    />
-                <TextView
-                    android:id="@+id/other_senses_label"
+                <ProgressBar
+                    android:id="@+id/loading_spinner"
+                    style="?android:progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/sense_relations_container"
+                    android:layout_marginTop="20dp"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/other_senses"
-                    android:textColor="@color/colorMainBrightText"
-                    android:textSize="10dp"
-                    />
+                    android:layout_centerVertical="true"/>
+                <View
+                    android:layout_below="@id/sense_relations_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"/>
+            </RelativeLayout>
+        </ScrollView>
+        <RelativeLayout
+            android:id="@+id/lower_bar"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:elevation="10dp"
+            android:background="@color/alpha">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/colorPrimary"
+                android:layout_alignParentBottom="true">
+                <RelativeLayout
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp">
+                    <Button
+                        android:id="@+id/other_senses_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="#/#"
+                        android:background="@drawable/button"
+                        android:textSize="12dp"
+                        android:textColor="@color/colorMainBrightText"
+                        android:paddingRight="0dp"
+                        android:paddingLeft="0dp"
+                        android:adjustViewBounds="true"
+                        />
+                    <TextView
+                        android:id="@+id/other_senses_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/other_senses"
+                        android:textColor="@color/colorMainBrightText"
+                        android:textSize="10dp"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerVertical="true">
+                    <ImageButton
+                        android:id="@+id/search_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/search_icon"
+                        android:background="@drawable/button"
+                        android:tint="@color/colorMainBrightText"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        />
+                    <TextView
+                        android:id="@+id/search_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/search"
+                        android:textColor="@color/colorMainBrightText"
+                        android:textSize="10dp"
+                        />
+                </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
                 android:layout_centerVertical="true">
                 <ImageButton
-                    android:id="@+id/search_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/graph_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/search_icon"
-                    android:background="@drawable/button"
-                    android:tint="@color/colorMainBrightText"
+                    android:src="@drawable/graph_button_icon"
+                    android:elevation="2dp"
+                    android:translationZ="2dp"
+                    android:background="@drawable/graph_button_icon_shadow"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     />
                 <TextView
-                    android:id="@+id/search_label"
+                    android:id="@+id/graph_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/search"
+                    android:text="@string/graph_view"
                     android:textColor="@color/colorMainBrightText"
                     android:textSize="10dp"
                     />
             </RelativeLayout>
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
-            <ImageButton
-                android:id="@+id/graph_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/graph_button_icon"
-                android:elevation="2dp"
-                android:translationZ="2dp"
-                android:background="@drawable/graph_button_icon_shadow"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                />
-            <TextView
-                android:id="@+id/graph_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/graph_view"
-                android:textColor="@color/colorMainBrightText"
-                android:textSize="10dp"
-                />
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <!-- The navigation drawer -->
+    <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:background="@color/colorDrawer"
+            app:itemIconTint="@color/colorNavigationViewIcon"
+            app:itemTextColor="@color/colorNavigationViewText"
+            app:menu="@menu/drawer_menu_main"
+            app:headerLayout="@layout/navigation_bar_header"/>
+
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

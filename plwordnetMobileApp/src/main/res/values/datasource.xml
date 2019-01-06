@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--string name="spring_interface_address" translatable="false">http://plwordnet-mobile-api.clarin-pl.eu</string-->
-    <string name="spring_interface_address" translatable="false">http://192.168.1.241:8080</string>
+    <string name="spring_interface_address" translatable="false">http://plwordnet-mobile-api.clarin-pl.eu</string>
 </resources>

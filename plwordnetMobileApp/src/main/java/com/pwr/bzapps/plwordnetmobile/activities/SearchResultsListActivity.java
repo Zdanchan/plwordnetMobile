@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSensesTask;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
@@ -26,7 +27,7 @@ import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.ArrayList;
 
-public class SearchResultsListActivity extends BackButtonActivity implements AdapterView.OnItemClickListener {
+public class SearchResultsListActivity extends DrawerMenuActivity implements AdapterView.OnItemClickListener {
 
     private ArrayList<SenseEntity> data;
     private ListView listView;
@@ -123,6 +124,14 @@ public class SearchResultsListActivity extends BackButtonActivity implements Ada
                 searchEdit.setText("");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Settings.getLocaleName()!=this.curr_language) {
+            recreate();
+        }
     }
 
     @Override
