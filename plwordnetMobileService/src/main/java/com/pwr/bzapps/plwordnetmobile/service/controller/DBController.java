@@ -55,6 +55,7 @@ public class DBController {
     private final String DOWNLOADS_DIRECTORY = "/downloads/";
     private final String TMP_DIRECTORY = "/downloads/tmp/";
     private final String[] languages = {"polish", "english"};
+    private final int QUERY_BATCH_SIZE = 1000;
 
     @Autowired
     private WordRepository wordRepository;
@@ -101,7 +102,8 @@ public class DBController {
                 @Override
                 public void run() {
                     try{
-                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDB(languages);
+                        //sqLiteComponent.dumpSQLDBContentIntoSQLiteDB(languages);
+                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(languages,QUERY_BATCH_SIZE);
                         log.info("SQLite databases are stored and up to date");
                     }catch (Exception e){
                         log.error("Exception during SQLite databases generation: ", e);

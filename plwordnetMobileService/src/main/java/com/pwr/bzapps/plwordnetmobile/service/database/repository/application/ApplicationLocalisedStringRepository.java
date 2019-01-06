@@ -19,5 +19,14 @@ public interface ApplicationLocalisedStringRepository extends CrudRepository<App
     @Query(value = "SELECT CONCAT(als.id,',','\"',' ','\"',',','\"',als.language,'\"') FROM application_localised_string als WHERE language = :language", nativeQuery = true)
     public List<String> findAllByLanguageAndParseString(@Param("language") String language);
 
+    @Query(value = "SELECT CONCAT(als.id,',','\"',' ','\"',',','\"',als.language,'\"') FROM application_localised_string als" +
+            " WHERE als.id>=:begin AND als.id<:end", nativeQuery = true)
+    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
 
+    @Query(value = "SELECT CONCAT(als.id,',','\"',' ','\"',',','\"',als.language,'\"') FROM application_localised_string als WHERE language = :language" +
+            " AND als.id>=:begin AND als.id<:end", nativeQuery = true)
+    public List<String> findAllByLanguageAndParseStringBatch(@Param("language") String language, @Param("begin") Integer begin, @Param("end") Integer end);
+
+    @Query(value = "SELECT MAX(id) FROM application_localised_string", nativeQuery = true)
+    public Integer getMaxIndex();
 }

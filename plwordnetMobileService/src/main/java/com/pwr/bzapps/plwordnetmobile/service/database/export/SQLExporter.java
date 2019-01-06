@@ -60,64 +60,67 @@ public class SQLExporter {
 
     public static <T> String createInsertQueryWithStrings(List<String> parsedElements, Class<T> clazz){
         String insert = "";
-        for(String element : parsedElements){
-            insert += "(" + element + "),";
+        for(int i = 0; i < parsedElements.size(); i++){
+            insert += "(" + parsedElements.get(i) + ")";
+            if(i<parsedElements.size()-1)
+                insert+=",";
         }
+        parsedElements.clear();
         switch(clazz.getSimpleName()){
             case "ApplicationLocalisedStringEntity":
                 return  String.format(INSERT_PATTERN,APPLICATION_LOCALISED_STRING_NAME,
-                        "[id],[value],[language]",insert.substring(0,insert.length()-1));
+                        "[id],[value],[language]",insert);
             case "DictionaryEntity":
                 return String.format(INSERT_PATTERN,DICTIONARY_NAME,
-                        "[dtype],[id],[description_id],[name_id],[tag],[value]",insert.substring(0,insert.length()-1));
+                        "[dtype],[id],[description_id],[name_id],[tag],[value]",insert);
             case "DomainEntity":
                 return String.format(INSERT_PATTERN,DOMAIN_NAME,
-                        "[id],[description_id],[name_id]",insert.substring(0,insert.length()-1));
+                        "[id],[description_id],[name_id]",insert);
             case "LexiconEntity":
                 return String.format(INSERT_PATTERN,LEXICON_NAME,
-                        "[id],[identifier],[language_name],[name],[lexicon_version]",insert.substring(0,insert.length()-1));
+                        "[id],[identifier],[language_name],[name],[lexicon_version]",insert);
             case "EmotionalAnnotationEntity":
                 return String.format(INSERT_PATTERN,EMOTIONAL_ANNOTATION_NAME,
-                        "[id],[sense_id],[has_emotional_characteristic],[super_anotation],[emotions],[valuations],[markedness],[example1],[example2]",insert.substring(0,insert.length()-1));
+                        "[id],[sense_id],[has_emotional_characteristic],[super_anotation],[emotions],[valuations],[markedness],[example1],[example2]",insert);
             case "PartOfSpeechEntity":
                 return String.format(INSERT_PATTERN,PART_OF_SPEECH_NAME,
-                        "[id],[name_id],[color]",insert.substring(0,insert.length()-1));
+                        "[id],[name_id],[color]",insert);
             case "WordEntity":
                 return String.format(INSERT_PATTERN,WORD_NAME,
-                        "[id],[word]",insert.substring(0,insert.length()-1));
+                        "[id],[word]",insert);
             case "RelationTypeAllowedLexiconEntity":
                 return String.format(INSERT_PATTERN,RELATION_TYPE_ALLOWED_LEXICON_NAME,
-                        "[relation_type_id],[lexicon_id]",insert.substring(0,insert.length()-1));
+                        "[relation_type_id],[lexicon_id]",insert);
             case "RelationTypeAllowedPartOfSpeechEntity":
                 return String.format(INSERT_PATTERN,RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME,
-                        "[relation_type_id],[part_of_speech_id]",insert.substring(0,insert.length()-1));
+                        "[relation_type_id],[part_of_speech_id]",insert);
             case "RelationTypeEntity":
                 return String.format(INSERT_PATTERN,RELATION_TYPE_NAME,
-                        "[id],[auto_reverse],[multilingual],[description_id],[display_text_id],[name_id],[parent_relation_type_id],[relation_argument],[reverse_relation_type_id],[short_display_text_id],[color],[node_position],[priority]",insert.substring(0,insert.length()-1));
+                        "[id],[auto_reverse],[multilingual],[description_id],[display_text_id],[name_id],[parent_relation_type_id],[relation_argument],[reverse_relation_type_id],[short_display_text_id],[color],[node_position],[priority]",insert);
             case "SenseAttributeEntity":
                 return String.format(INSERT_PATTERN,SENSE_ATTRIBUTE_NAME,
-                        "[sense_id],[comment],[definition],[link],[register_id],[aspect_id],[user_id],[error_comment],[proper_name]",insert.substring(0,insert.length()-1));
+                        "[sense_id],[comment],[definition],[link],[register_id],[aspect_id],[user_id],[error_comment],[proper_name]",insert);
             case "SenseEntity":
                 return String.format(INSERT_PATTERN,SENSE_NAME,
-                        "[id],[synset_position],[variant],[domain_id],[lexicon_id],[part_of_speech_id],[synset_id],[word_id],[status_id]",insert.substring(0,insert.length()-1));
+                        "[id],[synset_position],[variant],[domain_id],[lexicon_id],[part_of_speech_id],[synset_id],[word_id],[status_id]",insert);
             case "SenseExampleEntity":
                 return String.format(INSERT_PATTERN,SENSE_EXAMPLE_NAME,
-                        "[id],[sense_attribute_id],[example],[type]",insert.substring(0,insert.length()-1));
+                        "[id],[sense_attribute_id],[example],[type]",insert);
             case "SenseRelationEntity":
                 return String.format(INSERT_PATTERN,SENSE_RELATION_NAME,
-                        "[id],[child_sense_id],[parent_sense_id],[relation_type_id]",insert.substring(0,insert.length()-1));
+                        "[id],[child_sense_id],[parent_sense_id],[relation_type_id]",insert);
             case "SynsetAttributeEntity":
                 return String.format(INSERT_PATTERN,SYNSET_ATTRIBUTE_NAME,
-                        "[synset_id],[comment],[definition],[princeton_id],[owner_id],[error_comment],[ili_id]",insert.substring(0,insert.length()-1));
+                        "[synset_id],[comment],[definition],[princeton_id],[owner_id],[error_comment],[ili_id]",insert);
             case "SynsetEntity":
                 return String.format(INSERT_PATTERN,SYNSET_NAME,
-                        "[id],[split],[lexicon_id],[status_id],[abstract]",insert.substring(0,insert.length()-1));
+                        "[id],[split],[lexicon_id],[status_id],[abstract]",insert);
             case "SynsetExampleEntity":
                 return String.format(INSERT_PATTERN,SYNSET_EXAMPLE_NAME,
-                        "[id],[synset_attributes_id],[example],[type]",insert.substring(0,insert.length()-1));
+                        "[id],[synset_attributes_id],[example],[type]",insert);
             case "SynsetRelationEntity":
                 return String.format(INSERT_PATTERN,SYNSET_RELATION_NAME,
-                        "[id],[child_synset_id],[parent_synset_id],[synset_relation_type_id]",insert.substring(0,insert.length()-1));
+                        "[id],[child_synset_id],[parent_synset_id],[synset_relation_type_id]",insert);
         }
         return "";
     }

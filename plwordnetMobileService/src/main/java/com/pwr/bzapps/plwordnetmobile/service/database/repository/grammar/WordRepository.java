@@ -10,4 +10,11 @@ import java.util.List;
 public interface WordRepository extends CrudRepository<WordEntity, Integer> {
     @Query(value = "SELECT CONCAT(w.id,',','\"',REPLACE(w.word,'\"','####'),'\"') FROM word w", nativeQuery = true)
     public List<String> findAllAndParseString();
+
+    @Query(value = "SELECT CONCAT(w.id,',','\"',REPLACE(w.word,'\"','####'),'\"') FROM word w" +
+            " WHERE w.id>=:begin AND w.id<:end", nativeQuery = true)
+    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+
+    @Query(value = "SELECT MAX(id) FROM word", nativeQuery = true)
+    public Integer getMaxIndex();
 }

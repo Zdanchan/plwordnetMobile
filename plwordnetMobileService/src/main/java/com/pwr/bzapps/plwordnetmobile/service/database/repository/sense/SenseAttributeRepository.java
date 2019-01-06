@@ -12,6 +12,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
     public List<SenseAttributeEntity> findMultipleBySenseId(@Param("sense_ids") Integer[] sense_ids);
     @Query("SELECT sa.id FROM SenseAttributeEntity sa WHERE sa.sense_id IN (:sense_ids)")
     public List<Integer> findIdsMultipleBySenseId(@Param("sense_ids") Integer[] sense_ids);
+
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
             "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
@@ -36,4 +37,32 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)", nativeQuery = true)
     public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
+    @Query(value = "SELECT CONCAT(" +
+            "sa.sense_id,','," +
+            "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
+            "IF(sa.definition IS NULL,'null',CONCAT('\"',REPLACE(sa.definition,'\"','####'),'\"')),','," +
+            "IF(sa.link IS NULL,'null',CONCAT('\"',REPLACE(sa.link,'\"','####'),'\"')),','," +
+            "IF(sa.register_id IS NULL,'null',sa.register_id),','," +
+            "IF(sa.aspect_id IS NULL,'null',sa.aspect_id),','," +
+            "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
+            "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
+            "IF(sa.proper_name=1,1,0)" +
+            ")FROM sense_attributes sa" +
+            " WHERE sa.id>=:begin AND sa.id<:end", nativeQuery = true)
+    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    @Query(value = "SELECT CONCAT(" +
+            "sa.sense_id,','," +
+            "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
+            "IF(sa.definition IS NULL,'null',CONCAT('\"',REPLACE(sa.definition,'\"','####'),'\"')),','," +
+            "IF(sa.link IS NULL,'null',CONCAT('\"',REPLACE(sa.link,'\"','####'),'\"')),','," +
+            "IF(sa.register_id IS NULL,'null',sa.register_id),','," +
+            "IF(sa.aspect_id IS NULL,'null',sa.aspect_id),','," +
+            "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
+            "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
+            "IF(sa.proper_name=1,1,0)" +
+            ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)" +
+            " AND sense_id.id>=:begin AND sense_id.id<:end", nativeQuery = true)
+    public List<String> findAllForSensesAndParseStringBatch(@Param("sense_ids") Integer[] sense_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    @Query(value = "SELECT MAX(sense_id) FROM sense_attributes", nativeQuery = true)
+    public Integer getMaxIndex();
 }
