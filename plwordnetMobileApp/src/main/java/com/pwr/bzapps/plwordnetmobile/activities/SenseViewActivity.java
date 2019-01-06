@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
+import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSensesBySynsetsTask;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSynonymsTask;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveWordRelatedSensesTask;
@@ -47,7 +48,7 @@ import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.*;
 
-public class SenseViewActivity extends BackButtonActivity {
+public class SenseViewActivity extends DrawerMenuActivity {
 
     private SenseEntity entity;
     private ImageButton bookmark_button;
@@ -124,6 +125,14 @@ public class SenseViewActivity extends BackButtonActivity {
         });
 
         prepareLowerBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Settings.getLocaleName()!=this.curr_language) {
+            recreate();
+        }
     }
 
     @Override

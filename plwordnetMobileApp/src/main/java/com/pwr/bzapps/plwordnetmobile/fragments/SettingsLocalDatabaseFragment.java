@@ -53,10 +53,23 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         remove_button = view.findViewById(R.id.remove_databases);
         offline_mode_switch = offline_mode.findViewById(R.id.offline_mode_switch);
         offline_mode_switch.setChecked(Settings.isOfflineMode());
-        offline_mode_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        offline_mode_switch.setClickable(false);
+        offline_mode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Settings.setOfflineMode(b);
+            public void onClick(View view) {
+                if(!buttons_enabled && Settings.isOfflineMode()) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    offline_mode_switch.setChecked(!offline_mode_switch.isChecked());
+                    Settings.setOfflineMode(offline_mode_switch.isChecked());
+                    if(offline_mode_switch.isChecked())
+                        enableLocalDBSettings();
+                    else
+                        disableLocalDBSettings();
+                }
+
             }
         });
         polish_db.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +79,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     polish_checkbox.setChecked(!polish_checkbox.isChecked());
                 }
                 else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+                    showInformationToast();
                 }
             }
         });
@@ -77,7 +90,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     english_checkbox.setChecked(!english_checkbox.isChecked());
                 }
                 else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+                    showInformationToast();
                 }
             }
         });
@@ -96,7 +109,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+                    showInformationToast();
                 }
             }
         });
@@ -104,11 +117,16 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         status_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkLocalSQLiteDBWithServerTask =
-                        new CheckLocalSQLiteDBWithServerTask(SettingsLocalDatabaseFragment.this,
-                                getActivity().getApplicationContext());
-                setStatus(3);
-                checkLocalSQLiteDBWithServerTask.execute(Settings.getDbType());
+                if(buttons_enabled) {
+                    checkLocalSQLiteDBWithServerTask =
+                            new CheckLocalSQLiteDBWithServerTask(SettingsLocalDatabaseFragment.this,
+                                    getActivity().getApplicationContext());
+                    setStatus(3);
+                    checkLocalSQLiteDBWithServerTask.execute(saveCheckedDictionaries());
+                }
+                else {
+                    showInformationToast();
+                }
             }
         });
 
@@ -124,19 +142,28 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     Toast.makeText(getActivity(), getResources().getString(R.string.remove_local_db_toast), Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+                    showInformationToast();
                 }
             }
         });
 
-        checkLocalSQLiteDBWithServerTask =
-                new CheckLocalSQLiteDBWithServerTask(this, getActivity().getApplicationContext());
-        setStatus(3);
-        checkLocalSQLiteDBWithServerTask.execute(Settings.getDbType());
+        if(Settings.isOfflineMode())
+            enableLocalDBSettings();
+        else
+            disableLocalDBSettings();
 
         if(DownloadReceiver.isInitialized()){
-            DownloadReceiver.getInstance().setProgressBar(sync_progress);
-            DownloadReceiver.getInstance().setSettingsLocalDatabaseFragment(this);
+            if(DownloadReceiver.getInstance().isRunning()) {
+                DownloadReceiver.getInstance().setSettingsLocalDatabaseFragment(this);
+                DownloadReceiver.getInstance().setProgressBar(sync_progress);
+                startSyncAction();
+            }
+        }
+        else{
+            checkLocalSQLiteDBWithServerTask =
+                    new CheckLocalSQLiteDBWithServerTask(this, getActivity().getApplicationContext());
+            setStatus(3);
+            checkLocalSQLiteDBWithServerTask.execute(Settings.getDbType());
         }
 
         return view;
@@ -144,6 +171,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
     }
 
     public void startSyncAction(){
+        setStatus(4);
         sync_progress.setVisibility(View.VISIBLE);
         status_value.setText(R.string.status_synchronizing);
         status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
@@ -218,8 +246,43 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
     }
 
+    public void disableLocalDBSettings(){
+        buttons_enabled = false;
+        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        polish_db.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)polish_db.findViewById(R.id.polish_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        english_db.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)english_db.findViewById(R.id.english_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        status_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView)status_button.findViewById(R.id.status_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        ((TextView)status_button.findViewById(R.id.status_value)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+
+    }
+
+    public void enableLocalDBSettings(){
+        buttons_enabled = true;
+        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        polish_db.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)polish_db.findViewById(R.id.polish_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        english_db.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)english_db.findViewById(R.id.english_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        status_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView)status_button.findViewById(R.id.status_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        setStatus(status);
+    }
+
     public void setStatus(int status){
-        if(status==0 && !SQLiteDBFileManager.doesLocalDBExists()){
+        if(status!=3 && !SQLiteDBFileManager.doesLocalDBExists()){
             status = 2;
         }
         this.status = status;
@@ -248,6 +311,9 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 status_value.setText(R.string.status_connection_problem);
                 status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                 break;
+        }
+        if(!Settings.isOfflineMode()){
+            status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         }
     }
 
@@ -308,6 +374,15 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 }
                 return;
             }
+        }
+    }
+
+    private void showInformationToast(){
+        if(status==4){
+            Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+        }
+        else if(!Settings.isOfflineMode()){
+            Toast.makeText(getActivity(), getResources().getString(R.string.unavailable_in_online), Toast.LENGTH_LONG).show();
         }
     }
 }

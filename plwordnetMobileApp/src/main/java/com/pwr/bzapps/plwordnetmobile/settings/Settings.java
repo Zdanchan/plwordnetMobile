@@ -28,7 +28,7 @@ public class Settings {
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
     public static final String FILE_NAME= "plwordnet";
-    public static final String[] POSSIBLE_DB_LANGS = {"polish","english", "all"};
+    public static final String[] POSSIBLE_DB_LANGS = {"all", "polish", "english" };
 
 
 
@@ -136,7 +136,7 @@ public class Settings {
         if(historyList.contains(entry.toLowerCase())){
             historyList.remove(historyList.indexOf(entry.toLowerCase()));
         }
-        historyList.addFirst(entry.toLowerCase());
+        historyList.addFirst(entry.toLowerCase().trim());
 
         if(historyList.size()>=80){
             historyList.remove(historyList.size()-1);

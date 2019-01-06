@@ -48,7 +48,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa" +
-            " WHERE sa.id>=:begin AND sa.id<:end", nativeQuery = true)
+            " WHERE sa.sense_id>=:begin AND sa.sense_id<:end", nativeQuery = true)
     public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
@@ -61,7 +61,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)" +
-            " AND sense_id.id>=:begin AND sense_id.id<:end", nativeQuery = true)
+            " AND sa.sense_id>=:begin AND sa.sense_id<:end", nativeQuery = true)
     public List<String> findAllForSensesAndParseStringBatch(@Param("sense_ids") Integer[] sense_ids, @Param("begin") Integer begin, @Param("end") Integer end);
     @Query(value = "SELECT MAX(sense_id) FROM sense_attributes", nativeQuery = true)
     public Integer getMaxIndex();

@@ -18,12 +18,14 @@ import android.widget.RelativeLayout;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.MainActivity;
 import com.pwr.bzapps.plwordnetmobile.language.LanguageManager;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public abstract class BackButtonActivity extends AppCompatActivity{
 
     protected Toolbar toolbarMain;
     protected ActionBar actionbar;
     protected ImageView toolbarAppIcon;
+    protected String curr_language;
 
     protected BackButtonActivity(){
 
@@ -33,7 +35,7 @@ public abstract class BackButtonActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toolbarMain = findViewById(R.id.main_toolbar);
-
+        curr_language = Settings.getLocaleName();
         //setting toolbar
         toolbarMain.setTitle("");
         setSupportActionBar(toolbarMain);

@@ -68,6 +68,14 @@
     <string name="developers_label">Developers</string>
     <string name="mobile_developers_label">Developers of \'plWordNet GO!\'</string>
     <!---->
+    <!--FAQ-->
+    <string name="q_what_is_wordnet">What is plWordNet?</string>
+    <string name="a_what_is_wordnet">plWordNet is a relational lexico-semantic dictionary which reflects the lexical system of the Polish language. plWN currently contains 191 000 nouns, verbs, adjectives, and adverbs, 285 000 word senses, and over 600 000 relations. It is now the largest wordnet in the world and is still growing.</string>
+    <string name="q_what_is_thisapp">What is \'plWordNet GO!\'?</string>
+    <string name="a_what_is_thisapp">This specialized mobile application provides access to plWordNet contents, allowing to search senses for words and browse through its relations, while being online and offline. Also provides special graph visualization of wordnet relations (only online), which until this moment was only available through plWordNet desktop and web applications.</string>
+    <string name="q_what_for">What can I use it for?</string>
+    <string name="a_what_for">Among plWordNet\'s numerous applications there is its use as a Polish-English and English-Polish dictionary -- the effect of mapping onto Princeton WordNet (the first and for many years the largest wordnet in the world). plWordNet is also an important resource in natural language processing and in artificial intelligence research. For example, it is used by Google Translate for the purpose of machine translation.</string>
+    <!---->
     <!--Emotional markedness types-->
     <string name="ambiguous">Ambiguous</string>
     <string name="weak_negative">Weak negative</string>
@@ -114,6 +122,7 @@
     <string name="no_db_selected">No dictionary selected</string>
     <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
     <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
+    <string name="unavailable_in_online">Unavailable in online mode</string>
     <!---->
     <!--ApplicationLocalisedStrings-->
     <string name="als_1">verb</string>

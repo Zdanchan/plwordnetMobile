@@ -13,6 +13,7 @@ public class DownloadReceiver extends ResultReceiver {
     private SettingsLocalDatabaseFragment settingsLocalDatabaseFragment;
     private ProgressBar progressBar;
     private static DownloadReceiver instance = null;
+    private boolean isRunning = false;
 
     private DownloadReceiver(Handler handler, ProgressBar progressBar, SettingsLocalDatabaseFragment settingsLocalDatabaseFragment) {
         super(handler);
@@ -35,12 +36,19 @@ public class DownloadReceiver extends ResultReceiver {
         return instance!=null;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
         super.onReceiveResult(resultCode, resultData);
         if (resultCode == DownloadService.UPDATE_PROGRESS) {
             int progress = resultData.getInt("progress");
             int status = resultData.getInt("status", -1);
+            if(progress < 100){
+                isRunning = true;
+            }
             if(settingsLocalDatabaseFragment.areButtonsEnabled()){
                 settingsLocalDatabaseFragment.disableButtons();
             }
@@ -53,6 +61,7 @@ public class DownloadReceiver extends ResultReceiver {
             if(progress == 100){
                 settingsLocalDatabaseFragment.stopSyncAction();
                 settingsLocalDatabaseFragment.setStatus(0);
+                isRunning = false;
             }
             if(status == 5){
                 settingsLocalDatabaseFragment.setStatus(5);

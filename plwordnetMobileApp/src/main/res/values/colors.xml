@@ -39,7 +39,7 @@
     <color name="colorGraphButton_focused">#9e1717</color>
     <color name="colorGraphButton_pressed">#6e0000</color>
     <color name="colorSettingsIcon">#404040</color>
-    <color name="colorSeparator">#AAAAAA</color>
+    <color name="colorSeparator">#BBBBBB</color>
     <color name="colorSeparator2">#CCCCCC</color>
     <color name="colorUpToDate">#00AA00</color>
     <color name="colorNeedsUpdate">#D8C12D</color>
@@ -48,5 +48,6 @@
     <color name="colorSynchronizing">#555555</color>
     <color name="colorInactive">#AAAAAA</color>
     <color name="colorTextInactive">#666666</color>
+    <color name="colorFAQQuestionBackground">#666666</color>
     <color name="alpha">#00FFFFFF</color>
 </resources>
