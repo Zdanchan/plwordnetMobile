@@ -17,7 +17,6 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
     private SettingsLocalDatabaseFragment settingsLocalDatabaseFragment;
     private SettingsVisualFragment settingsVisualFragment;
     private SettingsHistoryAndBookmarksFragment settingsHistoryAndBookmarksFragment;
-    private RelativeLayout local_database, visual, history_and_bookmarks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +39,12 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
 
     public void onBackPressed() {
         Settings.saveSettings(getApplication());
-        if(!"none".equals(Settings.getDbType()))
-            SQLiteConnector.reloadInstance(getApplicationContext());
         if (settingsCategoriesFragment != null && settingsCategoriesFragment.isVisible()) {
+            if(!"none".equals(Settings.getDbType()))
+                SQLiteConnector.reloadInstance(getApplicationContext());
+            else{
+                Settings.setOfflineMode(false);
+            }
             super.onBackPressed();
         }
         else if (settingsLocalDatabaseFragment != null && settingsLocalDatabaseFragment.isVisible()) {
@@ -58,7 +60,7 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
                     .replace(R.id.settings_fragment_container, settingsCategoriesFragment, "SettingsCategoriesFragment").commit();
         }
         else {
-            //Whatever
+
         }
 
     }
