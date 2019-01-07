@@ -77,6 +77,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             public void onClick(View view) {
                 if(buttons_enabled) {
                     polish_checkbox.setChecked(!polish_checkbox.isChecked());
+                    saveCheckedDictionaries();
+                    refreshStatus();
                 }
                 else {
                     showInformationToast();
@@ -88,6 +90,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             public void onClick(View view) {
                 if(buttons_enabled){
                     english_checkbox.setChecked(!english_checkbox.isChecked());
+                    saveCheckedDictionaries();
+                    refreshStatus();
                 }
                 else {
                     showInformationToast();
@@ -118,11 +122,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(buttons_enabled) {
-                    checkLocalSQLiteDBWithServerTask =
-                            new CheckLocalSQLiteDBWithServerTask(SettingsLocalDatabaseFragment.this,
-                                    getActivity().getApplicationContext());
-                    setStatus(3);
-                    checkLocalSQLiteDBWithServerTask.execute(saveCheckedDictionaries());
+                    refreshStatus();
                 }
                 else {
                     showInformationToast();
@@ -160,14 +160,18 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             }
         }
         else{
-            checkLocalSQLiteDBWithServerTask =
-                    new CheckLocalSQLiteDBWithServerTask(this, getActivity().getApplicationContext());
-            setStatus(3);
-            checkLocalSQLiteDBWithServerTask.execute(Settings.getDbType());
+            refreshStatus();
         }
 
         return view;
 
+    }
+
+    public void refreshStatus(){
+        checkLocalSQLiteDBWithServerTask =
+                new CheckLocalSQLiteDBWithServerTask(this, getActivity().getApplicationContext());
+        setStatus(3);
+        checkLocalSQLiteDBWithServerTask.execute(Settings.getDbType());
     }
 
     public void startSyncAction(){
@@ -194,8 +198,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
     private void synchronizeLocalDB(){
         String local_db_langs = saveCheckedDictionaries();
         Settings.setDbType(local_db_langs);
-        if(!local_db_langs.equals("none")) {
-            if (status != 0) {
+        if(!local_db_langs.equals(Settings.POSSIBLE_DB_LANGS[0])) {
+            if (status == 1 || status == 2) {
                 startSyncAction();
                 Intent intent = new Intent(getActivity(), DownloadService.class);
                 intent.putExtra("db_type", Settings.getDbType());
@@ -319,29 +323,29 @@ public class SettingsLocalDatabaseFragment extends Fragment {
 
     private void loadCheckedDictionaries(){
         String db_type = Settings.getDbType();
-        if(db_type.equals(Settings.POSSIBLE_DB_LANGS[2])){
+        if(db_type.equals(Settings.POSSIBLE_DB_LANGS[1])){
             polish_checkbox.setChecked(true);
             english_checkbox.setChecked(true);
         }
-        else if(db_type.equals(Settings.POSSIBLE_DB_LANGS[0])){
+        else if(db_type.equals(Settings.POSSIBLE_DB_LANGS[2])){
             polish_checkbox.setChecked(true);
         }
-        else if(db_type.equals(Settings.POSSIBLE_DB_LANGS[1])){
+        else if(db_type.equals(Settings.POSSIBLE_DB_LANGS[3])){
             english_checkbox.setChecked(true);
         }
     }
 
     private String saveCheckedDictionaries(){
         if(polish_checkbox.isChecked() && english_checkbox.isChecked() ){
-            return Settings.POSSIBLE_DB_LANGS[2];
+            return Settings.setDbType(Settings.POSSIBLE_DB_LANGS[1]);
         }
         else if(polish_checkbox.isChecked()){
-            return Settings.POSSIBLE_DB_LANGS[0];
+            return Settings.setDbType(Settings.POSSIBLE_DB_LANGS[2]);
         }
         else if(english_checkbox.isChecked() ){
-            return Settings.POSSIBLE_DB_LANGS[1];
+            return Settings.setDbType(Settings.POSSIBLE_DB_LANGS[3]);
         }
-        return "none";
+        return Settings.setDbType(Settings.POSSIBLE_DB_LANGS[0]);
     }
 
     private boolean requestPermissions(){

@@ -160,7 +160,7 @@ public class ConnectionProvider{
     public Long getSQLiteLastUpdateOnServer(String db_type){
         try {
             
-            String url = context.getString(R.string.spring_interface_address) + "db_controller/get_SQLite_last_update?db_type=" + db_type;
+            String url = context.getString(R.string.spring_interface_address) + "/db_controller/get_SQLite_last_update?db_type=" + db_type;
             
             RestTemplate restTemplate = new RestTemplate();
             
