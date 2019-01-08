@@ -291,6 +291,8 @@ public class DBHelperComponent {
                 return ((List<String>)synsetExampleRepository.findAllForSynsetAttributesAndParseString(ids));
             case "SynsetRelationEntity":
                 return ((List<String>)synsetRelationRepository.findAllForSynsetsAndParseString(ids));
+            case "EmotionalAnnotationEntity":
+                return ((List<String>)emotionalAnnotationRepository.findAllForSenseIdsAndParseString(ids));
         }
         return null;
     }
@@ -314,6 +316,8 @@ public class DBHelperComponent {
                 return ((List<String>)synsetExampleRepository.findAllForSynsetAttributesAndParseStringBatch(ids, begin, end));
             case "SynsetRelationEntity":
                 return ((List<String>)synsetRelationRepository.findAllForSynsetsAndParseStringBatch(ids, begin, end));
+            case "EmotionalAnnotationEntity":
+                return ((List<String>)emotionalAnnotationRepository.findAllForSenseIdsAndParseStringBatch(ids, begin, end));
         }
         return null;
     }
@@ -385,7 +389,8 @@ public class DBHelperComponent {
                 || clazz.getSimpleName().equals("SenseExampleEntity")
                 || clazz.getSimpleName().equals("SenseAttributeEntity")
                 || clazz.getSimpleName().equals("SynsetExampleEntity")
-                || clazz.getSimpleName().equals("SynsetAttributeEntity") ){
+                || clazz.getSimpleName().equals("SynsetAttributeEntity")
+                || clazz.getSimpleName().equals("EmotionalAnnotationEntity") ){
             query = query.replaceAll("####","<\'>"); //had to replace every '"' simbol to be able to properly insert data into SQLite db
         }
         entities.clear();

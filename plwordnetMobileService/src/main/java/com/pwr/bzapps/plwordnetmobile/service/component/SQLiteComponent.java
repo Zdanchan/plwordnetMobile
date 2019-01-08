@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -197,7 +199,7 @@ public class SQLiteComponent {
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0], lexicons), classes[0]));
                 else{
                     int max_index = helper.getMaxIndexForEntity(classes[0]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
                         executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[0],
                                 lexicons, ind, ind+batch_size), classes[0]));
                     }
@@ -212,10 +214,13 @@ public class SQLiteComponent {
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synsets), classes[1]));
                 else{
+                    Arrays.sort(synsets);
                     int max_index = helper.getMaxIndexForEntity(classes[1]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1],
-                                synsets, ind, ind+batch_size), classes[1]));
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
+                        Integer[] batch_synsets = getIdsInRange(synsets,ind, ind+batch_size);
+                        if(batch_synsets.length>0)
+                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1],
+                                    batch_synsets, ind, ind+batch_size), classes[1]));
                     }
                 }
             }
@@ -224,15 +229,16 @@ public class SQLiteComponent {
             }
             if(isTableEmpty(db_path,classes[2])){
                 log.info("Inserting data for " + classes[2].getSimpleName());
-                Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
-                Integer[] synset_attributes = helper.getIdsOfSynsetAttributesByLanguage(synsets);
+                Integer[] synset_attributes = helper.getIdsOfSynsetsByLanguage(lexicons);
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synset_attributes), classes[2]));
                 else{
                     int max_index = helper.getMaxIndexForEntity(classes[2]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2],
-                                synset_attributes, ind, ind+batch_size), classes[2]));
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
+                        Integer[] batch_synset_attributes = getIdsInRange(synset_attributes,ind, ind+batch_size);
+                        if(batch_synset_attributes.length>0)
+                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2],
+                                    batch_synset_attributes, ind, ind+batch_size), classes[2]));
                     }
                 }
             }
@@ -245,8 +251,8 @@ public class SQLiteComponent {
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], synsets), classes[3]));
                 else{
-                    int max_index = helper.getMaxIndexForEntity(classes[3]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                    int max_index = helper.getMaxIndexForEntity(SenseEntity.class);
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
                         executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3],
                                 synsets, ind, ind+batch_size), classes[3]));
                     }
@@ -261,7 +267,7 @@ public class SQLiteComponent {
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4], lexicons), classes[4]));
                 else{
                     int max_index = helper.getMaxIndexForEntity(classes[4]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
                         executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[4],
                                 lexicons, ind, ind+batch_size), classes[4]));
                     }
@@ -276,10 +282,13 @@ public class SQLiteComponent {
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[3]));
                 else{
+                    Arrays.sort(senses);
                     int max_index = helper.getMaxIndexForEntity(classes[5]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
-                                senses, ind, ind+batch_size), classes[5]));
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
+                        Integer[] batch_senses = getIdsInRange(senses,ind, ind+batch_size);
+                        if(batch_senses.length>0)
+                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
+                                    batch_senses, ind, ind+batch_size), classes[5]));
                     }
                 }
             }
@@ -288,15 +297,17 @@ public class SQLiteComponent {
             }
             if(isTableEmpty(db_path,classes[6])){
                 log.info("Inserting data for " + classes[6].getSimpleName());
-                Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                Integer[] sense_attributes = helper.getIdsOfSenseAttributesByLanguage(senses);
+                Integer[] sense_attributes = helper.getIdsOfSensesByLanguage(lexicons);
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6], sense_attributes), classes[6]));
                 else{
+                    Arrays.sort(sense_attributes);
                     int max_index = helper.getMaxIndexForEntity(classes[6]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6],
-                                sense_attributes, ind, ind+batch_size), classes[6]));
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
+                        Integer[] batch_sense_attributes = getIdsInRange(sense_attributes,ind, ind+batch_size);
+                        if(batch_sense_attributes.length>0)
+                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6],
+                                    batch_sense_attributes, ind, ind+batch_size), classes[6]));
                     }
                 }
             }
@@ -309,12 +320,15 @@ public class SQLiteComponent {
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7], senses), classes[7]));
                 else{
-                    int max_index = helper.getMaxIndexForEntity(classes[7]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
+                    int max_index = helper.getMaxIndexForEntity(SynsetEntity.class);
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
                         executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7],
                                 senses, ind, ind+batch_size), classes[7]));
                     }
                 }
+            }
+            else{
+                log.info("Table already filled, skipping insert for " + classes[7].getSimpleName());
             }
             if(isTableEmpty(db_path,classes[8])){
                 log.info("Inserting data for " + classes[8].getSimpleName());
@@ -322,10 +336,13 @@ public class SQLiteComponent {
                 if(batch_size==-1)
                     executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8], senses), classes[8]));
                 else{
-                    int max_index = helper.getMaxIndexForEntity(classes[8]);
-                    for(int ind=0; ind<max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8],
-                                senses, ind, ind+batch_size), classes[8]));
+                    Arrays.sort(senses);
+                    int max_index = helper.getMaxIndexForEntity(SenseEntity.class); //to fast things up ranges are calculated over sense_id
+                    for(int ind=0; ind<=max_index; ind+=batch_size) {
+                        Integer[] batch_senses = getIdsInRange(senses,ind, ind+batch_size);
+                        if(batch_senses.length>0)
+                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8],
+                                    batch_senses, ind, ind+batch_size), classes[8]));
                     }
                 }
             }
@@ -340,6 +357,20 @@ public class SQLiteComponent {
             //}
         }
         log.info("Finished SQLite db " + language + " file generation");
+    }
+
+    private Integer[] getIdsInRange(Integer[] array, int begin, int end){
+        List<Integer> range = new LinkedList<Integer>();
+        int iterator = 0;
+        int curr_val = array[0].intValue();
+        while(curr_val<end && iterator<array.length){
+            curr_val = array[iterator].intValue();
+            if(curr_val>=begin){
+                range.add(array[iterator]);
+            }
+            iterator++;
+        }
+        return range.toArray(new Integer[0]);
     }
 
     private Connection connectToDatabaseFile(String fileName) {
