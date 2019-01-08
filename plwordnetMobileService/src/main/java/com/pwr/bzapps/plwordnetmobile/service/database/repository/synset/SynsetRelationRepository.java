@@ -46,6 +46,7 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             ")FROM synset_relation sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)" +
             " AND sr.id>=:begin AND sr.id<:end", nativeQuery = true)
     public List<String> findAllForSynsetsAndParseStringBatch(@Param("synset_ids") Integer[] synset_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+
     @Query(value = "SELECT MAX(id) FROM synset_relation", nativeQuery = true)
     public Integer getMaxIndex();
 }

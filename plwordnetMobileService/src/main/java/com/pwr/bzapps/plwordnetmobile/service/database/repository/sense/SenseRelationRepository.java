@@ -49,6 +49,7 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             ")FROM sense_relation sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)" +
             " AND sr.id>=:begin AND sr.id<:end", nativeQuery = true)
     public List<String> findAllForSensesAndParseStringBatch(@Param("sense_ids") Integer[] sense_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+
     @Query(value = "SELECT MAX(id) FROM sense_relation", nativeQuery = true)
     public Integer getMaxIndex();
 }
