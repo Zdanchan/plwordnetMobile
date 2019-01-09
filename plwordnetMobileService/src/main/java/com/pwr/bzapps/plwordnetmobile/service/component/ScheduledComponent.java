@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.service.component;
 
 import com.pwr.bzapps.plwordnetmobile.service.advisor.Advisor;
+import com.pwr.bzapps.plwordnetmobile.service.configuration.ConfigurationReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class ScheduledComponent {
             return;
         }
         if(!Advisor.isQuery_generator_processing()){
+            sqLiteComponent.removeTMPfiles();
             ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
             ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
             Advisor.setQuery_generator_processing(true);
@@ -35,7 +37,8 @@ public class ScheduledComponent {
                 @Override
                 public void run() {
                     try{
-                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDB(languages);
+                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(ConfigurationReader.readAvailableLanguagePacks(),
+                                ConfigurationReader.getMaxBatchSize());
                         log.info("SQLite databases are stored and up to date");
                     }catch (Exception e){
                         log.error("Exception during SQLite databases generation: ", e);

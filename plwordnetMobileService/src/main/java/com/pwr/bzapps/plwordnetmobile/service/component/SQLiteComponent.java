@@ -1,5 +1,6 @@
 package com.pwr.bzapps.plwordnetmobile.service.component;
 
+import com.pwr.bzapps.plwordnetmobile.service.configuration.ConfigurationReader;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DictionaryEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DomainEntity;
@@ -51,22 +52,32 @@ public class SQLiteComponent {
     public void dumpSQLDBContentIntoSQLiteDB(String[] languages){
         String[] files = new String[languages.length+1];
         for(int i=0; i<languages.length; i++){
-            dumpLanuagePackSQLiteDB(languages[i]);
-            files[i]= FILENAME_BASE + "_" + languages[i] + ".db";
+            if("all".equals(languages[i])){
+                dumpFullSQLiteDB();
+                files[files.length-1]= FILENAME_BASE + ".db";
+            }
+            else {
+                dumpLanuagePackSQLiteDB(languages[i]);
+                files[i] = FILENAME_BASE + "_" + languages[i] + ".db";
+            }
         }
-        dumpFullSQLiteDB();
-        files[files.length-1]= FILENAME_BASE + ".db";
+
         migrateDBFilesFromTMP(files);
     }
 
     public void dumpSQLDBContentIntoSQLiteDBInBatches(String[] languages, int batch_size){
         String[] files = new String[languages.length+1];
         for(int i=0; i<languages.length; i++){
-            dumpLanuagePackSQLiteDB(languages[i], batch_size);
-            files[i]= FILENAME_BASE + "_" + languages[i] + ".db";
+            if("all".equals(languages[i])){
+                dumpFullSQLiteDB(batch_size);
+                files[files.length-1]= FILENAME_BASE + ".db";
+            }
+            else{
+                dumpLanuagePackSQLiteDB(languages[i], batch_size);
+                files[i]= FILENAME_BASE + "_" + languages[i] + ".db";
+            }
         }
-        dumpFullSQLiteDB(batch_size);
-        files[files.length-1]= FILENAME_BASE + ".db";
+
         migrateDBFilesFromTMP(files);
     }
 
@@ -211,16 +222,18 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[1])){
                 log.info("Inserting data for " + classes[1].getSimpleName());
                 Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synsets), classes[1]));
-                else{
-                    Arrays.sort(synsets);
-                    int max_index = helper.getMaxIndexForEntity(classes[1]);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        Integer[] batch_synsets = getIdsInRange(synsets,ind, ind+batch_size);
-                        if(batch_synsets.length>0)
-                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1],
-                                    batch_synsets, ind, ind+batch_size), classes[1]));
+                if(synsets.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1], synsets), classes[1]));
+                    else {
+                        Arrays.sort(synsets);
+                        int max_index = helper.getMaxIndexForEntity(classes[1]);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Integer[] batch_synsets = getIdsInRange(synsets, ind, ind + batch_size);
+                            if (batch_synsets.length > 0)
+                                executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[1],
+                                        batch_synsets, ind, ind + batch_size), classes[1]));
+                        }
                     }
                 }
             }
@@ -230,15 +243,17 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[2])){
                 log.info("Inserting data for " + classes[2].getSimpleName());
                 Integer[] synset_attributes = helper.getIdsOfSynsetsByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synset_attributes), classes[2]));
-                else{
-                    int max_index = helper.getMaxIndexForEntity(classes[2]);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        Integer[] batch_synset_attributes = getIdsInRange(synset_attributes,ind, ind+batch_size);
-                        if(batch_synset_attributes.length>0)
-                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2],
-                                    batch_synset_attributes, ind, ind+batch_size), classes[2]));
+                if(synset_attributes.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2], synset_attributes), classes[2]));
+                    else {
+                        int max_index = helper.getMaxIndexForEntity(classes[2]);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Integer[] batch_synset_attributes = getIdsInRange(synset_attributes, ind, ind + batch_size);
+                            if (batch_synset_attributes.length > 0)
+                                executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[2],
+                                        batch_synset_attributes, ind, ind + batch_size), classes[2]));
+                        }
                     }
                 }
             }
@@ -248,13 +263,15 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[3])){
                 log.info("Inserting data for " + classes[3].getSimpleName());
                 Integer[] synsets = helper.getIdsOfSynsetsByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], synsets), classes[3]));
-                else{
-                    int max_index = helper.getMaxIndexForEntity(SenseEntity.class);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3],
-                                synsets, ind, ind+batch_size), classes[3]));
+                if(synsets.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3], synsets), classes[3]));
+                    else {
+                        int max_index = helper.getMaxIndexForEntity(SenseEntity.class);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[3],
+                                    synsets, ind, ind + batch_size), classes[3]));
+                        }
                     }
                 }
             }
@@ -279,16 +296,18 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[5])){
                 log.info("Inserting data for " + classes[5].getSimpleName());
                 Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[3]));
-                else{
-                    Arrays.sort(senses);
-                    int max_index = helper.getMaxIndexForEntity(classes[5]);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        Integer[] batch_senses = getIdsInRange(senses,ind, ind+batch_size);
-                        if(batch_senses.length>0)
-                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
-                                    batch_senses, ind, ind+batch_size), classes[5]));
+                if(senses.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5], senses), classes[3]));
+                    else {
+                        Arrays.sort(senses);
+                        int max_index = helper.getMaxIndexForEntity(classes[5]);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Integer[] batch_senses = getIdsInRange(senses, ind, ind + batch_size);
+                            if (batch_senses.length > 0)
+                                executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[5],
+                                        batch_senses, ind, ind + batch_size), classes[5]));
+                        }
                     }
                 }
             }
@@ -298,16 +317,18 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[6])){
                 log.info("Inserting data for " + classes[6].getSimpleName());
                 Integer[] sense_attributes = helper.getIdsOfSensesByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6], sense_attributes), classes[6]));
-                else{
-                    Arrays.sort(sense_attributes);
-                    int max_index = helper.getMaxIndexForEntity(classes[6]);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        Integer[] batch_sense_attributes = getIdsInRange(sense_attributes,ind, ind+batch_size);
-                        if(batch_sense_attributes.length>0)
-                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6],
-                                    batch_sense_attributes, ind, ind+batch_size), classes[6]));
+                if(sense_attributes.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6], sense_attributes), classes[6]));
+                    else {
+                        Arrays.sort(sense_attributes);
+                        int max_index = helper.getMaxIndexForEntity(classes[6]);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Integer[] batch_sense_attributes = getIdsInRange(sense_attributes, ind, ind + batch_size);
+                            if (batch_sense_attributes.length > 0)
+                                executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[6],
+                                        batch_sense_attributes, ind, ind + batch_size), classes[6]));
+                        }
                     }
                 }
             }
@@ -317,13 +338,15 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[7])){
                 log.info("Inserting data for " + classes[7].getSimpleName());
                 Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7], senses), classes[7]));
-                else{
-                    int max_index = helper.getMaxIndexForEntity(SynsetEntity.class);
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7],
-                                senses, ind, ind+batch_size), classes[7]));
+                if(senses.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7], senses), classes[7]));
+                    else {
+                        int max_index = helper.getMaxIndexForEntity(SynsetEntity.class);
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[7],
+                                    senses, ind, ind + batch_size), classes[7]));
+                        }
                     }
                 }
             }
@@ -333,16 +356,18 @@ public class SQLiteComponent {
             if(isTableEmpty(db_path,classes[8])){
                 log.info("Inserting data for " + classes[8].getSimpleName());
                 Integer[] senses = helper.getIdsOfSensesByLanguage(lexicons);
-                if(batch_size==-1)
-                    executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8], senses), classes[8]));
-                else{
-                    Arrays.sort(senses);
-                    int max_index = helper.getMaxIndexForEntity(SenseEntity.class); //to fast things up ranges are calculated over sense_id
-                    for(int ind=0; ind<=max_index; ind+=batch_size) {
-                        Integer[] batch_senses = getIdsInRange(senses,ind, ind+batch_size);
-                        if(batch_senses.length>0)
-                            executeQuery(db_path,helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8],
-                                    batch_senses, ind, ind+batch_size), classes[8]));
+                if(senses.length>0) {
+                    if (batch_size == -1)
+                        executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8], senses), classes[8]));
+                    else {
+                        Arrays.sort(senses);
+                        int max_index = helper.getMaxIndexForEntity(SenseEntity.class); //to fast things up ranges are calculated over sense_id
+                        for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Integer[] batch_senses = getIdsInRange(senses, ind, ind + batch_size);
+                            if (batch_senses.length > 0)
+                                executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[8],
+                                        batch_senses, ind, ind + batch_size), classes[8]));
+                        }
                     }
                 }
             }
@@ -486,11 +511,13 @@ public class SQLiteComponent {
     }
 
     public void removeTMPfiles(){
-        String[] files = {
-                FILENAME_BASE + ".db",
-                FILENAME_BASE + "_polish.db",
-                FILENAME_BASE + "_english.db"
-        };
+        String[] files = ConfigurationReader.readAvailableLanguagePacks();
+        for(int i=0; i<files.length; i++){
+            if("all".equals(files[i]))
+                files[i] = FILENAME_BASE + ".db";
+            else
+                files[i] = FILENAME_BASE + "_" + files[i] + ".db";
+        }
         for(String fileName : files){
             File file =  new File(TMP_DIRECTORY + fileName);
             if(file.exists()){

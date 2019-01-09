@@ -4,6 +4,7 @@ import com.pwr.bzapps.plwordnetmobile.service.advisor.Advisor;
 import com.pwr.bzapps.plwordnetmobile.service.cache.StringCache;
 import com.pwr.bzapps.plwordnetmobile.service.component.DBHelperComponent;
 import com.pwr.bzapps.plwordnetmobile.service.component.SQLiteComponent;
+import com.pwr.bzapps.plwordnetmobile.service.configuration.ConfigurationReader;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DictionaryEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.DomainEntity;
@@ -103,7 +104,8 @@ public class DBController {
                 public void run() {
                     try{
                         //sqLiteComponent.dumpSQLDBContentIntoSQLiteDB(languages);
-                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(languages,QUERY_BATCH_SIZE);
+                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(ConfigurationReader.readAvailableLanguagePacks()
+                                ,ConfigurationReader.getMaxBatchSize());
                         log.info("SQLite databases are stored and up to date");
                     }catch (Exception e){
                         log.error("Exception during SQLite databases generation: ", e);
