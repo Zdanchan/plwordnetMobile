@@ -2,9 +2,21 @@
 <resources>
     <string-array
         name="locales_symbols">
-        <item>en_US</item>
+        <item>en_EN</item>
         <item>pl_PL</item>
+        <!--<item>de_DE</item>-->
+        <!--<item>pt_PT</item>-->
     </string-array>
-    <string name="locale_en_US" translatable="false">english</string>
+    <!--Language names-->
+    <string name="lang_en_EN" translatable="false">English</string>
+    <string name="lang_pl_PL" translatable="false">Polski</string>
+    <string name="lang_de_DE" translatable="false">Deutsche</string>
+    <string name="lang_pt_PT" translatable="false">Português</string>
+    <!---->
+    <!--Locale ID-->
+    <string name="locale_en_EN" translatable="false">english</string>
     <string name="locale_pl_PL" translatable="false">polish</string>
+    <string name="locale_de_DE" translatable="false">deutsche</string>
+    <string name="locale_pt_PT" translatable="false">portuguese</string>
+    <!---->
 </resources>

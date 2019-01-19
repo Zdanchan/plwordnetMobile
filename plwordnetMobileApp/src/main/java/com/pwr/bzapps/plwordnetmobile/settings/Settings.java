@@ -39,10 +39,7 @@ public class Settings {
         }
         localeName = preferences.getString("selected_locale", "default");
         if(localeName.equals("default")){
-            ArrayList<String> available = LanguageManager.getAvailableLanguages(context);
-            if(!available.contains(localeName)){
-                localeName = "en_US";
-            }
+            localeName = getMatchingLocale(Locale.getDefault().getLanguage());
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("selected_locale", localeName);
             editor.commit();
@@ -63,6 +60,16 @@ public class Settings {
         editor.commit();
     }
 
+    private static String getMatchingLocale(String id){
+        ArrayList<String> available = LanguageManager.getAvailableLanguages(context);
+        for(String locale_full_id : available){
+            if(locale_full_id.contains(id.toLowerCase() + "_")){
+                return locale_full_id;
+            }
+        }
+        return "en_EN";
+    }
+
     public static void refreshLocale(){
         setLocale(localeName);
     }
@@ -70,7 +77,7 @@ public class Settings {
     public static void setLocale(String localeName) {
         ArrayList<String> available = LanguageManager.getAvailableLanguages(context);
         if(!available.contains(localeName)){
-            localeName = "en_US";
+            localeName = "en_EN";
         }
         Settings.localeName = localeName;
         locale = new Locale(localeName.substring(0,localeName.indexOf('_')));

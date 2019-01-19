@@ -11,10 +11,6 @@
     <string name="settings">Ustawienia</string>
     <string name="about_us">O nas</string>
     <string name="faq">FAQ</string>
-        <!--Languages-->
-        <string name="lang_eng">Angielski</string>
-        <string name="lang_pol">Polski</string>
-    <!---->
     <!--Main activity strings-->
     <string name="search_text_edit">Wpisz słowo...</string>
     <string name="thanks_to">Projekt rozwijany jest\n dzięki wsparciu:</string>
@@ -106,8 +102,6 @@
     <string name="clear_history_toast">Cała historia wyszukiwania została usunięta</string>
     <string name="clear_bookmarks_toast">Wszystkie zakładki zostały usunięte</string>
     <string name="select_local_dictionaries">Wybierz lokalne słowniki:</string>
-    <string name="dictionary_polish">Polski</string>
-    <string name="dictionary_english">Angielski</string>
     <string name="sync_db">Synchronizuj bazy danych</string>
     <string name="status_db">Status: </string>
     <string name="status_up_to_date">Aktualna</string>

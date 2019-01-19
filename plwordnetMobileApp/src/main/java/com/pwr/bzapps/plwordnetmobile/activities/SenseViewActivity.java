@@ -184,7 +184,9 @@ public class SenseViewActivity extends DrawerMenuActivity {
                     Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
                     final SenseEntity sense = findRelatedBySynsetId(other);
                     ((TextView) cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
-                    ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(sense.getLexicon_id().getLanguage_name()));
+                    ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(
+                            getApplicationContext(),
+                            sense.getLexicon_id().getLanguage_name()));
                     String description = "";
                     if ("Polish".equals(sense.getLexicon_id().getLanguage_name())) {
                         description+=(SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
@@ -252,13 +254,12 @@ public class SenseViewActivity extends DrawerMenuActivity {
         sense_word.setText(entity.getWord_id().getWord() + "-" + entity.getVariant());
         sense_part_of_speech.setText(SenseAdapter.getPartOfSpeechString(entity.getPart_of_speech_id().getId(), getApplicationContext()).toUpperCase());
         String language = entity.getLexicon_id().getLanguage_name();
-        language_flag.setImageResource(SenseAdapter.getFlagResource(language));
-        if(!entity.getSense_attributes().isEmpty()) {
-            if ("Polish".equals(language)) {
-                sense_description.setText(((ArrayList<SenseAttributeEntity>) entity.getSense_attributes()).get(0).getDefinition());
-            } else {
-                sense_description.setText(((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
-            }
+        language_flag.setImageResource(SenseAdapter.getFlagResource(getApplicationContext(),language));
+        if(SenseAdapter.checkIfContainsSenseAttributes(entity)) {
+            sense_description.setText(((ArrayList<SenseAttributeEntity>) entity.getSense_attributes()).get(0).getDefinition());
+        }
+        else if(SenseAdapter.checkIfContainsSynsetAttributes(entity)){
+            sense_description.setText(((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
         }
         sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomain_id().getId()));
         sense_source.setText(entity.getLexicon_id().getName());
@@ -320,7 +321,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     private void setEmotionalAnnotations(final LinearLayout annotation_container){
         boolean no_emotions = true;
         final ImageView expander = ((ImageView) findViewById(R.id.drawer_icon));
-        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
+        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,2));
         //expander.setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
 
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
