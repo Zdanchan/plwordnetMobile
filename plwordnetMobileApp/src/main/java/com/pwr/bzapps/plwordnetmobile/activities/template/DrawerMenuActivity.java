@@ -78,9 +78,20 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
         mDrawerMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        RelativeLayout drawerHeader = (RelativeLayout)navigationView.getHeaderView(0);
+        drawerHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -121,6 +132,14 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
                     }
                 });
         toolbarAppIcon = findViewById(R.id.toolbar_app_icon);
+        toolbarAppIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         centerToolbarAppIcon();
     }
 
