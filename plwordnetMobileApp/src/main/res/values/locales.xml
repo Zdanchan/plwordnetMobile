@@ -16,7 +16,7 @@
     <!--Locale ID-->
     <string name="locale_en_EN" translatable="false">english</string>
     <string name="locale_pl_PL" translatable="false">polish</string>
-    <string name="locale_de_DE" translatable="false">deutsche</string>
+    <string name="locale_de_DE" translatable="false">german</string>
     <string name="locale_pt_PT" translatable="false">portuguese</string>
     <!---->
 </resources>
