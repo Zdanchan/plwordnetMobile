@@ -3,6 +3,26 @@
 
 *Project uses JavaScript graph visualization code created by plWordNet development team.
 
+# Project Overview
+Overview
+
+## dockerDeployer
+Overview
+
+## plwordnetMobileApp
+Overview
+
+## plwordnetMobileEntity
+Overview
+
+## plwordnetMobileService
+Overview
+
+## plwordnetMobileRoot
+Overview
+
+
+# How to things
 ## What should be done after adding new lexicon into database
 
 **1.** Lexicon language added into database must be named in english (to stay consistent in whole system) for example:
