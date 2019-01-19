@@ -36,7 +36,7 @@ public class LanguageAdapter extends ArrayAdapter<String>  {
         int flag_resource = context.getResources().getIdentifier("flag_" + name,"drawable",context.getPackageName());
         flag_resource = (flag_resource == 0 ? R.drawable.flag_unknown : flag_resource);
 
-        rowLanguageItem.language_text.setText(context.getResources().getString(context.getResources().getIdentifier(name,"string",context.getPackageName())));
+        rowLanguageItem.language_text.setText(context.getResources().getString(context.getResources().getIdentifier("lang_" + symbol,"string",context.getPackageName())));
         rowLanguageItem.language_icon.setImageResource(flag_resource);
         if(Settings.getLocaleName().equals(symbol)){
             rowLanguageItem.row.setBackgroundColor(context.getResources().getColor(R.color.colorHighlight,null));

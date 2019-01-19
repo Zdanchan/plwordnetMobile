@@ -414,18 +414,26 @@ public class DBHelperComponent {
     }
 
     public Integer[] getIdsOfSensesByLanguage(Integer[] lexicons){
+        if(lexicons.length==0)
+            return new Integer[0];
         return senseRepository.findIdsForLanguage(lexicons).toArray(new Integer[0]);
     }
 
     public Integer[] getIdsOfSynsetsByLanguage(Integer[] lexicons){
+        if(lexicons.length==0)
+            return new Integer[0];
         return synsetRepository.findIdsForLanguage(lexicons).toArray(new Integer[0]);
     }
 
     public Integer[] getIdsOfSenseAttributesByLanguage(Integer[] sense_ids){
+        if(sense_ids.length==0)
+            return new Integer[0];
         return senseAttributeRepository.findIdsMultipleBySenseId(sense_ids).toArray(new Integer[0]);
     }
 
     public Integer[] getIdsOfSynsetAttributesByLanguage(Integer[] synset_ids){
+        if(synset_ids.length==0)
+            return new Integer[0];
         return synsetAttributeRepository.findIdsMultipleBySynsetId(synset_ids).toArray(new Integer[0]);
     }
 }

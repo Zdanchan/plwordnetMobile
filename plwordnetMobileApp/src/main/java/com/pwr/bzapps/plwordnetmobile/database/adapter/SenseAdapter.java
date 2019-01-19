@@ -53,27 +53,49 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
         //rowResultItem.word_meaning_id.setText("-" + senseEntity.getVariant());
         rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPart_of_speech_id().getId()));
         String description = "";
-        if(senseEntity.getSense_attributes().size()>0 && ((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0)!=null){
-            if("Polish".equals(senseEntity.getLexicon_id().getLanguage_name())){
-                description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0).getDefinition());
-            }
-            else {
-                description = shortenDescription(((ArrayList<SynsetAttributeEntity>)(senseEntity.getSynset_id().getSynset_attributes())).get(0).getDefinition());
-            }
+        if(checkIfContainsSenseAttributes(senseEntity)) {
+            description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0).getDefinition());
+        }
+        else if(checkIfContainsSynsetAttributes(senseEntity)){
+            description = shortenDescription(((ArrayList<SynsetAttributeEntity>)(senseEntity.getSynset_id().getSynset_attributes())).get(0).getDefinition());
         }
         rowResultItem.short_description.setText(description);
-        rowResultItem.language_icon.setImageResource(getFlagResource(senseEntity.getLexicon_id().getLanguage_name()));
+        rowResultItem.language_icon.setImageResource(getFlagResource(context,senseEntity.getLexicon_id().getLanguage_name()));
         return convertView;
     }
 
-    public static int getFlagResource(String languageName){
-        switch (languageName) {
-            case "Polish":
-                return R.drawable.flag_polish;
-            case "English":
-                return R.drawable.flag_english;
+    public static boolean checkIfContainsSenseAttributes(SenseEntity entity){
+        if(!entity.getSense_attributes().isEmpty()){
+            if(((ArrayList<SenseAttributeEntity>)entity.getSense_attributes()).get(0).getDefinition() != null) {
+                if (!((ArrayList<SenseAttributeEntity>) entity.getSense_attributes()).get(0).getDefinition().isEmpty()) {
+                    return true;
+                }
+            }
         }
-        return R.drawable.flag_unknown;
+        return false;
+    }
+
+    public static boolean checkIfContainsSynsetAttributes(SenseEntity entity){
+        if(!entity.getSynset_id().getSynset_attributes().isEmpty()){
+            if(((ArrayList<SynsetAttributeEntity>)entity.getSynset_id().getSynset_attributes()).get(0).getDefinition() != null) {
+                if (!((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int getFlagResource(Context context, String languageName){
+        int flag_id = context.getResources().getIdentifier("flag_" + languageName.toLowerCase(),
+                "drawable",context.getPackageName());
+        //switch (languageName) {
+        //    case "Polish":
+        //        return R.drawable.flag_polish;
+        //    case "English":
+        //        return R.drawable.flag_english;
+        //}
+        return flag_id;
     }
 
     private String getPartOfSpeechString(Integer id){
