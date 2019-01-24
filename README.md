@@ -10,16 +10,16 @@ Overview
 Overview
 
 ## plwordnetMobileApp
-Overview
+Module contains source code of android "plWordNet GO!" application.
 
 ## plwordnetMobileEntity
-Overview
+Module supposed to be a bridge between Android and Spring application, integrating their Entity class implementations but due to unabbility to satisfy deppendencies on both sites it's depricated and marked for removal.
 
 ## plwordnetMobileService
-Overview
+Module contains source code of Spring application, which supposed to be launched on server and act as a communicator with MySQL database. Provides services necessary for Android app to retrive all needed data from database.
 
 ## plwordnetMobileRoot
-Overview
+Root module, ties up all mentioned above modules and builds them at with gradle build task.
 
 
 # How to things
