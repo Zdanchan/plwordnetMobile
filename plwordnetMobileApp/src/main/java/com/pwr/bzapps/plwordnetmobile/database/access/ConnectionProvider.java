@@ -85,6 +85,23 @@ public class ConnectionProvider{
         }
     }
 
+    public String getRelatedSensesForWord(String word, String language, Integer part_of_speech){
+        try {
+            String url = context.getString(R.string.spring_interface_address)
+                    + "/sense/findRelatedSensesByWordLanguageAndPartOfSpeech?word=" + word + "&language=" + language + "&part_of_speech=" + part_of_speech;
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+            String result = restTemplate.getForObject(url, String.class);
+
+            return result;
+        }catch(ResourceAccessException e){
+            return "ConnectionException";
+        }
+    }
+
     public String getSenseById(int id){
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findById?id=" + id;

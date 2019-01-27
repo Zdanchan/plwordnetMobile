@@ -30,7 +30,7 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
             resultHolder = new ArrayList<SenseEntity>(
                     (new SenseDAO()).findRelatedForWordAndLanguage(strings[0],strings[1]));
         else
-            result = ConnectionProvider.getInstance(context).getRelatedSensesForWord(strings[0],strings[1]);
+            result = ConnectionProvider.getInstance(context).getRelatedSensesForWord(strings[0],strings[1],Integer.parseInt(strings[2]));
         return result;
     }
 

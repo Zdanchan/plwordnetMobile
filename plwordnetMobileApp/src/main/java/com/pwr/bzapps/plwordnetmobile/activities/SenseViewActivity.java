@@ -99,7 +99,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
         retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
-            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord(), entity.getLexicon_id().getLanguage_name());
+            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext())
+                    .execute(entity.getWord_id().getWord(),
+                            entity.getLexicon_id().getLanguage_name(),
+                            entity.getPart_of_speech_id().getId() + "");
         }
         bookmark_button.setOnClickListener(new View.OnClickListener() {
             @Override

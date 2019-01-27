@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.service.database.repository.sense;
 
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.sense.SenseEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +12,10 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
 
     @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) LIKE CONCAT('%',LOWER(:word),'%')")
     public List<SenseEntity> findByWord(@Param("word") String word);
+
+    @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) LIKE CONCAT('%',LOWER(:word),'%')" +
+            "ORDER BY LENGTH(s.word_id.word), s.word_id.word, s.variant, s.lexicon_id.id, s.part_of_speech_id.id")
+    public List<SenseEntity> findByWord(@Param("word") String word, Pageable pageable);
 
     @Query("SELECT s FROM SenseEntity s WHERE synset_id.id = :id")
     public List<SenseEntity> findSynonymsBySynsetId(@Param("id") Integer id);
@@ -25,8 +30,14 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
     public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word);
 
     @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word) " +
-            "AND LOWER(lexicon_id.language_name) = LOWER(:language)")
+            "AND LOWER(lexicon_id.language_name) LIKE LOWER(:language)")
     public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word, @Param("language")String language);
+
+    @Query("SELECT s FROM SenseEntity s WHERE LOWER(word_id.word) = LOWER(:word) " +
+            "AND LOWER(lexicon_id.language_name) LIKE LOWER(:language) " +
+            "AND part_of_speech_id.id = :part_of_speech")
+    public List<SenseEntity> findRelatedSensesByWord(@Param("word") String word, @Param("language")String language,
+                                                     @Param("part_of_speech") Integer part_of_speech);
 
     @Query("SELECT s FROM SenseEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
     public List<SenseEntity> findAllForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
@@ -44,7 +55,7 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
             "IF(s.synset_id IS NULL,'null',s.synset_id),','," +
             "s.word_id,','," +
             "IF(s.status_id IS NULL,'null',s.status_id)" +
-            ")FROM sense s", nativeQuery = true)
+            ")FROM sense s ", nativeQuery = true)
     public List<String> findAllAndParseString();
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
@@ -85,6 +96,7 @@ public interface SenseRepository extends CrudRepository<SenseEntity, Integer> {
             ")FROM sense s WHERE s.lexicon_id  IN (:lexicon_ids)" +
             " AND s.id>=:begin AND s.id<:end", nativeQuery = true)
     public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+
     @Query(value = "SELECT MAX(id) FROM sense", nativeQuery = true)
     public Integer getMaxIndex();
 }

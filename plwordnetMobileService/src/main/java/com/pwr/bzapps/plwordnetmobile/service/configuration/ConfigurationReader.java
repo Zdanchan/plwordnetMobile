@@ -10,6 +10,7 @@ public class ConfigurationReader {
 
     static private Logger log = LoggerFactory.getLogger(ConfigurationReader.class);
 
+    static private int sense_query_result_limit = -1;
 
     static private String readConfigurationFile(){
         File conf_file = new File(CONF_PATH);
@@ -20,6 +21,8 @@ public class ConfigurationReader {
                 bw.write("conf.max_batch_size=1000;");
                 bw.newLine();
                 bw.write("conf.language_packs={all,polish,english};");
+                bw.newLine();
+                bw.write("conf.sense_query_result_limit=60; //requires service restart");
                 bw.newLine();
                 bw.flush();
                 bw.close();
@@ -48,7 +51,7 @@ public class ConfigurationReader {
 
     static public int getMaxBatchSize(){
         String conf = readConfigurationFile();
-        if(conf != null) {
+        if(conf != null && conf.indexOf("conf.max_batch_size")!=-1) {
             String line = conf.substring(conf.indexOf("conf.max_batch_size"));
             String value = line.substring(line.indexOf("=")+1, line.indexOf(";")).trim();
             return Integer.parseInt(value);
@@ -58,7 +61,7 @@ public class ConfigurationReader {
 
     static public String[] readAvailableLanguagePacks(){
         String conf = readConfigurationFile();
-        if(conf != null) {
+        if(conf != null && conf.indexOf("conf.language_packs")!=-1) {
             String line = conf.substring(conf.indexOf("conf.language_packs"));
             line = line.substring(0, line.indexOf(";"));
             String values = line.substring(line.indexOf("{")+1, line.indexOf("}"));
@@ -66,5 +69,19 @@ public class ConfigurationReader {
             return languages;
         }
         return new String[0];
+    }
+
+    static public int getSenseQueryResultLimit(){
+        if(sense_query_result_limit!=-1)
+            return sense_query_result_limit;
+        String conf = readConfigurationFile();
+        if(conf != null && conf.indexOf("conf.sense_query_result_limit")!=-1) {
+            String line = conf.substring(conf.indexOf("conf.sense_query_result_limit"));
+            String value = line.substring(line.indexOf("=")+1, line.indexOf(";")).trim();
+            sense_query_result_limit = Integer.parseInt(value);
+            return sense_query_result_limit;
+        }
+        sense_query_result_limit = 60;
+        return sense_query_result_limit;
     }
 }
