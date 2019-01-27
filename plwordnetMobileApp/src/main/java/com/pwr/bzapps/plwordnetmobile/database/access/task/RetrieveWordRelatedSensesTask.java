@@ -28,7 +28,7 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
         String result = null;
         if(Settings.isOfflineMode())
             resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findRelatedForWordAndLanguage(strings[0],strings[1]));
+                    (new SenseDAO()).findRelatedForWordLanguageAndPartOfSpeech(strings[0],strings[1],Integer.parseInt(strings[2])));
         else
             result = ConnectionProvider.getInstance(context).getRelatedSensesForWord(strings[0],strings[1],Integer.parseInt(strings[2]));
         return result;

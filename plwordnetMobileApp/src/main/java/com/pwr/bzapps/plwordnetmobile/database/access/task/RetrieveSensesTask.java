@@ -55,7 +55,7 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         }
         String result = null;
         if(Settings.isOfflineMode()) {
-            resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],50));
+            resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],Settings.RESULTS_LIMIT));
             Collections.sort((ArrayList<SenseEntity>) resultHolder);
         }
         else

@@ -19,12 +19,12 @@ public class Settings {
 
     private static Locale locale;
     private static String localeName;
-    private static int max_results_count = 50;
     private static boolean localeNeedsSync = false;
     private static boolean offlineMode = false;
     private static int app_files_location = 0;
     private static String sqlite_db_file_location;
     private static String db_type = "none";
+    public static int RESULTS_LIMIT = 60;
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
     public static final String FILE_NAME= "plwordnet";

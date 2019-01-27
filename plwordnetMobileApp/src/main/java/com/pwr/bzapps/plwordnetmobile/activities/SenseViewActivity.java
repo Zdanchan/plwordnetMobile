@@ -186,6 +186,8 @@ public class SenseViewActivity extends DrawerMenuActivity {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
                     Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
                     final SenseEntity sense = findRelatedBySynsetId(other);
+                    if(sense==null)
+                        continue;
                     ((TextView) cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
                     ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(
                             getApplicationContext(),
