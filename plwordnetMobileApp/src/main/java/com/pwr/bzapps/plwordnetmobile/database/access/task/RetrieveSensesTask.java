@@ -65,24 +65,25 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
 
     protected void onPostExecute(String result) {
         ArrayList<SenseEntity> results_list = null;
-        if(Settings.isOfflineMode())
+        if(Settings.isOfflineMode()) {
             results_list = (ArrayList<SenseEntity>) resultHolder;
+            if (((ArrayList<SenseEntity>) resultHolder).size()==0) {
+                if (message_view != null) {
+                    message_view.setText(context.getResources().getString(R.string.no_results));
+                }
+                return;
+            }
+        }
         else {
             if("ConnectionException".equals(result)){
                 if(message_view !=null){
                     message_view.setText(context.getResources().getString(R.string.no_connection));
-                }
-                if(searchResultsListActivity!=null){
-                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                 }
                 return;
             }
             else if("{\"content\":[]}".equals(result) || result==null){
                 if(message_view !=null){
                     message_view.setText(context.getResources().getString(R.string.no_results));
-                }
-                if(searchResultsListActivity!=null){
-                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                 }
                 return;
             }
