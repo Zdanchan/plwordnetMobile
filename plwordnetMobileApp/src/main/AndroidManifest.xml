@@ -44,7 +44,7 @@
             android:configChanges="layoutDirection|locale">
         </activity>
         <activity android:name=".activities.GraphBrowserActivity"
-            android:configChanges="locale">
+            android:configChanges="locale|layoutDirection|screenSize">
         </activity>
 
         <service android:name=".service.DownloadService"/>

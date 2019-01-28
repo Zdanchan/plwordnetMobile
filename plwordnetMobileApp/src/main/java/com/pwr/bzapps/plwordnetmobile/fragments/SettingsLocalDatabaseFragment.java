@@ -289,6 +289,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         if(status!=3 && !SQLiteDBFileManager.doesLocalDBExists()){
             status = 2;
         }
+        if(getActivity()==null)
+            return;
         this.status = status;
         switch (status){
             case 0:
