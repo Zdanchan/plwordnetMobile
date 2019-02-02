@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
@@ -26,17 +27,25 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
     @Override
     protected String doInBackground(String... strings) {
         String result = null;
-        if(Settings.isOfflineMode())
+        if(Settings.isOfflineMode()) {
+            if (!SQLiteDBFileManager.doesLocalDBExists())
+                return "NoLocalDatabase";
             resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findRelatedForWordLanguageAndPartOfSpeech(strings[0],strings[1],Integer.parseInt(strings[2])));
+                    (new SenseDAO()).findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Integer.parseInt(strings[2])));
+        }
         else
             result = ConnectionProvider.getInstance(context).getRelatedSensesForWord(strings[0],strings[1],Integer.parseInt(strings[2]));
         return result;
     }
 
     protected void onPostExecute(String result) {
-        if(Settings.isOfflineMode())
-            senseViewActivity.setWordRelatedSenses((ArrayList<SenseEntity>)resultHolder);
+        if(Settings.isOfflineMode()) {
+            if ("NoLocalDatabase".equals(result)) {
+                senseViewActivity.setWordRelatedSenses(new ArrayList<SenseEntity>());
+                return;
+            }
+            senseViewActivity.setWordRelatedSenses((ArrayList<SenseEntity>) resultHolder);
+        }
         else {
             if ("ConnectionException".equals(result)) {
 

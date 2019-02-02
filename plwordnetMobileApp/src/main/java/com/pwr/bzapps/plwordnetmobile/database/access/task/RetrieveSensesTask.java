@@ -9,6 +9,7 @@ import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.SearchResultsListActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
@@ -55,6 +56,8 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         }
         String result = null;
         if(Settings.isOfflineMode()) {
+            if(!SQLiteDBFileManager.doesLocalDBExists())
+                return "NoLocalDatabase";
             resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],Settings.RESULTS_LIMIT));
             Collections.sort((ArrayList<SenseEntity>) resultHolder);
         }
@@ -66,9 +69,17 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String result) {
         ArrayList<SenseEntity> results_list = null;
         if(Settings.isOfflineMode()) {
+            if ("NoLocalDatabase".equals(result)) {
+                if (message_view != null) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    message_view.setText(context.getResources().getString(R.string.no_local_database_installed));
+                }
+                return;
+            }
             results_list = (ArrayList<SenseEntity>) resultHolder;
             if (((ArrayList<SenseEntity>) resultHolder).size()==0) {
                 if (message_view != null) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_results));
                 }
                 return;
@@ -77,12 +88,14 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         else {
             if("ConnectionException".equals(result)){
                 if(message_view !=null){
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_connection));
                 }
                 return;
             }
             else if("{\"content\":[]}".equals(result) || result==null){
                 if(message_view !=null){
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_results));
                 }
                 return;

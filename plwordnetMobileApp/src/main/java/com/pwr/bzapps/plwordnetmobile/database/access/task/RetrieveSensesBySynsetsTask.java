@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
@@ -27,9 +28,12 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... strings) {
         String result = null;
-        if(Settings.isOfflineMode())
+        if(Settings.isOfflineMode()) {
+            if (!SQLiteDBFileManager.doesLocalDBExists())
+                return "NoLocalDatabase";
             resultHolder = new ArrayList<SenseEntity>(
                     (new SenseDAO()).findMultipleBySynsetIds(StringUtil.parseStringToIntegerArray(strings[0])));
+        }
         else
             result = ConnectionProvider.getInstance(context).getSensesBySynsetIds(strings[0]);
         return result;
@@ -37,6 +41,10 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
 
     protected void onPostExecute(String result) {
         if(Settings.isOfflineMode()){
+            if ("NoLocalDatabase".equals(result)) {
+                senseViewActivity.setRelated(new ArrayList<SenseEntity>());
+                return;
+            }
             if (senseViewActivity != null)
                 senseViewActivity.setRelated((ArrayList<SenseEntity>)resultHolder);
         }
