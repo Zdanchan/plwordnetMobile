@@ -97,7 +97,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/history_icon"
+                android:src="@drawable/ic_history"
                 android:tint="@color/colorSettingsIcon"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"/>

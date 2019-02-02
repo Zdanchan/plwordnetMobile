@@ -9,6 +9,7 @@
     <string name="bookmarks">Zakładki</string>
     <string name="change_language">Zmień język</string>
     <string name="settings">Ustawienia</string>
+    <string name="stats">Statystyki</string>
     <string name="about_us">O nas</string>
     <string name="faq">FAQ</string>
     <!--Main activity strings-->

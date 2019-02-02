@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -116,6 +117,15 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
                                 mDrawerMain.closeDrawer(GravityCompat.START);
                                 wentToNextActivity=true;
                                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                                return true;
+                            case R.id.nav_stats:
+                                mDrawerMain.closeDrawer(GravityCompat.START);
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                intent.setData(Uri.parse(getString(R.string.plwordnet_stats_link)));
+                                wentToNextActivity = true;
+                                startActivity(intent);
                                 return true;
                             case R.id.nav_about_us:
                                 mDrawerMain.closeDrawer(GravityCompat.START);

@@ -5,4 +5,5 @@
     <string name="pwr_link" translatable="false">http://pwr.edu.pl/</string>
     <string name="nekst_link" translatable="false">https://nekst.ipipan.waw.pl/</string>
     <string name="synat_link" translatable="false">http://synat.pl/</string>
+    <string name="plwordnet_stats_link" translatable="false">http://plwordnet.pwr.wroc.pl/wordnet/stats</string>
 </resources>
