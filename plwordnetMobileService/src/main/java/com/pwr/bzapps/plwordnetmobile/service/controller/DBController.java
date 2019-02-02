@@ -63,19 +63,19 @@ public class DBController {
     @Autowired
     private SQLiteComponent sqLiteComponent;
 
-    @GetMapping(path="/print_generated_files")
-    public @ResponseBody String printGeneratedFiles(){
-        String content = "generated files:\n";
-        File[] files = (new File(new File("").getAbsolutePath() + TMP_DIRECTORY)).listFiles();
-        for (File file : files){
-            String file_name = file.getAbsolutePath();
-            if(file_name.contains("/"))
-                content+=file_name.substring(file_name.lastIndexOf("/"))+"\n";
-            else
-                content+=file_name.substring(file_name.lastIndexOf("\\"))+"\n";
-        }
-        return content;
-    }
+    //@GetMapping(path="/print_generated_files")
+    //public @ResponseBody String printGeneratedFiles(){
+    //    String content = "generated files:\n";
+    //    File[] files = (new File(new File("").getAbsolutePath() + TMP_DIRECTORY)).listFiles();
+    //    for (File file : files){
+    //        String file_name = file.getAbsolutePath();
+    //        if(file_name.contains("/"))
+    //            content+=file_name.substring(file_name.lastIndexOf("/"))+"\n";
+    //        else
+    //            content+=file_name.substring(file_name.lastIndexOf("\\"))+"\n";
+    //    }
+    //    return content;
+    //}
 
     @GetMapping(path="/test_SQLite_files")
     public @ResponseBody String testSQLiteFiles(){
@@ -130,19 +130,19 @@ public class DBController {
         return "SQLite generator is currently off";
     }
 
-    @GetMapping(path="/remove_tmp_SQLite_files")
-    public @ResponseBody String removeTmpSQLiteFiles(){
-
-        String response = "";
-        if(!Advisor.isQuery_generator_processing()){
-            sqLiteComponent.removeTMPfiles();
-            response = "SQLite files removed";
-        }
-        else{
-            response = "SQLite generator is already running";
-        }
-        return response;
-    }
+    //@GetMapping(path="/remove_tmp_SQLite_files")
+    //public @ResponseBody String removeTmpSQLiteFiles(){
+//
+    //    String response = "";
+    //    if(!Advisor.isQuery_generator_processing()){
+    //        sqLiteComponent.removeTMPfiles();
+    //        response = "SQLite files removed";
+    //    }
+    //    else{
+    //        response = "SQLite generator is already running";
+    //    }
+    //    return response;
+    //}
 
     private Integer[] parseStringList(String[] strings){
         Integer[] integers = new Integer[strings.length];
