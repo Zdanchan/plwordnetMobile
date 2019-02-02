@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -58,8 +59,12 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         if(Settings.isOfflineMode()) {
             if(!SQLiteDBFileManager.doesLocalDBExists())
                 return "NoLocalDatabase";
-            resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],Settings.RESULTS_LIMIT));
-            Collections.sort((ArrayList<SenseEntity>) resultHolder);
+            try {
+                resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0], Settings.RESULTS_LIMIT));
+                Collections.sort((ArrayList<SenseEntity>) resultHolder);
+            }catch (SQLiteException e){
+                return "LocalDBException";
+            }
         }
         else
             result = ConnectionProvider.getInstance(context).getSensesForWord(strings[0]);
@@ -68,39 +73,36 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
 
     protected void onPostExecute(String result) {
         ArrayList<SenseEntity> results_list = null;
-        if(Settings.isOfflineMode()) {
-            if ("NoLocalDatabase".equals(result)) {
-                if (message_view != null) {
+        if(message_view !=null && searchResultsListActivity!=null) {
+            if (Settings.isOfflineMode()) {
+                if ("LocalDBException".equals(result)) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    searchResultsListActivity.showWarningPopup();
+                    return;
+                }
+                if ("NoLocalDatabase".equals(result)) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_local_database_installed));
+                    return;
                 }
-                return;
-            }
-            results_list = (ArrayList<SenseEntity>) resultHolder;
-            if (((ArrayList<SenseEntity>) resultHolder).size()==0) {
-                if (message_view != null) {
+                results_list = (ArrayList<SenseEntity>) resultHolder;
+                if (((ArrayList<SenseEntity>) resultHolder).size() == 0) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_results));
+                    return;
                 }
-                return;
-            }
-        }
-        else {
-            if("ConnectionException".equals(result)){
-                if(message_view !=null){
+            } else {
+                if ("ConnectionException".equals(result)) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_connection));
-                }
-                return;
-            }
-            else if("{\"content\":[]}".equals(result) || result==null){
-                if(message_view !=null){
+                    return;
+                } else if ("{\"content\":[]}".equals(result) || result == null) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_results));
+                    return;
                 }
-                return;
+                results_list = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
             }
-            results_list = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
         }
         //Collections.sort(results_list);
         adapter.getData().addAll(results_list);

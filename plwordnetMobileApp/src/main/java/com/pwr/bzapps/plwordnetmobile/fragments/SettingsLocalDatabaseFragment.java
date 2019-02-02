@@ -1,19 +1,23 @@
 package com.pwr.bzapps.plwordnetmobile.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.pwr.bzapps.plwordnetmobile.R;
+import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.activities.global.GlobalValues;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.adapter.SQLiteDictionaryAdapter;
@@ -34,7 +38,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
     private ProgressBar sync_progress;
     private ImageView sync_icon;
     private TextView status_value;
-    private boolean buttons_enabled;
+    private boolean buttons_enabled, isPopupUp = false;
     private int status;
     private SQLiteDictionaryAdapter adapter;
 
@@ -111,7 +115,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     status_value.setText(R.string.status_no_local_db);
                     status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                     setStatus(2);
-                    Toast.makeText(getActivity(), getResources().getString(R.string.remove_local_db_toast), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.remove_all_local_db_toast), Toast.LENGTH_LONG).show();
+                    adapter.notifyDataSetChanged();
                 }
                 else {
                     showInformationToast();
@@ -148,7 +153,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             packs_list.add(packs[i]);
         }
 
-        adapter = new SQLiteDictionaryAdapter(getActivity().getApplicationContext(),packs_list);
+        adapter = new SQLiteDictionaryAdapter(getActivity().getApplicationContext(),packs_list, this);
         for(int i=0; i<packs.length; i++){
             View view = adapter.getView(i);
             container.addView(view);
@@ -231,15 +236,20 @@ public class SettingsLocalDatabaseFragment extends Fragment {
     }
 
     public void enableButtons(){
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
         buttons_enabled = true;
         choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
         ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
+        adapter.setBackgroundsResource(outValue.resourceId);
         adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setIsEnabled(true);
         synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        synchronize_button.setBackgroundResource(outValue.resourceId);
         ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        remove_button.setBackgroundResource(outValue.resourceId);
         ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
     }
 
@@ -308,9 +318,39 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 status_value.setText(R.string.status_connection_problem);
                 status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                 break;
+            case 6:
+                status_value.setText(R.string.status_error);
+                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorError));
+                break;
         }
         if(!Settings.isOfflineMode()){
             status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        }
+    }
+
+    public void showWarningPopup(){
+        if(!isPopupUp) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.warning_popup, null);
+            Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView reason = (TextView) convertView.findViewById(R.id.reason);
+            title.setText(R.string.download_error_title);
+            reason.setText(R.string.download_error_content);
+            ok_button.setText(R.string.ok_text);
+            builder.setView(convertView);
+            final AlertDialog dialog = builder.create();
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            isPopupUp = true;
+            dialog.show();
+            ok_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isPopupUp = false;
+                    dialog.dismiss();
+                }
+            });
         }
     }
 
@@ -324,6 +364,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.acquired_permissions), Toast.LENGTH_LONG).show();
                 return true;
             } else {
                 ActivityCompat.requestPermissions(getActivity(),

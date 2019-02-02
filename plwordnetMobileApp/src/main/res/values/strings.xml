@@ -50,6 +50,8 @@
     <string name="no_local_database_installed">No local database installed</string>
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
+    <string name="local_db_error_title">Local database error</string>
+    <string name="local_db_error_content">Local database file might be corrupted. Please try to download it again, by removing old file through Settings menu and pressing Update.</string>
     <!---->
     <!--Bookmarks messages-->
     <string name="no_bookmarks">No bookmarks has been added yet</string>
@@ -209,7 +211,7 @@
     <string name="clear_bookmarks">Clear bookmarks</string>
     <string name="clear_history_toast">Whole history has been removed</string>
     <string name="clear_bookmarks_toast">All bookmarks has been removed</string>
-    <string name="select_local_dictionaries">Select local dictionaries:</string>
+    <string name="select_local_dictionaries">Select local dictionary:</string>
     <string name="sync_db">Update local database</string>
     <string name="status_db">Status: </string>
     <string name="status_up_to_date">Up to date</string>
@@ -218,12 +220,17 @@
     <string name="status_checking">Checking...</string>
     <string name="status_synchronizing">Updating</string>
     <string name="status_connection_problem">Connection problem</string>
-    <string name="remove_local_db">Remove local database</string>
+    <string name="status_error">Error during update</string>
+    <string name="remove_local_db">Remove local databases</string>
     <string name="remove_local_db_toast">Local database has been removed</string>
+    <string name="remove_all_local_db_toast">All local databases has been removed</string>
     <string name="sync_please_wait">Updating, please wait...</string>
     <string name="no_db_selected">No dictionary selected</string>
     <string name="requires_permissions">Action aborted because it requires read and write permissions</string>
     <string name="acquired_permissions">Permissions acquired, please synchronize again</string>
     <string name="unavailable_in_online">Unavailable in online mode</string>
+    <string name="ok_text">OK</string>
+    <string name="download_error_title">Update error</string>
+    <string name="download_error_content">An error occurred during local database update, please try again.</string>
     <!---->
 </resources>

@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
@@ -31,8 +32,12 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
         if(Settings.isOfflineMode()) {
             if (!SQLiteDBFileManager.doesLocalDBExists())
                 return "NoLocalDatabase";
-            resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findMultipleBySynsetIds(StringUtil.parseStringToIntegerArray(strings[0])));
+            try {
+                resultHolder = new ArrayList<SenseEntity>(
+                        (new SenseDAO()).findMultipleBySynsetIds(StringUtil.parseStringToIntegerArray(strings[0])));
+            }catch (SQLiteException e){
+            return "LocalDBException";
+            }
         }
         else
             result = ConnectionProvider.getInstance(context).getSensesBySynsetIds(strings[0]);
@@ -40,20 +45,24 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
     }
 
     protected void onPostExecute(String result) {
-        if(Settings.isOfflineMode()){
-            if ("NoLocalDatabase".equals(result)) {
-                senseViewActivity.setRelated(new ArrayList<SenseEntity>());
-                return;
-            }
-            if (senseViewActivity != null)
-                senseViewActivity.setRelated((ArrayList<SenseEntity>)resultHolder);
-        }
-        else {
-            if ("ConnectionException".equals(result)) {
+        if(senseViewActivity != null) {
+            if (Settings.isOfflineMode()) {
+                if ("LocalDBException".equals(result)) {
+                    senseViewActivity.showWarningPopup();
+                }
+                else if ("NoLocalDatabase".equals(result)) {
+                    senseViewActivity.setRelated(new ArrayList<SenseEntity>());
+                }
+                else
+                    senseViewActivity.setRelated((ArrayList<SenseEntity>) resultHolder);
 
+            } else {
+                if ("ConnectionException".equals(result)) {
+
+                }
+                else
+                    senseViewActivity.setRelated(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
             }
-            if (senseViewActivity != null)
-                senseViewActivity.setRelated(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
         }
     }
 }

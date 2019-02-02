@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -32,36 +33,41 @@ public class RetrieveSelectedSensesTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... strings) {
         String result = null;
-        if(Settings.isOfflineMode())
-            resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findMultipleByIds(StringUtil.parseStringToIntegerArray(strings[0])));
+        if(Settings.isOfflineMode()) {
+            try{
+                resultHolder = new ArrayList<SenseEntity>(
+                        (new SenseDAO()).findMultipleByIds(StringUtil.parseStringToIntegerArray(strings[0])));
+            }catch (SQLiteException e){
+                return "LocalDBException";
+            }
+        }
         else
             result = ConnectionProvider.getInstance(context).getSensesByIds(strings[0]);
         return result;
     }
 
     protected void onPostExecute(String result) {
-        if(Settings.isOfflineMode()){
-            if ("none".equals(Settings.getDbType())) {
-                if (bookmarksActivity != null) {
+        if(bookmarksActivity!=null) {
+            if (Settings.isOfflineMode()) {
+                if ("LocalDBException".equals(result)) {
+                    bookmarksActivity.showWarningPopup();
+                }
+                else if ("none".equals(Settings.getDbType())) {
                     bookmarksActivity.informThereIsNoLocalDatabase();
                 }
-            }
-            if (bookmarksActivity != null) {
-                Collections.sort((ArrayList<SenseEntity>) resultHolder);
-                bookmarksActivity.setBookmarksData((ArrayList<SenseEntity>)resultHolder);
-            }
-        }
-        else {
-            if ("ConnectionException".equals(result)) {
-                if (bookmarksActivity != null) {
+                else {
+                    Collections.sort((ArrayList<SenseEntity>) resultHolder);
+                    bookmarksActivity.setBookmarksData((ArrayList<SenseEntity>) resultHolder);
+                }
+            } else {
+                if ("ConnectionException".equals(result)) {
                     bookmarksActivity.informAboutConnectionProblems();
                 }
-            }
-            if (bookmarksActivity != null) {
-                resultHolder = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
-                Collections.sort((ArrayList<SenseEntity>) resultHolder);
-                bookmarksActivity.setBookmarksData((ArrayList<SenseEntity>)resultHolder);
+                else {
+                    resultHolder = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
+                    Collections.sort((ArrayList<SenseEntity>) resultHolder);
+                    bookmarksActivity.setBookmarksData((ArrayList<SenseEntity>) resultHolder);
+                }
             }
         }
     }

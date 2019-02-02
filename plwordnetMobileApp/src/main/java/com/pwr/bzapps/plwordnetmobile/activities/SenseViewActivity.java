@@ -59,7 +59,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     private ArrayList<SynsetRelationEntity> relations;
     private ProgressBar progress_bar;
     private AsyncTask retrieveSelectedSensesTask, retrieveSynonymsTask, retrieveWordRelatedSensesTask;
-    private boolean bookmarked;
+    private boolean bookmarked, isPopupUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -528,8 +528,13 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 if(Settings.isOfflineMode()){
                     final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
                     LayoutInflater inflater = getLayoutInflater();
-                    View convertView = (View) inflater.inflate(R.layout.connection_required_popup, null);
+                    View convertView = (View) inflater.inflate(R.layout.warning_popup, null);
                     Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+                    TextView title = (TextView) convertView.findViewById(R.id.title);
+                    TextView reason = (TextView) convertView.findViewById(R.id.reason);
+                    title.setText(R.string.connection_required);
+                    reason.setText(R.string.connection_required_reason);
+                    ok_button.setText(R.string.ok_text);
                     builder.setView(convertView);
                     final AlertDialog dialog = builder.create();
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -557,5 +562,31 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void showWarningPopup(){
+        if(!isPopupUp) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.warning_popup, null);
+            Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView reason = (TextView) convertView.findViewById(R.id.reason);
+            title.setText(R.string.local_db_error_title);
+            reason.setText(R.string.local_db_error_content);
+            ok_button.setText(R.string.ok_text);
+            builder.setView(convertView);
+            final AlertDialog dialog = builder.create();
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            isPopupUp = true;
+            dialog.show();
+            ok_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isPopupUp = false;
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 }

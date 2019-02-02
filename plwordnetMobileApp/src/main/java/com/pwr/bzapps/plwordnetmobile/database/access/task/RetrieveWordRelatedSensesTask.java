@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
@@ -30,8 +31,12 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
         if(Settings.isOfflineMode()) {
             if (!SQLiteDBFileManager.doesLocalDBExists())
                 return "NoLocalDatabase";
-            resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Integer.parseInt(strings[2])));
+            try{
+                resultHolder = new ArrayList<SenseEntity>(
+                        (new SenseDAO()).findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Integer.parseInt(strings[2])));
+            }catch (SQLiteException e){
+                return "LocalDBException";
+            }
         }
         else
             result = ConnectionProvider.getInstance(context).getRelatedSensesForWord(strings[0],strings[1],Integer.parseInt(strings[2]));
@@ -40,17 +45,21 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
 
     protected void onPostExecute(String result) {
         if(Settings.isOfflineMode()) {
-            if ("NoLocalDatabase".equals(result)) {
-                senseViewActivity.setWordRelatedSenses(new ArrayList<SenseEntity>());
-                return;
+            if ("LocalDBException".equals(result)) {
+                senseViewActivity.showWarningPopup();
             }
-            senseViewActivity.setWordRelatedSenses((ArrayList<SenseEntity>) resultHolder);
+            else if ("NoLocalDatabase".equals(result)) {
+                senseViewActivity.setWordRelatedSenses(new ArrayList<SenseEntity>());
+            }
+            else
+                senseViewActivity.setWordRelatedSenses((ArrayList<SenseEntity>) resultHolder);
         }
         else {
             if ("ConnectionException".equals(result)) {
 
             }
-            senseViewActivity.setWordRelatedSenses(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
+            else
+                senseViewActivity.setWordRelatedSenses(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
         }
     }
 }

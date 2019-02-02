@@ -15,6 +15,32 @@ public class SQLiteDBFileManager {
         return Long.MIN_VALUE;
     }
 
+    public static String getLocalDBSizeString(String db_type){
+        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_" + db_type + ".db");
+        String size_string = "0 mb";
+        if(doesLocalDBExists(db_type)) {
+            double size = (double) (local_db.length() / (1024 * 1024));
+            if(size>1024){
+                size = (double) (local_db.length() / 1024);
+                size_string = String.format( "%.2f", size ) + " Gb";
+            }
+            else
+                size_string = String.format( "%.2f", size ) + " mb";
+
+            return size_string;
+        }
+        else
+            return size_string;
+    }
+
+    public static int getLocalDBSize(String db_type){
+        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_" + db_type + ".db");
+        if(doesLocalDBExists(db_type))
+            return (int) (local_db.length() / (1024 * 1024));
+        else
+            return 0;
+    }
+
     public static boolean doesLocalDBExists(String db_type){
         File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_" + db_type + ".db");
         return local_db.exists();

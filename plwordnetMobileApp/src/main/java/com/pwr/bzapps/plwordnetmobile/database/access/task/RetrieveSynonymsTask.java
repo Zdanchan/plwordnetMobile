@@ -1,8 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 
+import android.view.View;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
@@ -31,8 +33,12 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
         if(Settings.isOfflineMode()) {
             if (!SQLiteDBFileManager.doesLocalDBExists())
                 return "NoLocalDatabase";
-            resultHolder = new ArrayList<SenseEntity>(
-                    (new SenseDAO()).findBySynsetId(Integer.parseInt(strings[0])));
+            try{
+                resultHolder = new ArrayList<SenseEntity>(
+                        (new SenseDAO()).findBySynsetId(Integer.parseInt(strings[0])));
+            }catch (SQLiteException e){
+                return "LocalDBException";
+            }
         }
         else
             result = ConnectionProvider.getInstance(context).getSynonymsBySynsetId(strings[0]);
@@ -41,17 +47,21 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
 
     protected void onPostExecute(String result) {
         if(Settings.isOfflineMode()) {
-            if ("NoLocalDatabase".equals(result)) {
-                senseViewActivity.setSynonyms(new ArrayList<SenseEntity>());
-                return;
+            if ("LocalDBException".equals(result)) {
+                senseViewActivity.showWarningPopup();
             }
-            senseViewActivity.setSynonyms((ArrayList<SenseEntity>) resultHolder);
+            else if ("NoLocalDatabase".equals(result)) {
+                senseViewActivity.setSynonyms(new ArrayList<SenseEntity>());
+            }
+            else
+                senseViewActivity.setSynonyms((ArrayList<SenseEntity>) resultHolder);
         }
         else {
             if("ConnectionException".equals(result)){
 
             }
-            senseViewActivity.setSynonyms(JSONParser.parseJSONqueryArrayResponse(result,SenseEntity.class));
+            else
+                senseViewActivity.setSynonyms(JSONParser.parseJSONqueryArrayResponse(result,SenseEntity.class));
         }
 
     }

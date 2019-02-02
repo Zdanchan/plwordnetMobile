@@ -35,6 +35,8 @@
     <string name="no_local_database_installed">Nie zainstalowano żadnej lokalnej bazy danych</string>
     <string name="no_results">Brak wyników</string>
     <string name="searching">Wyszukiwanie</string>
+    <string name="local_db_error_title">Błąd lokalnej bazy danych</string>
+    <string name="local_db_error_content">Plik lokalnej bazy danych prawdopodobnie jest uszkodzony. Proszę usunąć stary plik przez menu Ustawień i wybrać opcję Aktualizuj.</string>
     <!---->
     <!--Bookmarks messages-->
     <string name="no_bookmarks">Nie masz jeszcze żadnej zakładki</string>
@@ -102,7 +104,7 @@
     <string name="clear_bookmarks">Wyczyść zakładki</string>
     <string name="clear_history_toast">Cała historia wyszukiwania została usunięta</string>
     <string name="clear_bookmarks_toast">Wszystkie zakładki zostały usunięte</string>
-    <string name="select_local_dictionaries">Wybierz lokalne słowniki:</string>
+    <string name="select_local_dictionaries">Wybierz lokalny słownik:</string>
     <string name="sync_db">Aktualizuj bazę danych</string>
     <string name="status_db">Status: </string>
     <string name="status_up_to_date">Aktualna</string>
@@ -111,12 +113,17 @@
     <string name="status_checking">Sprawdzanie...</string>
     <string name="status_synchronizing">Aktualizowanie</string>
     <string name="status_connection_problem">Brak połączenia</string>
-    <string name="remove_local_db">Usuń lokalną bazę danych</string>
+    <string name="status_error">Błąd aktualizacji</string>
+    <string name="remove_local_db">Usuń lokalne bazy danych</string>
     <string name="remove_local_db_toast">Lokalna baza danych została usunięta</string>
+    <string name="remove_all_local_db_toast">Usunięto wszystkie lokalne bazy danych</string>
     <string name="sync_please_wait">Pobieranie, proszę czekać...</string>
     <string name="no_db_selected">Nie wybrano żadnych słowników</string>
     <string name="requires_permissions">Akcja przerwana gdyż wymaga ona pozwolenia na zapis i odczyt danych</string>
     <string name="acquired_permissions">Uzyskano pozwolenie, proszę uruchomić synchronizację ponownie</string>
     <string name="unavailable_in_online">Niedostępne w trybie online</string>
+    <string name="ok_text">OK</string>
+    <string name="download_error_title">Błąd aktualizacji</string>
+    <string name="download_error_content">Podczas aktualizacji lokalnej bazy danych wystąpił błąd, proszę spróbować ponownie.</string>
     <!---->
 </resources>

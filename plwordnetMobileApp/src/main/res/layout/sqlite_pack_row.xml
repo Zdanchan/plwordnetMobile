@@ -17,6 +17,16 @@
             android:text="DICTIONARY_NAME"
             android:textColor="@color/colorMainText"
             android:textSize="20dp"/>
+    <TextView
+            android:id="@+id/dictionary_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cell_text"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:text="(0 mb)"
+            android:textColor="@color/colorDictionarySize"
+            android:textSize="15dp"/>
     <View
             android:id="@+id/cell_separator"
             android:layout_width="0dp"
@@ -45,6 +55,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:clickable="false"
+            android:background="@color/alpha"
             android:buttonTint="@color/colorAccent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
