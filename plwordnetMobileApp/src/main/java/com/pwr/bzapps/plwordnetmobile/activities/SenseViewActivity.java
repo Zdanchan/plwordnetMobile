@@ -332,7 +332,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     private void setEmotionalAnnotations(final LinearLayout annotation_container){
         boolean no_emotions = true;
         final ImageView expander = ((ImageView) findViewById(R.id.drawer_icon));
-        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,2));
+        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),0,2));
         //expander.setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
 
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
