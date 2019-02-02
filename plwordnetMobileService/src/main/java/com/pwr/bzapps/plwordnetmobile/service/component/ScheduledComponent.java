@@ -11,8 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
 @Component
 public class ScheduledComponent {
@@ -22,13 +21,20 @@ public class ScheduledComponent {
     @Autowired
     private SQLiteComponent sqLiteComponent;
 
-    @Scheduled(cron = "0 0 0 10 * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void regenerateSQLiteDatabases() {
-        if(System.currentTimeMillis() - sqLiteComponent.getFileFor("all").lastModified() < 1209600000l ){
-            log.info("SQLite files were updated at least 14 days ago, skipping update");
-            return;
+        String[] availablePacks = ConfigurationReader.readAvailableLanguagePacks();
+        ArrayList<String> tmp = new ArrayList<String>();
+        for(int i=0; i<availablePacks.length; i++){
+            if(System.currentTimeMillis() - sqLiteComponent.getFileFor(availablePacks[i]).lastModified() < 2419200000l ){
+                log.info("SQLite file plwordnet_" + availablePacks[i] +" was updated at least 28 days ago, skipping update.");
+            }
+            else{
+                tmp.add(availablePacks[i]);
+            }
         }
-        if(!Advisor.isQuery_generator_processing()){
+        final String[] finalList = tmp.toArray(new String[0]);
+        if(!Advisor.isQuery_generator_processing() && finalList.length>0){
             sqLiteComponent.removeTMPfiles();
             ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
             ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
@@ -37,7 +43,7 @@ public class ScheduledComponent {
                 @Override
                 public void run() {
                     try{
-                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(ConfigurationReader.readAvailableLanguagePacks(),
+                        sqLiteComponent.dumpSQLDBContentIntoSQLiteDBInBatches(finalList,
                                 ConfigurationReader.getMaxBatchSize());
                         log.info("SQLite databases are stored and up to date");
                     }catch (Exception e){

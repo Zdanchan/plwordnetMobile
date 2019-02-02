@@ -5,7 +5,6 @@ import android.content.Context;
 import com.pwr.bzapps.plwordnetmobile.R;
 
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.ConnectException;
@@ -31,7 +30,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -47,7 +46,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -63,7 +62,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -80,7 +79,24 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
+            return "ConnectionException";
+        }
+    }
+
+    public String getRelatedSensesForWord(String word, String language, Integer part_of_speech){
+        try {
+            String url = context.getString(R.string.spring_interface_address)
+                    + "/sense/findRelatedSensesByWordLanguageAndPartOfSpeech?word=" + word + "&language=" + language + "&part_of_speech=" + part_of_speech;
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+            String result = restTemplate.getForObject(url, String.class);
+
+            return result;
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -96,7 +112,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -114,7 +130,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -134,7 +150,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -152,7 +168,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -169,7 +185,7 @@ public class ConnectionProvider{
             Long result = Long.parseLong(restTemplate.getForObject(url, String.class));
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return Long.MAX_VALUE;
         }
     }

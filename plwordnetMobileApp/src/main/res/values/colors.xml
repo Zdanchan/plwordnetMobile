@@ -44,6 +44,8 @@
     <color name="colorUpToDate">#00AA00</color>
     <color name="colorNeedsUpdate">#D8C12D</color>
     <color name="colorNoLocalDB">#6e0000</color>
+    <color name="colorError">#ae0000</color>
+    <color name="colorDictionarySize">#5f5f5f</color>
     <color name="colorConnectionProblem">#6e0000</color>
     <color name="colorSynchronizing">#555555</color>
     <color name="colorInactive">#AAAAAA</color>

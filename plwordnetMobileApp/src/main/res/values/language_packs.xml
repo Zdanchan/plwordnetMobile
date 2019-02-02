@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="data_languages">
+    <string-array name="language_packs">
+        <item>all</item>
         <item>polish</item>
         <item>english</item>
     </string-array>

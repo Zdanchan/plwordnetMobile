@@ -26,8 +26,23 @@ public class GraphBrowserActivity extends BackButtonActivity{
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         int synset_id = getIntent().getExtras().getInt("synset_id",2914);
-        webView.loadUrl("file:///android_asset/index.html?synset_id=" + synset_id + "&language=" + Settings.getShortLocalName());
+        if(savedInstanceState == null)
+            webView.loadUrl("file:///android_asset/index.html?synset_id=" + synset_id + "&language=" + Settings.getShortLocalName());
         toolbar_hide_button = findViewById(R.id.toolbar_hide_button);
         toolbar_hide_button.setOnClickListener(new OnClickExpander(true,findViewById(R.id.main_toolbar),toolbar_hide_button,getApplicationContext(),true));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        webView.restoreState(savedInstanceState);
     }
 }

@@ -33,6 +33,11 @@ public class SQLiteConnector extends SQLiteOpenHelper {
         return instance;
     }
 
+    public void runQuery(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.rawQuery(query, null);
+    }
+
     public <T extends Entity> T getResultForQuery(String query, Class<T> clazz){
         SQLiteDatabase db = this.getWritableDatabase();
         T result = null;
@@ -59,6 +64,10 @@ public class SQLiteConnector extends SQLiteOpenHelper {
         results = SQLiteEntityWrapper.wrapWithEntityCollection(cursor, clazz);
         cursor.close();
         return results;
+    }
+
+    public static void setContext(Context context) {
+        SQLiteConnector.context = context;
     }
 
     @Override

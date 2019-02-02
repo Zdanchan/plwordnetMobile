@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.task;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.SearchResultsListActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
@@ -55,8 +57,14 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         }
         String result = null;
         if(Settings.isOfflineMode()) {
-            resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0],50));
-            Collections.sort((ArrayList<SenseEntity>) resultHolder);
+            if(!SQLiteDBFileManager.doesLocalDBExists())
+                return "NoLocalDatabase";
+            try {
+                resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0], Settings.RESULTS_LIMIT));
+                Collections.sort((ArrayList<SenseEntity>) resultHolder);
+            }catch (SQLiteException e){
+                return "LocalDBException";
+            }
         }
         else
             result = ConnectionProvider.getInstance(context).getSensesForWord(strings[0]);
@@ -65,28 +73,36 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
 
     protected void onPostExecute(String result) {
         ArrayList<SenseEntity> results_list = null;
-        if(Settings.isOfflineMode())
-            results_list = (ArrayList<SenseEntity>) resultHolder;
-        else {
-            if("ConnectionException".equals(result)){
-                if(message_view !=null){
-                    message_view.setText(context.getResources().getString(R.string.no_connection));
-                }
-                if(searchResultsListActivity!=null){
+        if(message_view !=null && searchResultsListActivity!=null) {
+            if (Settings.isOfflineMode()) {
+                if ("LocalDBException".equals(result)) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    searchResultsListActivity.showWarningPopup();
+                    return;
                 }
-                return;
-            }
-            else if("{\"content\":[]}".equals(result) || result==null){
-                if(message_view !=null){
+                if ("NoLocalDatabase".equals(result)) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    message_view.setText(context.getResources().getString(R.string.no_local_database_installed));
+                    return;
+                }
+                results_list = (ArrayList<SenseEntity>) resultHolder;
+                if (((ArrayList<SenseEntity>) resultHolder).size() == 0) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
                     message_view.setText(context.getResources().getString(R.string.no_results));
+                    return;
                 }
-                if(searchResultsListActivity!=null){
+            } else {
+                if ("ConnectionException".equals(result)) {
                     searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    message_view.setText(context.getResources().getString(R.string.no_connection));
+                    return;
+                } else if ("{\"content\":[]}".equals(result) || result == null) {
+                    searchResultsListActivity.setProgressBarVisibility(View.INVISIBLE);
+                    message_view.setText(context.getResources().getString(R.string.no_results));
+                    return;
                 }
-                return;
+                results_list = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
             }
-            results_list = JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class);
         }
         //Collections.sort(results_list);
         adapter.getData().addAll(results_list);

@@ -59,7 +59,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     private ArrayList<SynsetRelationEntity> relations;
     private ProgressBar progress_bar;
     private AsyncTask retrieveSelectedSensesTask, retrieveSynonymsTask, retrieveWordRelatedSensesTask;
-    private boolean bookmarked;
+    private boolean bookmarked, isPopupUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
         retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
         retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynset_id().getId().toString());
         if(word_related_senses==null){
-            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext()).execute(entity.getWord_id().getWord(), entity.getLexicon_id().getLanguage_name());
+            retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext())
+                    .execute(entity.getWord_id().getWord(),
+                            entity.getLexicon_id().getLanguage_name(),
+                            entity.getPart_of_speech_id().getId() + "");
         }
         bookmark_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,18 +182,22 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 final ImageView expander = ((ImageView) type.findViewById(R.id.drawer_icon));
                 //expander.setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
                 type.findViewById(R.id.relative_type_header).setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
+                boolean contains_senses = false;
                 for (SynsetRelationEntity relation : list) {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
                     Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
                     final SenseEntity sense = findRelatedBySynsetId(other);
+                    if(sense==null)
+                        continue;
                     ((TextView) cell.findViewById(R.id.relation_sense_id)).setText(sense.getWord_id().getWord());
                     ((ImageView) cell.findViewById(R.id.language_icon)).setImageResource(SenseAdapter.getFlagResource(
                             getApplicationContext(),
                             sense.getLexicon_id().getLanguage_name()));
                     String description = "";
-                    if ("Polish".equals(sense.getLexicon_id().getLanguage_name())) {
+                    if (!sense.getSense_attributes().isEmpty()) {
                         description+=(SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
-                    } else {
+                    }
+                    else if(!sense.getSynset_id().getSynset_attributes().isEmpty()){
                         description+=(SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id()
                                 .getSynset_attributes()).get(0).getDefinition()));
                     }
@@ -212,10 +219,14 @@ public class SenseViewActivity extends DrawerMenuActivity {
                             startActivity(intent);
                         }
                     });
+                    contains_senses = true;
                 }
-                cell_container.setVisibility(View.GONE);
-                sense_relations_container.addView(type);
+                if(contains_senses) {
+                    cell_container.setVisibility(View.GONE);
+                    sense_relations_container.addView(type);
+                }
             }
+
         }
     }
 
@@ -261,6 +272,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
         else if(SenseAdapter.checkIfContainsSynsetAttributes(entity)){
             sense_description.setText(((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
         }
+        else{
+            sense_description.setText("");
+            sense_description.setVisibility(View.GONE);
+        }
         sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomain_id().getId()));
         sense_source.setText(entity.getLexicon_id().getName());
 
@@ -273,12 +288,8 @@ public class SenseViewActivity extends DrawerMenuActivity {
     }
 
     private void setExamples(LinearLayout sense_examples_container){
-        if(entity.getSense_attributes().isEmpty()){
-            ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
-            ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
-            sense_examples_container.setVisibility(View.GONE);
-        }
-        else if("Polish".equals(entity.getLexicon_id().getLanguage_name())){
+        if(!entity.getSense_attributes().isEmpty()
+                && !((ArrayList<SenseAttributeEntity>)entity.getSense_attributes()).get(0).getSense_examples().isEmpty()){
             ArrayList<SenseExampleEntity> examples = (ArrayList<SenseExampleEntity>)((ArrayList<SenseAttributeEntity>)entity.getSense_attributes())
                     .get(0).getSense_examples();
             if(examples.size()<1){
@@ -297,7 +308,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 }
             }
         }
-        else{
+        else if(!entity.getSynset_id().getSynset_attributes().isEmpty()){
             ArrayList<SynsetExampleEntity> examples = (ArrayList<SynsetExampleEntity>)((ArrayList<SynsetAttributeEntity>)entity.getSynset_id()
                     .getSynset_attributes()).get(0).getSynset_examples();
             if(examples.size()<1){
@@ -316,12 +327,17 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 }
             }
         }
+        else{
+            ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
+            sense_examples_container.setVisibility(View.GONE);
+        }
     }
 
     private void setEmotionalAnnotations(final LinearLayout annotation_container){
         boolean no_emotions = true;
         final ImageView expander = ((ImageView) findViewById(R.id.drawer_icon));
-        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,2));
+        findViewById(R.id.emotional_annotations_header).setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),0,2));
         //expander.setOnClickListener(new OnClickExpander(false,annotation_container,expander,getApplicationContext(),3,3));
 
         for(EmotionalAnnotationEntity emo : entity.getEmotional_annotations()){
@@ -401,10 +417,11 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 if (!synonym.getWord_id().getWord().equals(entity.getWord_id().getWord())) {
                     RelativeLayout synonym_cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.synonym_template, null);
                     ((TextView) synonym_cell.findViewById(R.id.synonym_name)).setText(synonym.getWord_id().getWord() + "-" + synonym.getVariant());
-                    if ("Polish".equals(synonym.getLexicon_id().getLanguage_name())) {
+                    if (!synonym.getSense_attributes().isEmpty()) {
                         ((TextView) synonym_cell.findViewById(R.id.synonym_description)).setText(
                                 ((ArrayList<SenseAttributeEntity>) synonym.getSense_attributes()).get(0).getDefinition());
-                    } else {
+                    }
+                    else if(!synonym.getSynset_id().getSynset_attributes().isEmpty()) {
                         ((TextView) synonym_cell.findViewById(R.id.synonym_description)).setText(
                                 ((ArrayList<SynsetAttributeEntity>) synonym.getSynset_id().getSynset_attributes()).get(0).getDefinition());
                     }
@@ -511,8 +528,13 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 if(Settings.isOfflineMode()){
                     final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
                     LayoutInflater inflater = getLayoutInflater();
-                    View convertView = (View) inflater.inflate(R.layout.connection_required_popup, null);
+                    View convertView = (View) inflater.inflate(R.layout.warning_popup, null);
                     Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+                    TextView title = (TextView) convertView.findViewById(R.id.title);
+                    TextView reason = (TextView) convertView.findViewById(R.id.reason);
+                    title.setText(R.string.connection_required);
+                    reason.setText(R.string.connection_required_reason);
+                    ok_button.setText(R.string.ok_text);
                     builder.setView(convertView);
                     final AlertDialog dialog = builder.create();
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -540,5 +562,31 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void showWarningPopup(){
+        if(!isPopupUp) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.warning_popup, null);
+            Button ok_button = (Button) convertView.findViewById(R.id.ok_button);
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView reason = (TextView) convertView.findViewById(R.id.reason);
+            title.setText(R.string.local_db_error_title);
+            reason.setText(R.string.local_db_error_content);
+            ok_button.setText(R.string.ok_text);
+            builder.setView(convertView);
+            final AlertDialog dialog = builder.create();
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            isPopupUp = true;
+            dialog.show();
+            ok_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isPopupUp = false;
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 }

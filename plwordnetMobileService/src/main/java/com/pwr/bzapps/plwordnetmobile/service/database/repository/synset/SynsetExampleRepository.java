@@ -22,8 +22,10 @@ public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEnt
             "se.synset_attributes_id,','," +
             "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
             "IF(se.type IS NULL,'null',CONCAT('\"',se.type,'\"'))" +
-            ") FROM synset_examples se WHERE se.synset_attributes_id IN (:synset_attribute_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetAttributesAndParseString(@Param("synset_attribute_ids") Integer[] synset_attribute_ids);
+            ") FROM synset_examples se " +
+            "JOIN synset s ON se.id = s.id " +
+            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetAttributesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.synset_attributes_id,','," +
@@ -37,9 +39,11 @@ public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEnt
             "se.synset_attributes_id,','," +
             "IF(se.example IS NULL,'null',CONCAT('\"',REPLACE(se.example,'\"','####'),'\"')),','," +
             "IF(se.type IS NULL,'null',CONCAT('\"',se.type,'\"'))" +
-            ") FROM synset_examples se WHERE se.synset_attributes_id IN (:synset_attribute_ids)" +
-            " AND se.synset_attributes_id>=:begin AND se.synset_attributes_id<:end", nativeQuery = true)
-    public List<String> findAllForSynsetAttributesAndParseStringBatch(@Param("synset_attribute_ids") Integer[] synset_attribute_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+            ") FROM synset_examples se " +
+            "JOIN synset s ON se.id = s.id " +
+            "WHERE se.synset_attributes_id>=:begin AND se.synset_attributes_id<:end " +
+            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetAttributesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
     @Query(value = "SELECT MAX(id) FROM synset_examples", nativeQuery = true)
     public Integer getMaxIndex();
 }

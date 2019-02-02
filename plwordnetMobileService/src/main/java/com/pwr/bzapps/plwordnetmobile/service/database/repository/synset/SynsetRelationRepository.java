@@ -28,8 +28,11 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "sr.child_synset_id,','," +
             "sr.parent_synset_id,','," +
             "sr.synset_relation_type_id" +
-            ")FROM synset_relation sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
+            ")FROM synset_relation sr " +
+            "JOIN synset sec ON sr.child_synset_id = sec.id " +
+            "JOIN synset sep ON sr.parent_synset_id = sep.id " +
+            "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
@@ -43,9 +46,12 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "sr.child_synset_id,','," +
             "sr.parent_synset_id,','," +
             "sr.synset_relation_type_id" +
-            ")FROM synset_relation sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)" +
-            " AND sr.id>=:begin AND sr.id<:end", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseStringBatch(@Param("synset_ids") Integer[] synset_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+            ")FROM synset_relation sr " +
+            "JOIN synset sec ON sr.child_synset_id = sec.id " +
+            "JOIN synset sep ON sr.parent_synset_id = sep.id " +
+            "WHERE sr.id>=:begin AND sr.id<:end " +
+            "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids))", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
 
     @Query(value = "SELECT MAX(id) FROM synset_relation", nativeQuery = true)
     public Integer getMaxIndex();

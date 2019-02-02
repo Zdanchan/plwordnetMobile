@@ -93,75 +93,9 @@
             android:id="@+id/available_dictionaries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <RelativeLayout
-                android:id="@+id/polish_dictionary"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true">
-            <TextView
-                    android:id="@+id/polish_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/dictionary_polish"
-                    android:textColor="@color/colorMainText"
-                    android:textSize="20dp"/>
-            <View
-                    android:id="@+id/polish_separator"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/colorSeparator2"
-            />
-            <CheckBox
-                    android:id="@+id/polish_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    />
-        </RelativeLayout>
-        <RelativeLayout
-                android:id="@+id/english_dictionary"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true">
-            <TextView
-                    android:id="@+id/english_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/dictionary_english"
-                    android:textColor="@color/colorMainText"
-                    android:textSize="20dp"/>
-            <View
-                    android:id="@+id/english_separator"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/colorSeparator2"
-            />
-            <CheckBox
-                    android:id="@+id/english_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-            />
-        </RelativeLayout>
+            android:orientation="vertical"
+            android:layout_below="@id/local_database">
+
     </LinearLayout>
     <RelativeLayout
             android:id="@+id/sync_databases"

@@ -30,8 +30,11 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "sr.child_sense_id,','," +
             "sr.parent_sense_id,','," +
             "sr.relation_type_id" +
-            ")FROM sense_relation sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
+            ")FROM sense_relation sr " +
+            "JOIN sense sec ON sr.child_sense_id = sec.id " +
+            "JOIN sense sep ON sr.parent_sense_id = sep.id " +
+            "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
@@ -46,9 +49,12 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "sr.child_sense_id,','," +
             "sr.parent_sense_id,','," +
             "sr.relation_type_id" +
-            ")FROM sense_relation sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)" +
-            " AND sr.id>=:begin AND sr.id<:end", nativeQuery = true)
-    public List<String> findAllForSensesAndParseStringBatch(@Param("sense_ids") Integer[] sense_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+            ")FROM sense_relation sr " +
+            "JOIN sense sec ON sr.child_sense_id = sec.id " +
+            "JOIN sense sep ON sr.parent_sense_id = sep.id " +
+            "WHERE sr.id>=:begin AND sr.id<:end " +
+            "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids))", nativeQuery = true)
+    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
 
     @Query(value = "SELECT MAX(id) FROM sense_relation", nativeQuery = true)
     public Integer getMaxIndex();

@@ -66,7 +66,7 @@ public class SenseDAO {
         String query = HEADER
                 + " JOIN word AS w ON s.word_id = w.id"
                 + " WHERE LOWER(w.word) LIKE LOWER('%" + word + "%')"
-                + " ORDER BY w.word, variant, part_of_speech_id, lexicon_id ASC";
+                + " ORDER BY LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC";
         Collection<SenseEntity> results = SQLiteConnector.getInstance()
                 .getResultListForQuery(query,SenseEntity.class);
         return results;
@@ -78,9 +78,10 @@ public class SenseDAO {
         String query = HEADER
                 + " JOIN word AS w ON s.word_id = w.id"
                 + " WHERE LOWER(w.word) LIKE LOWER('%" + word + "%')"
-                + " ORDER BY w.word, s.variant, s.lexicon_id, s.part_of_speech_id ASC";
+                + " ORDER BY LENGTH(w.word), w.word, s.variant, s.lexicon_id, s.part_of_speech_id ASC"
+                + " LIMIT " + resultLimit;;
         Collection<SenseEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SenseEntity.class,resultLimit);
+                .getResultListForQuery(query,SenseEntity.class);
         return results;
     }
 
@@ -98,6 +99,17 @@ public class SenseDAO {
                 + " JOIN word AS w ON s.word_id = w.id JOIN lexicon AS l ON l.id = s.lexicon_id"
                 + " WHERE w.word= '" + word + "'"
                 + " AND LOWER(l.language_name) LIKE LOWER('" + language + "')";
+        Collection<SenseEntity> results = SQLiteConnector.getInstance()
+                .getResultListForQuery(query,SenseEntity.class);
+        return results;
+    }
+
+    public Collection<SenseEntity> findRelatedForWordLanguageAndPartOfSpeech(String word, String language, Integer part_of_speech){
+        String query = HEADER
+                + " JOIN word AS w ON s.word_id = w.id JOIN lexicon AS l ON l.id = s.lexicon_id"
+                + " WHERE w.word= '" + word + "'"
+                + " AND LOWER(l.language_name) LIKE LOWER('" + language + "')"
+                + " AND s.part_of_speech_id=" + part_of_speech;
         Collection<SenseEntity> results = SQLiteConnector.getInstance()
                 .getResultListForQuery(query,SenseEntity.class);
         return results;
