@@ -5,7 +5,6 @@ import android.content.Context;
 import com.pwr.bzapps.plwordnetmobile.R;
 
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.ConnectException;
@@ -31,7 +30,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -47,7 +46,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -63,7 +62,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -80,7 +79,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -97,7 +96,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -113,7 +112,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -131,7 +130,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -151,7 +150,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -169,7 +168,7 @@ public class ConnectionProvider{
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return "ConnectionException";
         }
     }
@@ -186,7 +185,7 @@ public class ConnectionProvider{
             Long result = Long.parseLong(restTemplate.getForObject(url, String.class));
 
             return result;
-        }catch(ResourceAccessException e){
+        }catch(Exception e){
             return Long.MAX_VALUE;
         }
     }

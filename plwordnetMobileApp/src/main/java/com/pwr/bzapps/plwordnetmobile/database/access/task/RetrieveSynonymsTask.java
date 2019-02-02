@@ -58,7 +58,7 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
         }
         else {
             if("ConnectionException".equals(result)){
-
+                senseViewActivity.setWordRelatedSenses((new ArrayList<SenseEntity>()));
             }
             else
                 senseViewActivity.setSynonyms(JSONParser.parseJSONqueryArrayResponse(result,SenseEntity.class));

@@ -58,7 +58,7 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
 
             } else {
                 if ("ConnectionException".equals(result)) {
-
+                    senseViewActivity.setWordRelatedSenses((new ArrayList<SenseEntity>()));
                 }
                 else
                     senseViewActivity.setRelated(JSONParser.parseJSONqueryArrayResponse(result, SenseEntity.class));
