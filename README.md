@@ -106,7 +106,7 @@ conf.language_packs={all,polish,english,...,new_language_pack_name};
 ```
 
 ### 2. On application side (requires application rebuild)
-  **2.1.** Add new entry in *plwordnetMobile/plwordnetMobileApp/src/main/res/values/data_languages.xml*
+  **2.1.** Add new entry in *plwordnetMobile/plwordnetMobileApp/src/main/res/values/language_packs.xml*
 
 ```xml
     <string-array name="data_languages">
