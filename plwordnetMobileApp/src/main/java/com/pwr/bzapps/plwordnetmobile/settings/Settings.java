@@ -28,9 +28,11 @@ public class Settings {
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
     public static final String FILE_NAME= "plwordnet";
-    public static final String[] POSSIBLE_DB_LANGS = {"none", "all", "polish", "english" };
+    public static String[] POSSIBLE_DB_LANGS = {"all", "polish", "english"};
 
-
+    public static void loadPossibleDBLangs(){
+        POSSIBLE_DB_LANGS = context.getResources().getStringArray(R.array.language_packs);
+    }
 
     public static void loadSettings(Context ctx){
         context=ctx;

@@ -66,7 +66,7 @@ public class SenseDAO {
         String query = HEADER
                 + " JOIN word AS w ON s.word_id = w.id"
                 + " WHERE LOWER(w.word) LIKE LOWER('%" + word + "%')"
-                + " ORDER BY w.word, variant, part_of_speech_id, lexicon_id ASC";
+                + " ORDER BY LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC";
         Collection<SenseEntity> results = SQLiteConnector.getInstance()
                 .getResultListForQuery(query,SenseEntity.class);
         return results;
@@ -78,7 +78,7 @@ public class SenseDAO {
         String query = HEADER
                 + " JOIN word AS w ON s.word_id = w.id"
                 + " WHERE LOWER(w.word) LIKE LOWER('%" + word + "%')"
-                + " ORDER BY w.word, s.variant, s.lexicon_id, s.part_of_speech_id ASC";
+                + " ORDER BY LENGTH(w.word), w.word, s.variant, s.lexicon_id, s.part_of_speech_id ASC";
         Collection<SenseEntity> results = SQLiteConnector.getInstance()
                 .getResultListForQuery(query,SenseEntity.class,resultLimit);
         return results;

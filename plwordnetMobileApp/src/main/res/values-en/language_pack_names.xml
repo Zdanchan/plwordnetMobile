@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dictionary_all">Full pack</string>
     <string name="dictionary_polish">Polish</string>
     <string name="dictionary_english">English</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dictionary_all">Pełny zestaw</string>
     <string name="dictionary_polish">Polski</string>
     <string name="dictionary_english">Angielski</string>
 </resources>

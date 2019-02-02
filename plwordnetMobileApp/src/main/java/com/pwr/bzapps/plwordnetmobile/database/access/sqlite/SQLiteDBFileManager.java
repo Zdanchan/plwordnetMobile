@@ -15,26 +15,33 @@ public class SQLiteDBFileManager {
         return Long.MIN_VALUE;
     }
 
+    public static boolean doesLocalDBExists(String db_type){
+        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_" + db_type + ".db");
+        return local_db.exists();
+    }
+
     public static boolean doesLocalDBExists(){
         File local_db = new File(Settings.getSqliteDbFile());
         return local_db.exists();
     }
 
-    public static void removeLocalDB(){
-        File pl_local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
-                + Settings.POSSIBLE_DB_LANGS[0] + ".db");
-        File en_local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
-                + Settings.POSSIBLE_DB_LANGS[1] + ".db");
-        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
-                + Settings.POSSIBLE_DB_LANGS[2] + ".db");
+    public static void removeLocalDB(String db_type){
+        File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_" + db_type + ".db");
         if(local_db.exists()){
             local_db.delete();
         }
-        if(pl_local_db.exists()){
-            pl_local_db.delete();
-        }
-        if(en_local_db.exists()){
-            en_local_db.delete();
+    }
+
+    public static void removeLocalDB(){
+        Settings.loadPossibleDBLangs();
+        String[] packs = Settings.POSSIBLE_DB_LANGS;
+
+        for(int i=0; i<packs.length; i++){
+            File local_db = new File(Settings.getSqliteDbFileLocation() + "/" + Settings.FILE_NAME + "_"
+                    + packs[i] + ".db");
+            if(local_db.exists()){
+                local_db.delete();
+            }
         }
     }
 }

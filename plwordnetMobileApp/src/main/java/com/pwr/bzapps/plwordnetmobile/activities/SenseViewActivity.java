@@ -182,6 +182,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 final ImageView expander = ((ImageView) type.findViewById(R.id.drawer_icon));
                 //expander.setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
                 type.findViewById(R.id.relative_type_header).setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
+                boolean contains_senses = false;
                 for (SynsetRelationEntity relation : list) {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
                     Integer other = (relation.getChild_synset_id().equals(entity.getSynset_id().getId()) ? relation.getParent_synset_id() : relation.getChild_synset_id());
@@ -193,9 +194,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
                             getApplicationContext(),
                             sense.getLexicon_id().getLanguage_name()));
                     String description = "";
-                    if ("Polish".equals(sense.getLexicon_id().getLanguage_name())) {
+                    if (!sense.getSense_attributes().isEmpty()) {
                         description+=(SenseAdapter.shortenDescription(((ArrayList<SenseAttributeEntity>) sense.getSense_attributes()).get(0).getDefinition()));
-                    } else {
+                    }
+                    else if(!sense.getSynset_id().getSynset_attributes().isEmpty()){
                         description+=(SenseAdapter.shortenDescription(((ArrayList<SynsetAttributeEntity>) sense.getSynset_id()
                                 .getSynset_attributes()).get(0).getDefinition()));
                     }
@@ -217,10 +219,14 @@ public class SenseViewActivity extends DrawerMenuActivity {
                             startActivity(intent);
                         }
                     });
+                    contains_senses = true;
                 }
-                cell_container.setVisibility(View.GONE);
-                sense_relations_container.addView(type);
+                if(contains_senses) {
+                    cell_container.setVisibility(View.GONE);
+                    sense_relations_container.addView(type);
+                }
             }
+
         }
     }
 
