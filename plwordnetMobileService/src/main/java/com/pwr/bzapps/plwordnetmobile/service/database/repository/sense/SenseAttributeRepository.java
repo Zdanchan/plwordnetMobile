@@ -35,8 +35,10 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
             "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.proper_name=1,1,0)" +
-            ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseString(@Param("sense_ids") Integer[] sense_ids);
+            ")FROM sense_attributes sa " +
+            "JOIN sense s ON sa.sense_id = s.id " +
+            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
             "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
@@ -60,9 +62,11 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.user_id IS NULL,'null',sa.user_id),','," +
             "IF(sa.error_comment IS NULL,'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.proper_name=1,1,0)" +
-            ")FROM sense_attributes sa WHERE sa.sense_id IN (:sense_ids)" +
-            " AND sa.sense_id>=:begin AND sa.sense_id<:end", nativeQuery = true)
-    public List<String> findAllForSensesAndParseStringBatch(@Param("sense_ids") Integer[] sense_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+            ")FROM sense_attributes sa " +
+            "JOIN sense s ON sa.sense_id = s.id " +
+            "WHERE sa.sense_id>=:begin AND sa.sense_id<:end " +
+            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
     @Query(value = "SELECT MAX(sense_id) FROM sense_attributes", nativeQuery = true)
     public Integer getMaxIndex();
 }

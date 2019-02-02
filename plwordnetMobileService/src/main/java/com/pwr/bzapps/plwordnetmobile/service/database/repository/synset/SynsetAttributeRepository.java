@@ -41,8 +41,10 @@ public interface SynsetAttributeRepository extends CrudRepository<SynsetAttribut
             "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
             "IF(sa.error_comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.ili_id IS NULL, 'null',CONCAT('\"',sa.ili_id,'\"'))" +
-            ")FROM synset_attributes sa WHERE sa.synset_id IN (:synset_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseString(@Param("synset_ids") Integer[] synset_ids);
+            ")FROM synset_attributes sa " +
+            "JOIN synset s ON sa.synset_id = s.id " +
+            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "sa.synset_id,','," +
@@ -63,9 +65,11 @@ public interface SynsetAttributeRepository extends CrudRepository<SynsetAttribut
             "IF(sa.owner_id IS NULL, 'null',sa.owner_id),','," +
             "IF(sa.error_comment IS NULL, 'null',CONCAT('\"',REPLACE(sa.error_comment,'\"','####'),'\"')),','," +
             "IF(sa.ili_id IS NULL, 'null',CONCAT('\"',sa.ili_id,'\"'))" +
-            ")FROM synset_attributes sa WHERE sa.synset_id IN (:synset_ids)" +
-            " AND sa.synset_id>=:begin AND sa.synset_id<:end", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseStringBatch(@Param("synset_ids") Integer[] synset_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+            ")FROM synset_attributes sa " +
+            "JOIN synset s ON sa.synset_id = s.id " +
+            "WHERE sa.synset_id>=:begin AND sa.synset_id<:end " +
+            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
     @Query(value = "SELECT MAX(synset_id) FROM synset_attributes", nativeQuery = true)
     public Integer getMaxIndex();
 }
