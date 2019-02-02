@@ -272,6 +272,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
         else if(SenseAdapter.checkIfContainsSynsetAttributes(entity)){
             sense_description.setText(((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition());
         }
+        else{
+            sense_description.setText("");
+            sense_description.setVisibility(View.GONE);
+        }
         sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomain_id().getId()));
         sense_source.setText(entity.getLexicon_id().getName());
 
@@ -284,12 +288,8 @@ public class SenseViewActivity extends DrawerMenuActivity {
     }
 
     private void setExamples(LinearLayout sense_examples_container){
-        if(entity.getSense_attributes().isEmpty()){
-            ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
-            ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
-            sense_examples_container.setVisibility(View.GONE);
-        }
-        else if("Polish".equals(entity.getLexicon_id().getLanguage_name())){
+        if(!entity.getSense_attributes().isEmpty()
+                && !((ArrayList<SenseAttributeEntity>)entity.getSense_attributes()).get(0).getSense_examples().isEmpty()){
             ArrayList<SenseExampleEntity> examples = (ArrayList<SenseExampleEntity>)((ArrayList<SenseAttributeEntity>)entity.getSense_attributes())
                     .get(0).getSense_examples();
             if(examples.size()<1){
@@ -308,7 +308,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 }
             }
         }
-        else{
+        else if(!entity.getSynset_id().getSynset_attributes().isEmpty()){
             ArrayList<SynsetExampleEntity> examples = (ArrayList<SynsetExampleEntity>)((ArrayList<SynsetAttributeEntity>)entity.getSynset_id()
                     .getSynset_attributes()).get(0).getSynset_examples();
             if(examples.size()<1){
@@ -326,6 +326,11 @@ public class SenseViewActivity extends DrawerMenuActivity {
                     sense_examples_container.addView(example);
                 }
             }
+        }
+        else{
+            ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
+            sense_examples_container.setVisibility(View.GONE);
         }
     }
 
@@ -412,10 +417,11 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 if (!synonym.getWord_id().getWord().equals(entity.getWord_id().getWord())) {
                     RelativeLayout synonym_cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.synonym_template, null);
                     ((TextView) synonym_cell.findViewById(R.id.synonym_name)).setText(synonym.getWord_id().getWord() + "-" + synonym.getVariant());
-                    if ("Polish".equals(synonym.getLexicon_id().getLanguage_name())) {
+                    if (!synonym.getSense_attributes().isEmpty()) {
                         ((TextView) synonym_cell.findViewById(R.id.synonym_description)).setText(
                                 ((ArrayList<SenseAttributeEntity>) synonym.getSense_attributes()).get(0).getDefinition());
-                    } else {
+                    }
+                    else if(!synonym.getSynset_id().getSynset_attributes().isEmpty()) {
                         ((TextView) synonym_cell.findViewById(R.id.synonym_description)).setText(
                                 ((ArrayList<SynsetAttributeEntity>) synonym.getSynset_id().getSynset_attributes()).get(0).getDefinition());
                     }

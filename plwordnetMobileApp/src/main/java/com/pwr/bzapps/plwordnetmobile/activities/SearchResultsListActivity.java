@@ -1,8 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.activities;
 
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
@@ -52,8 +54,14 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
         listView = findViewById(R.id.results_list);
         messages = findViewById(R.id.message_text);
         progressBar = findViewById(R.id.loading_spinner);
+        wentToNextActivity = true;
         String word = getIntent().getExtras().getString("search_value","");
-        searchEdit.setText(word);
+        if("".equals(word)){
+            handleClipboardContent();
+        }
+        else{
+            searchEdit.setText(word);
+        }
         data = new ArrayList<SenseEntity>();
         adapter = new SenseAdapter(getApplicationContext(),data);
         adapter.getData().clear();
@@ -132,6 +140,7 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
         if (Settings.getLocaleName()!=this.curr_language) {
             recreate();
         }
+        handleClipboardContent();
     }
 
     @Override
@@ -140,6 +149,28 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
             retrieveSensesTask.cancel(true);
         }
         super.onDestroy();
+    }
+
+    private void handleClipboardContent(){
+        if(!wentToNextActivity){
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if(clipboard.hasPrimaryClip())
+                if(clipboard.getPrimaryClip().getItemCount()>0)
+                    if(clipboard.getPrimaryClip().getItemAt(0)!=null){
+                        String string = "";
+                        Object item = clipboard.getPrimaryClip().getItemAt(0).getText();
+                        if(item instanceof android.text.SpannableString){
+                            string = ((android.text.SpannableString)item).subSequence(0,((SpannableString) item).length()).toString();
+                        }
+                        else if(item instanceof String){
+                            string = (String) item;
+                        }
+                        if(string!=null)
+                            if(string.length()<40)
+                                searchEdit.setText(clipboard.getPrimaryClip().getItemAt(0).getText());
+                    }
+        }
+        wentToNextActivity = false;
     }
 
     @Override
@@ -155,6 +186,7 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
             }
         }
         //intent.putExtra("word_related_senses", word_related_senses);
+        wentToNextActivity = true;
         startActivity(intent);
     }
 
