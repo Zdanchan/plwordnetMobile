@@ -1,0 +1,12 @@
+0) docker build -t plwordnetmobile_service:1.0 - < plwordnet_docker/Dockerfile
+1) docker run --name=plwordnetmobile_server --env="MYSQL_ROOT_PASSWORD=<mysql_root_password>" --publish 8080:8080 <image_name or id>
+2) docker cp plwordnet_docker/wordnet_20180417.sql plwordnetmobile_server:/data/wordnet_20180417.sql
+3) docker cp plwordnet_docker/launch_configuration.sh plwordnetmobile_server:/data/launch_configuration.sh
+4) docker cp plwordnet_docker/git-organiser.sh plwordnetmobile_server:/data/git-organiser.sh
+5) docker exec -it plwordnetmobile_server /bin/bash
+6) cd data
+7) source ./launch_configuration.sh
+8) accept agreement when needed and pass <mysql_root_password> when needed
+9) gradle -p /data/plwordnetMobile-repo/plwordnetmobileRoot build
+10) gradle -p /data/plwordnetMobile-repo/dockerDeployer deploySpringServiceToDocker
+11) nohup java -jar /data/plwordnetMobile-spring-service/plwordnetmobile-service.jar &
