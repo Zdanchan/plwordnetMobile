@@ -63,7 +63,7 @@ Symbols according to Andriod locales list (https://github.com/Zdanchan/plwordnet
     <string name="lang_en_EN" translatable="false">English</string>
     <string name="lang_pl_PL" translatable="false">Polski</string>
     ...
-    <string name="lang_New_Locale_Symbol" translatable="false">Localised language name</string>
+    <string name="lang_%New_Locale_Symbol%" translatable="false">Localised language name</string>
     <!---->
 ```
 
@@ -73,7 +73,7 @@ Symbols according to Andriod locales list (https://github.com/Zdanchan/plwordnet
     <string name="locale_en_EN" translatable="false">english</string>
     <string name="locale_pl_PL" translatable="false">polish</string>
     ...
-    <string name="locale_New_Locale_Symbol" translatable="false">language_name_in_english</string>
+    <string name="locale_%New_Locale_Symbol%" translatable="false">language_name_in_english</string>
     <!---->
 ```
 
