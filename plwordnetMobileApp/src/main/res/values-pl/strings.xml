@@ -31,7 +31,7 @@
     <string name="adjective">Przymiotnik</string>
     <!---->
     <!--Search results massages-->
-    <string name="no_connection">Brak połączenia z bazą danych</string>
+    <string name="no_connection">Brak połączenia z serwerem</string>
     <string name="no_local_database_installed">Nie zainstalowano żadnej lokalnej bazy danych</string>
     <string name="no_results">Brak wyników</string>
     <string name="searching">Wyszukiwanie</string>
