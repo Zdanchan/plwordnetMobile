@@ -25,7 +25,7 @@ Module supposed to be a bridge between Android and Spring application, integrati
 Module contains source code of Spring application, which supposed to be launched on server and act as a communicator with MySQL database. Provides services necessary for Android app to retrive all needed data from database.
 
 ## plwordnetMobileRoot
-Root module, ties up all mentioned above modules and builds them at with gradle build task.
+Root module, ties up all mentioned above modules and builds them with gradle build task.
 
 
 # How to do things
