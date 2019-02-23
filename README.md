@@ -28,7 +28,7 @@ Module contains source code of Spring application, which supposed to be launched
 Root module, ties up all mentioned above modules and builds them at with gradle build task.
 
 
-# How to things
+# How to do things
 ## What should be done after adding new lexicon into database
 
 **1.** Lexicon language added into database must be named in english (to stay consistent in whole system) for example:
