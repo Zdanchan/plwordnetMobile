@@ -46,7 +46,7 @@
     <string name="adjective">Adjective</string>
     <!---->
     <!--Search results messages-->
-    <string name="no_connection">No connection to database</string>
+    <string name="no_connection">No connection with server</string>
     <string name="no_local_database_installed">No local database installed</string>
     <string name="no_results">No results found</string>
     <string name="searching">Searching</string>
