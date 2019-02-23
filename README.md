@@ -4,13 +4,19 @@
 *Project uses JavaScript graph visualization code created by plWordNet development team.
 
 # Project Overview
-Overview
+Project is split on several modules containing source files, configurations and resources used to create "plWordNet GO!" app.
 
 ## dockerDeployer
-Overview
+Module used as tool to deploy built spring service and start it inside docker.
 
 ## plwordnetMobileApp
 Module contains source code of android "plWordNet GO!" application.
+
+## plwordnetMobileDocker
+Module contains files necessary to configure "plWordNet GO!" spring service on server side inside docker container.
+
+## plwordnetMobileResources
+Module contains only images used in "plWordnetGO!" app and editable .xcf files for GIMP editor.
 
 ## plwordnetMobileEntity
 Module supposed to be a bridge between Android and Spring application, integrating their Entity class implementations but due to unabbility to satisfy deppendencies on both sites it's depricated and marked for removal.
