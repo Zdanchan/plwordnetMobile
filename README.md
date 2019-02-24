@@ -139,6 +139,8 @@ conf.language_packs={all,polish,english,...,new_language_pack_name};
   **2.4.** Rebuild project
 
 ## How to add new relation type
+*Note: This process is required to make new relation type visible in mobile application, otherwise it will be ignored.*
+
 **1.** Add new entry in *plwordnetMobile/plwordnetMobileApp/src/main/res/values/relation_types.xml*
 ```xml
 <resources>
