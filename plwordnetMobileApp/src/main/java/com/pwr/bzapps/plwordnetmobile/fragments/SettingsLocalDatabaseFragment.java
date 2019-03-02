@@ -111,12 +111,14 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(buttons_enabled) {
-                    SQLiteDBFileManager.removeLocalDB();
-                    status_value.setText(R.string.status_no_local_db);
-                    status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
-                    setStatus(2);
-                    Toast.makeText(getActivity(), getResources().getString(R.string.remove_all_local_db_toast), Toast.LENGTH_LONG).show();
-                    adapter.notifyDataSetChanged();
+                    if(requestPermissions()) {
+                        SQLiteDBFileManager.removeLocalDB();
+                        status_value.setText(R.string.status_no_local_db);
+                        status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
+                        setStatus(2);
+                        Toast.makeText(getActivity(), getResources().getString(R.string.remove_all_local_db_toast), Toast.LENGTH_LONG).show();
+                        adapter.notifyDataSetChanged();
+                    }
                 }
                 else {
                     showInformationToast();
@@ -139,9 +141,8 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         else{
             refreshStatus();
         }
-
+        requestPermissions();
         return view;
-
     }
 
     private void prepareDictionarySelectors(){
