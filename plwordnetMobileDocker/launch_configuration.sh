@@ -27,7 +27,7 @@ mysqld -u root -p --max_allowed_packet=32M
 mysql -u root -p --max_allowed_packet=32M
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS wordnet;
 USE wordnet;
-CREATE USER 'wordnet_android'@'%' IDENTIFIED BY 'a54b3fkjxdtasdf3';
+CREATE USER 'wordnet_android'@'%' IDENTIFIED BY '<wordnet_android_password>';
 USE wordnet;
 GRANT SELECT ON wordnet.* TO 'wordnet_android'@'%';
 CREATE TABLE wordnet.db_change_records (change_id INT AUTO_INCREMENT,
@@ -47,7 +47,7 @@ cd /data/plwordnetMobile-repo/ && git clone https://github.com/Zdanchan/plwordne
 echo "spring.jpa.hibernate.ddl-auto=none
 spring.datasource.url=jdbc:mysql://localhost:3306/wordnet
 spring.datasource.username=wordnet_android
-spring.datasource.password=a54b3fkjxdtasdf3
+spring.datasource.password=<wordnet_android_password>
 logging.path=/data/plwordnetMobile-spring-service/logs" > /data/plwordnetMobile-repo/plwordnetMobile/plwordnetMobileService/src/main/resources/application.properties
 
 echo "*/5 * * * * root /bin/bash /data/git-organiser.sh" >> /etc/crontab
