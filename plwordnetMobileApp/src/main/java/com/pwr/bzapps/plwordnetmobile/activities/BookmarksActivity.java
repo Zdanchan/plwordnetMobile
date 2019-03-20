@@ -70,10 +70,12 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
 
     public void informAboutConnectionProblems(){
         message_text.setText(R.string.no_connection);
-    }
+        progressBar.setVisibility(View.GONE);
+}
 
     public void informThereIsNoLocalDatabase(){
         message_text.setText(R.string.no_local_database_installed);
+        progressBar.setVisibility(View.GONE);
     }
 
     public void showWarningPopup(){
@@ -96,6 +98,7 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
                 dialog.dismiss();
             }
         });
+        progressBar.setVisibility(View.GONE);
     }
 
     private String arrayToString(Integer[] array){
