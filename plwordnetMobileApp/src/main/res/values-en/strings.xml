@@ -30,6 +30,9 @@
     <string name="adverb">Adverb</string>
     <string name="adjective">Adjective</string>
     <!---->
+    <!--Sense view warnings-->
+    <string name="not_loaded_yet">Loading, please wait and try again...</string>
+    <!---->
     <!--Search results massages-->
     <string name="no_connection">No connection with server</string>
     <string name="no_local_database_installed">No local database installed</string>

@@ -24,6 +24,9 @@
         <string name="free_licence">darmowa licencja</string>
         <string name="largest_wordnet_in_the_world">największy wordnet na świecie</string>
     <!---->
+    <!--Sense view warnings-->
+    <string name="not_loaded_yet">Wczytywanie, proszę czekać i spróbować ponownie za chwilę...</string>
+    <!---->
     <!--Parts of speech-->
     <string name="verb">Czasownik</string>
     <string name="noun">Rzeczownik</string>
