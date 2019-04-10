@@ -13,15 +13,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
@@ -491,34 +483,39 @@ public class SenseViewActivity extends DrawerMenuActivity {
         other_senses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                View convertView = (View) inflater.inflate(R.layout.other_senses_popup, null);
-                //((TextView) convertView.findViewById(R.id.title)).setText(R.string.other_senses);
-                ListView lv = (ListView) convertView.findViewById(R.id.other_senses_list);
-                ImageButton close_button = (ImageButton) convertView.findViewById(R.id.close_button);
-                SenseAdapter adapter = new SenseAdapter(getApplicationContext(),word_related_senses);
-                lv.setAdapter(adapter);
-                builder.setView(convertView);
-                final AlertDialog dialog = builder.create();
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.show();
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
-                        intent.putExtra("sense_entity",word_related_senses.get(i));
-                        intent.putExtra("word_related_senses", word_related_senses);
-                        dialog.dismiss();
-                        startActivity(intent);
-                    }
-                });
-                close_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
+                if(word_related_senses!=null) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(SenseViewActivity.this);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View convertView = (View) inflater.inflate(R.layout.other_senses_popup, null);
+                    //((TextView) convertView.findViewById(R.id.title)).setText(R.string.other_senses);
+                    ListView lv = (ListView) convertView.findViewById(R.id.other_senses_list);
+                    ImageButton close_button = (ImageButton) convertView.findViewById(R.id.close_button);
+                    SenseAdapter adapter = new SenseAdapter(getApplicationContext(), word_related_senses);
+                    lv.setAdapter(adapter);
+                    builder.setView(convertView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.show();
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
+                            intent.putExtra("sense_entity", word_related_senses.get(i));
+                            intent.putExtra("word_related_senses", word_related_senses);
+                            dialog.dismiss();
+                            startActivity(intent);
+                        }
+                    });
+                    close_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.not_loaded_yet), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
