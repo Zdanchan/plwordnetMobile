@@ -369,7 +369,7 @@ public class SQLiteEntityWrapper {
             senseAttributeEntity.setAspect_id(aspect_id);
             senseAttributeEntity.setRegister_id(register_id);
             senseAttributeEntity.setLink(link);
-            senseAttributeEntity.setDefinition(definition);
+            senseAttributeEntity.setDefinition(definition!=null ? definition.replaceAll("<'>","\"") : null);
             senseAttributeEntity.setComment(comment);
 
             senseAttributeEntity.setSense_examples(new ArrayList<SenseExampleEntity>(
@@ -458,7 +458,7 @@ public class SQLiteEntityWrapper {
 
             SynsetAttributeEntity synsetAttributeEntity = new SynsetAttributeEntity();
             synsetAttributeEntity.setSynset_id(synset_id);
-            synsetAttributeEntity.setDefinition(definition);
+            synsetAttributeEntity.setDefinition(definition!=null ? definition.replaceAll("<'>","\"") : null);
             synsetAttributeEntity.setComment(comment);
             synsetAttributeEntity.setError_comment(error_comment);
             synsetAttributeEntity.setIli_id(ili_id);
