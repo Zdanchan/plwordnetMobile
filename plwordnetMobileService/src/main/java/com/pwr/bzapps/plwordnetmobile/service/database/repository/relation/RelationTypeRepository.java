@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface RelationTypeRepository extends CrudRepository<RelationTypeEntity, Integer> {
+public interface RelationTypeRepository extends CrudRepository<RelationTypeEntity, Long> {
     @Query(value = "SELECT CONCAT(rt.id,','" +
             ",IF(rt.auto_reverse=1,1,0),','" +
             ",IF(rt.multilingual=1,1,0),','" +
@@ -37,8 +37,8 @@ public interface RelationTypeRepository extends CrudRepository<RelationTypeEntit
             ",IF(rt.node_position IS NULL, 'null',CONCAT('\"',rt.node_position,'\"')),','" +
             ",IF(rt.priority IS NULL, 'null', rt.priority)) FROM relation_type rt" +
             " WHERE rt.id>=:begin AND rt.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM relation_type", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

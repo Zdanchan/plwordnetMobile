@@ -22,7 +22,7 @@ import java.util.Collection;
 public class SenseAttributeEntity {
     @Id
     @Column(name = "sense_id")
-    private Integer sense_id;
+    private Long sense_id;
     //@ManyToOne
     //@JoinColumn(name = "sense", referencedColumnName = "id")
     //private SenseEntity sense;
@@ -33,11 +33,11 @@ public class SenseAttributeEntity {
     @Column(name = "link")
     private String link;
     @Column(name = "register_id")
-    private Integer register_id;
+    private Long register_id;
     @Column(name = "aspect_id")
-    private Integer aspect_id;
+    private Long aspect_id;
     @Column(name = "user_id")
-    private Integer user_id;
+    private Long user_id;
     @Column(name = "error_comment")
     private String error_comment;
     @Column(name = "proper_name")
@@ -46,11 +46,11 @@ public class SenseAttributeEntity {
     @OneToMany(mappedBy = "sense_attribute_id")
     private Collection<SenseExampleEntity> sense_examples;
 
-    public Integer getSense_id() {
+    public Long getSense_id() {
         return sense_id;
     }
 
-    public void setSense_id(Integer sense_id) {
+    public void setSense_id(Long sense_id) {
         this.sense_id = sense_id;
     }
 
@@ -86,27 +86,27 @@ public class SenseAttributeEntity {
         this.link = link;
     }
 
-    public Integer getRegister_id() {
+    public Long getRegister_id() {
         return register_id;
     }
 
-    public void setRegister_id(Integer register_id) {
+    public void setRegister_id(Long register_id) {
         this.register_id = register_id;
     }
 
-    public Integer getAspect_id() {
+    public Long getAspect_id() {
         return aspect_id;
     }
 
-    public void setAspect_id(Integer aspect_id) {
+    public void setAspect_id(Long aspect_id) {
         this.aspect_id = aspect_id;
     }
 
-    public Integer getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 

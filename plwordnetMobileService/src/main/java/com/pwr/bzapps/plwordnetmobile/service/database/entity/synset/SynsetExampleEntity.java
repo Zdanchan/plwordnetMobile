@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "synset_examples")
 public class SynsetExampleEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "synset_attributes_id")
     private Integer synset_attributes_id;
     @Column(name = "example")
@@ -20,11 +20,11 @@ public class SynsetExampleEntity {
     @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -19,10 +19,7 @@ import java.util.Collection;
 public class SynsetAttributeEntity {
     @Id
     @Column(name = "synset_id")
-    private Integer synset_id;
-    //@ManyToOne
-    //@JoinColumn(name = "synset", referencedColumnName = "id")
-    //private SynsetEntity synset;
+    private Long synset_id;
     @Column(name = "comment")
     private String comment;
     @Column(name = "definition")
@@ -39,21 +36,13 @@ public class SynsetAttributeEntity {
     @OneToMany(mappedBy = "synset_attributes_id")
     private Collection<SynsetExampleEntity> synset_examples;
 
-    public Integer getSynset_id() {
+    public Long getSynset_id() {
         return synset_id;
     }
 
-    public void setSynset_id(Integer synset_id) {
+    public void setSynset_id(Long synset_id) {
         this.synset_id = synset_id;
     }
-
-    //public SynsetEntity getSynset() {
-    //    return synset;
-    //}
-//
-    //public void setSynset(SynsetEntity synset) {
-    //    this.synset = synset;
-    //}
 
     public String getComment() {
         return comment;

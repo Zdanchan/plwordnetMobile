@@ -119,11 +119,11 @@ public class SQLiteComponent {
             for (int i = 0; i < classes.length; i++) {
                 if(isTableEmpty(db_path,classes[i])) {
                     log.info("Inserting data for " + classes[i].getSimpleName());
-                    int max_index = helper.getMaxIndexForEntity(classes[i]);
+                    Long max_index = helper.getMaxIndexForEntity(classes[i]);
                     if(batch_size == -1 || max_index==Integer.MAX_VALUE)
                         executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
                     else {
-                        for(int ind=0; ind<max_index; ind+=batch_size) {
+                        for(long ind=0; ind<max_index; ind+=batch_size) {
                             executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i], ind, ind+batch_size), classes[i]));
                         }
                     }
@@ -176,11 +176,11 @@ public class SQLiteComponent {
             for (int i = 0; i < classes.length; i++) {
                 if(isTableEmpty(db_path,classes[i])) {
                     log.info("Inserting data for " + classes[i].getSimpleName());
-                    int max_index = helper.getMaxIndexForEntity(classes[i]);
+                    Long max_index = helper.getMaxIndexForEntity(classes[i]);
                     if(batch_size == -1 || max_index==Integer.MAX_VALUE)
                         executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
                     else {
-                        for(int ind=0; ind<max_index; ind+=batch_size) {
+                        for(long ind=0; ind<max_index; ind+=batch_size) {
                             executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i], ind, ind+batch_size), classes[i]));
                         }
                     }
@@ -202,7 +202,7 @@ public class SQLiteComponent {
                     EmotionalAnnotationEntity.class
             };
 
-            Integer[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(language));
+            Long[] lexicons = getLexiconsIds(lexiconRepository.getAllLexiconsForLanguage(language));
 
             for(int i=0; i<classes.length; i++){
                 if(isTableEmpty(db_path,classes[i])){
@@ -211,8 +211,8 @@ public class SQLiteComponent {
                         if (batch_size == -1)
                             executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[i], lexicons), classes[i]));
                         else {
-                            int max_index = helper.getMaxIndexForEntity(classes[i]);
-                            for (int ind = 0; ind <= max_index; ind += batch_size) {
+                            Long max_index = helper.getMaxIndexForEntity(classes[i]);
+                            for (long ind = 0; ind <= max_index; ind += batch_size) {
                                 executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findSynsetAndSensesAllByRelatedIdsAndParseString(classes[i],
                                         lexicons, ind, ind + batch_size), classes[i]));
                             }
@@ -396,12 +396,12 @@ public class SQLiteComponent {
         }
     }
 
-    private Integer[] getLexiconsIds(List<LexiconEntity> lexicons){
-        LinkedList<Integer> ids = new LinkedList<Integer>();
+    private Long[] getLexiconsIds(List<LexiconEntity> lexicons){
+        LinkedList<Long> ids = new LinkedList<Long>();
         for (LexiconEntity lexicon : lexicons){
             ids.add(lexicon.getId());
         }
-        return ids.toArray(new Integer[0]);
+        return ids.toArray(new Long[0]);
     }
 
     public String testSQLiteDB(){

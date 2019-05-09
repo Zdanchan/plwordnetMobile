@@ -7,14 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface DictionaryRepository extends CrudRepository<DictionaryEntity, Integer> {
+public interface DictionaryRepository extends CrudRepository<DictionaryEntity, Long> {
     @Query(value = "SELECT CONCAT('\"',de.dtype,'\"',',',de.id,',',IF(de.description_id IS NULL,'null', de.description_id),',',de.name_id,',',IF(de.tag IS NULL, 'null', CONCAT('\"',de.tag,'\"')),',',IF(de.value IS NULL,'null',de.value)) FROM dictionaries de", nativeQuery = true)
     public List<String> findAllAndParseString();
 
     @Query(value = "SELECT CONCAT('\"',de.dtype,'\"',',',de.id,',',IF(de.description_id IS NULL,'null', de.description_id),',',de.name_id,',',IF(de.tag IS NULL, 'null', CONCAT('\"',de.tag,'\"')),',',IF(de.value IS NULL,'null',de.value)) FROM dictionaries de" +
             " WHERE de.id>=:begin AND de.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM dictionaries", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

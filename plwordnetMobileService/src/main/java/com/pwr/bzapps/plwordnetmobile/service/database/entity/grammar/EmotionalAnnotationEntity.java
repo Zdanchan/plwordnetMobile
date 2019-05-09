@@ -19,9 +19,9 @@ import javax.persistence.*;
 @Table(name = "emotional_annotations")
 public class EmotionalAnnotationEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "sense_id")
-    private Integer sense_id;
+    private Long sense_id;
     @Column(name = "has_emotional_characteristic")
     private boolean has_emotional_characteristic;
     @Column(name = "super_anotation")
@@ -37,19 +37,19 @@ public class EmotionalAnnotationEntity {
     @Column(name = "example2")
     private String example2;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getSense_id() {
+    public Long getSense_id() {
         return sense_id;
     }
 
-    public void setSense_id(Integer sense_id) {
+    public void setSense_id(Long sense_id) {
         this.sense_id = sense_id;
     }
 

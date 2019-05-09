@@ -11,17 +11,17 @@ import javax.persistence.*;
 @Table(name = "domain")
 public class DomainEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "description_id")
     private Integer description_id;
     @Column(name = "name_id")
     private Integer name_id;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

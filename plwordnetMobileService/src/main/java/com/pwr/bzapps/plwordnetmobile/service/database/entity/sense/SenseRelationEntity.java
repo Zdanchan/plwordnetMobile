@@ -14,36 +14,36 @@ import javax.persistence.*;
 @Table(name = "sense_relation")
 public class SenseRelationEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "child_sense_id")
-    private Integer child_sense_id;
+    private Long child_sense_id;
     @Column(name = "parent_sense_id")
-    private Integer parent_sense_id;
+    private Long parent_sense_id;
     @ManyToOne
     @JoinColumn(name = "relation_type_id", referencedColumnName = "id")
     private RelationTypeEntity relation_type_id;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getChild_sense_id() {
+    public Long getChild_sense_id() {
         return child_sense_id;
     }
 
-    public void setChild_sense_id(Integer child_sense_id) {
+    public void setChild_sense_id(Long child_sense_id) {
         this.child_sense_id = child_sense_id;
     }
 
-    public Integer getParent_sense_id() {
+    public Long getParent_sense_id() {
         return parent_sense_id;
     }
 
-    public void setParent_sense_id(Integer parent_sense_id) {
+    public void setParent_sense_id(Long parent_sense_id) {
         this.parent_sense_id = parent_sense_id;
     }
 

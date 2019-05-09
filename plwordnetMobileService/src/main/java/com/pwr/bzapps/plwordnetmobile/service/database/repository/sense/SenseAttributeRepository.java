@@ -7,11 +7,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SenseAttributeRepository extends CrudRepository<SenseAttributeEntity, Integer> {
+public interface SenseAttributeRepository extends CrudRepository<SenseAttributeEntity, Long> {
     @Query("SELECT sa FROM SenseAttributeEntity sa WHERE sa.sense_id IN (:sense_ids)")
-    public List<SenseAttributeEntity> findMultipleBySenseId(@Param("sense_ids") Integer[] sense_ids);
+    public List<SenseAttributeEntity> findMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
     @Query("SELECT sa.id FROM SenseAttributeEntity sa WHERE sa.sense_id IN (:sense_ids)")
-    public List<Integer> findIdsMultipleBySenseId(@Param("sense_ids") Integer[] sense_ids);
+    public List<Long> findIdsMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
@@ -38,7 +38,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             ")FROM sense_attributes sa " +
             "JOIN sense s ON sa.sense_id = s.id " +
             "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
             "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
@@ -51,7 +51,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa" +
             " WHERE sa.sense_id>=:begin AND sa.sense_id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
             "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
@@ -66,7 +66,7 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "JOIN sense s ON sa.sense_id = s.id " +
             "WHERE sa.sense_id>=:begin AND sa.sense_id<:end " +
             "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids, @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(sense_id) FROM sense_attributes", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

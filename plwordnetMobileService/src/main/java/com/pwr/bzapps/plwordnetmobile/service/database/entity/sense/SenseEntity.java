@@ -26,7 +26,7 @@ import java.util.Collection;
 @Table(name = "sense")
 public class SenseEntity implements Comparable<SenseEntity>{
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "synset_position")
     private Integer synset_position;
     @Column(name = "variant")
@@ -49,20 +49,16 @@ public class SenseEntity implements Comparable<SenseEntity>{
     @Column(name = "status_id")
     private Integer status_id;
 
-    //@OneToMany(mappedBy = "child_sense_id")
-    //private Collection<SenseRelationEntity> relation_child;
-    //@OneToMany(mappedBy = "parent_sense_id")
-    //private Collection<SenseRelationEntity> relation_parent;
     @OneToMany(mappedBy = "sense_id")
     private Collection<SenseAttributeEntity> sense_attributes;
     @OneToMany(mappedBy = "sense_id")
     private Collection<EmotionalAnnotationEntity> emotional_annotations;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -129,22 +125,6 @@ public class SenseEntity implements Comparable<SenseEntity>{
     public void setStatus_id(Integer status_id) {
         this.status_id = status_id;
     }
-
-    //public Collection<SenseRelationEntity> getRelation_child() {
-    //    return relation_child;
-    //}
-
-    //public void setRelation_child(Collection<SenseRelationEntity> relation_child) {
-    //    this.relation_child = relation_child;
-    //}
-
-    //public Collection<SenseRelationEntity> getRelation_parent() {
-    //    return relation_parent;
-    //}
-
-    //public void setRelation_parent(Collection<SenseRelationEntity> relation_parent) {
-    //    this.relation_parent = relation_parent;
-    //}
 
     public Collection<SenseAttributeEntity> getSense_attributes() {
         return sense_attributes;

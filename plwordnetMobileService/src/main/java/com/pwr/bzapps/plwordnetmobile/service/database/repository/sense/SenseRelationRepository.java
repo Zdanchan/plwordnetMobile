@@ -8,15 +8,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SenseRelationRepository extends CrudRepository<SenseRelationEntity, Integer> {
+public interface SenseRelationRepository extends CrudRepository<SenseRelationEntity, Long> {
     @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)")
-    public List<SenseRelationEntity> findMultipleBySenseId(@Param("sense_ids") Integer[] sense_ids);
+    public List<SenseRelationEntity> findMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
 
     @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relation_type_id IN (:relation_type_ids)")
-    public List<SenseRelationEntity> findByRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+    public List<SenseRelationEntity> findByRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
 
     @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relation_type_id NOT IN (:relation_type_ids)")
-    public List<SenseRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+    public List<SenseRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
@@ -34,7 +34,7 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "JOIN sense sec ON sr.child_sense_id = sec.id " +
             "JOIN sense sep ON sr.parent_sense_id = sep.id " +
             "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
@@ -43,7 +43,7 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "sr.relation_type_id" +
             ")FROM sense_relation sr" +
             " WHERE sr.id>=:begin AND sr.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_sense_id,','," +
@@ -54,8 +54,9 @@ public interface SenseRelationRepository extends CrudRepository<SenseRelationEnt
             "JOIN sense sep ON sr.parent_sense_id = sep.id " +
             "WHERE sr.id>=:begin AND sr.id<:end " +
             "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids))", nativeQuery = true)
-    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+                                                            @Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM sense_relation", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SenseExampleRepository extends CrudRepository<SenseExampleEntity, Integer> {
+public interface SenseExampleRepository extends CrudRepository<SenseExampleEntity, Long> {
     @Query("SELECT se FROM SenseExampleEntity se WHERE sense_attribute_id IN (:ids)")
-    public List<SenseExampleEntity> findMultipleBySenseAttributeId(@Param("ids") Integer[] ids);
+    public List<SenseExampleEntity> findMultipleBySenseAttributeId(@Param("ids") Long[] ids);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.sense_attribute_id,','," +
@@ -23,7 +23,7 @@ public interface SenseExampleRepository extends CrudRepository<SenseExampleEntit
             "'\"',se.type,'\"') FROM sense_examples se " +
             "JOIN sense s ON se.id = s.id " +
             "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseAttributesAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForSenseAttributesAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.sense_attribute_id,','," +
@@ -31,7 +31,7 @@ public interface SenseExampleRepository extends CrudRepository<SenseExampleEntit
             "'\"',se.type,'\"') " +
             "FROM sense_examples se" +
             " WHERE se.id>=:begin AND se.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.sense_attribute_id,','," +
@@ -41,9 +41,9 @@ public interface SenseExampleRepository extends CrudRepository<SenseExampleEntit
             "JOIN sense s ON se.id = s.id " +
             "WHERE se.sense_attribute_id>=:begin AND se.sense_attribute_id<:end " +
             "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseAttributesAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids,
-                                                                     @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForSenseAttributesAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+                                                                     @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(id) FROM sense_examples", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 
 }

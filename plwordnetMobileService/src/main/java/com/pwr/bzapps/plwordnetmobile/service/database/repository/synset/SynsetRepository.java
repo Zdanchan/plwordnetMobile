@@ -15,16 +15,16 @@ import java.util.List;
  *   `abstract` tinyint(1) DEFAULT NULL COMMENT 'is synset abstract',
  * */
 
-public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> {
+public interface SynsetRepository extends CrudRepository<SynsetEntity, Long> {
 
     @Query("SELECT s FROM SynsetEntity s WHERE id IN (:ids)")
-    public List<SynsetEntity> findMultipleByIds(@Param("ids") Integer[] ids);
+    public List<SynsetEntity> findMultipleByIds(@Param("ids") Long[] ids);
 
     @Query("SELECT s FROM SynsetEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
-    public List<SynsetEntity> findAllForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<SynsetEntity> findAllForLanguage(@Param("lexicon_ids") Long[] lexicon_ids);
 
     @Query("SELECT s.id FROM SynsetEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
-    public List<Integer> findIdsForLanguage(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<Long> findIdsForLanguage(@Param("lexicon_ids") Long[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
@@ -41,7 +41,7 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
             "IF(s.status_id IS NULL, 'null', s.status_id),','," +
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
             ")FROM synset s WHERE s.lexicon_id  IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
@@ -51,7 +51,7 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
             ")FROM synset s" +
             " WHERE s.id>=:begin AND s.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
             "IF(s.split IS NULL, 'null', s.split),','," +
@@ -60,7 +60,8 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Integer> 
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
             ")FROM synset s WHERE s.lexicon_id  IN (:lexicon_ids)" +
             " AND s.id>=:begin AND s.id<:end", nativeQuery = true)
-    public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+                                                              @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(id) FROM synset", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

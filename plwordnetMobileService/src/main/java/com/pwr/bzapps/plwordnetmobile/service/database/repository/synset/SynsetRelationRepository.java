@@ -7,15 +7,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SynsetRelationRepository extends CrudRepository<SynsetRelationEntity, Integer> {
+public interface SynsetRelationRepository extends CrudRepository<SynsetRelationEntity, Long> {
     @Query("SELECT sr FROM SynsetRelationEntity sr WHERE sr.child_synset_id IN (:synset_ids) AND sr.parent_synset_id IN (:synset_ids)")
-    public List<SynsetRelationEntity> findMultipleBySynsetId(@Param("synset_ids") Integer[] synset_ids);
+    public List<SynsetRelationEntity> findMultipleBySynsetId(@Param("synset_ids") Long[] synset_ids);
 
     @Query("SELECT sr FROM SynsetRelationEntity sr WHERE sr.synset_relation_type_id IN (:relation_type_ids)")
-    public List<SynsetRelationEntity> findByRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+    public List<SynsetRelationEntity> findByRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
 
     @Query("SELECT sr FROM SynsetRelationEntity sr WHERE sr.synset_relation_type_id NOT IN (:relation_type_ids)")
-    public List<SynsetRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Integer[] relation_type_ids);
+    public List<SynsetRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
@@ -32,7 +32,7 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "JOIN synset sec ON sr.child_synset_id = sec.id " +
             "JOIN synset sep ON sr.parent_synset_id = sep.id " +
             "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForSynsetsAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
@@ -40,7 +40,7 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "sr.synset_relation_type_id" +
             ")FROM synset_relation sr" +
             " WHERE sr.id>=:begin AND sr.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
@@ -51,8 +51,9 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "JOIN synset sep ON sr.parent_synset_id = sep.id " +
             "WHERE sr.id>=:begin AND sr.id<:end " +
             "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids))", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids, @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+                                                             @Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM synset_relation", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

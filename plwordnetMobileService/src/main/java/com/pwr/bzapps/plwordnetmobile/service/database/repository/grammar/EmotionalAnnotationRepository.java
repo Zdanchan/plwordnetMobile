@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalAnnotationEntity, Integer> {
+public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalAnnotationEntity, Long> {
     @Query(value = "SELECT CONCAT(ea.id,','" +
             ",ea.sense_id,','" +
             ",IF(ea.has_emotional_characteristic=1,1,0),','" +
@@ -32,7 +32,7 @@ public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalA
             " FROM emotional_annotations ea " +
             "JOIN sense s ON ea.sense_id = s.id " +
             "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseIdsAndParseString(@Param("lexicon_ids") Integer[] lexicon_ids);
+    public List<String> findAllForSenseIdsAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
 
     @Query(value = "SELECT CONCAT(ea.id,','" +
             ",ea.sense_id,','" +
@@ -45,7 +45,7 @@ public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalA
             ",IF(ea.example2 IS NULL,'null',CONCAT('\"',REPLACE(ea.example2,'\"','####'),'\"'))) " +
             "FROM emotional_annotations ea " +
             "WHERE ea.id>=:begin AND ea.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT CONCAT(ea.id,','" +
             ",ea.sense_id,','" +
@@ -60,9 +60,9 @@ public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalA
             "JOIN sense s ON ea.sense_id = s.id " +
             "WHERE ea.sense_id>=:begin AND ea.sense_id<:end " +
             "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseIdsAndParseStringBatch(@Param("lexicon_ids") Integer[] lexicon_ids,
-                                                              @Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllForSenseIdsAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+                                                              @Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM emotional_annotations", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

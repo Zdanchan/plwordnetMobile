@@ -18,7 +18,7 @@ import java.util.Collection;
 @Table(name = "synset")
 public class SynsetEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "split")
     private Integer split;
     @ManyToOne
@@ -37,11 +37,11 @@ public class SynsetEntity {
     private Collection<SynsetAttributeEntity> synset_attributes;
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -21,25 +21,25 @@ import javax.persistence.*;
 @Table(name = "relation_type")
 public class RelationTypeEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "auto_reverse")
     private boolean auto_reverse;
     @Column(name = "multilingual")
     private boolean multilingual;
     @Column(name = "description_id")
-    private Integer description_id;
+    private Long description_id;
     @Column(name = "display_text_id")
-    private Integer display_text_id;
+    private Long display_text_id;
     @Column(name = "name_id")
-    private Integer name_id;
+    private Long name_id;
     @Column(name = "parent_relation_type_id")
-    private Integer parent_relation_type_id;
+    private Long parent_relation_type_id;
     @Column(name = "relation_argument")
     private String relation_argument;
     @Column(name = "reverse_relation_type_id")
-    private Integer reverse_relation_type_id;
+    private Long reverse_relation_type_id;
     @Column(name = "short_display_text_id")
-    private Integer short_display_text_id;
+    private Long short_display_text_id;
     @Column(name = "color")
     private String color;
     @Column(name = "node_position")
@@ -47,11 +47,11 @@ public class RelationTypeEntity {
     @Column(name = "priority")
     private Integer priority;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,35 +71,35 @@ public class RelationTypeEntity {
         this.multilingual = multilingual;
     }
 
-    public Integer getDescription_id() {
+    public Long getDescription_id() {
         return description_id;
     }
 
-    public void setDescription_id(Integer description_id) {
+    public void setDescription_id(Long description_id) {
         this.description_id = description_id;
     }
 
-    public Integer getDisplay_text_id() {
+    public Long getDisplay_text_id() {
         return display_text_id;
     }
 
-    public void setDisplay_text_id(Integer display_text_id) {
+    public void setDisplay_text_id(Long display_text_id) {
         this.display_text_id = display_text_id;
     }
 
-    public Integer getName_id() {
+    public Long getName_id() {
         return name_id;
     }
 
-    public void setName_id(Integer name_id) {
+    public void setName_id(Long name_id) {
         this.name_id = name_id;
     }
 
-    public Integer getParent_relation_type_id() {
+    public Long getParent_relation_type_id() {
         return parent_relation_type_id;
     }
 
-    public void setParent_relation_type_id(Integer parent_relation_type_id) {
+    public void setParent_relation_type_id(Long parent_relation_type_id) {
         this.parent_relation_type_id = parent_relation_type_id;
     }
 
@@ -111,19 +111,19 @@ public class RelationTypeEntity {
         this.relation_argument = relation_argument;
     }
 
-    public Integer getReverse_relation_type_id() {
+    public Long getReverse_relation_type_id() {
         return reverse_relation_type_id;
     }
 
-    public void setReverse_relation_type_id(Integer reverse_relation_type_id) {
+    public void setReverse_relation_type_id(Long reverse_relation_type_id) {
         this.reverse_relation_type_id = reverse_relation_type_id;
     }
 
-    public Integer getShort_display_text_id() {
+    public Long getShort_display_text_id() {
         return short_display_text_id;
     }
 
-    public void setShort_display_text_id(Integer short_display_text_id) {
+    public void setShort_display_text_id(Long short_display_text_id) {
         this.short_display_text_id = short_display_text_id;
     }
 

@@ -14,36 +14,36 @@ import javax.persistence.*;
 @Table(name = "synset_relation")
 public class SynsetRelationEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "child_synset_id")
-    private Integer child_synset_id;
+    private Long child_synset_id;
     @Column(name = "parent_synset_id")
-    private Integer parent_synset_id;
+    private Long parent_synset_id;
     @ManyToOne
     @JoinColumn(name = "synset_relation_type_id", referencedColumnName = "id")
     private RelationTypeEntity synset_relation_type_id;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getChild_synset_id() {
+    public Long getChild_synset_id() {
         return child_synset_id;
     }
 
-    public void setChild_synset_id(Integer child_synset_id) {
+    public void setChild_synset_id(Long child_synset_id) {
         this.child_synset_id = child_synset_id;
     }
 
-    public Integer getParent_synset_id() {
+    public Long getParent_synset_id() {
         return parent_synset_id;
     }
 
-    public void setParent_synset_id(Integer parent_synset_id) {
+    public void setParent_synset_id(Long parent_synset_id) {
         this.parent_synset_id = parent_synset_id;
     }
 

@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TablesRepository extends CrudRepository<TableEntity, Integer> {
+public interface TablesRepository extends CrudRepository<TableEntity, Long> {
 
     @Query("SELECT t FROM TableEntity t WHERE table_schema = 'wordnet' order by update_time desc")
     public List<TableEntity> getTablesOrdered();

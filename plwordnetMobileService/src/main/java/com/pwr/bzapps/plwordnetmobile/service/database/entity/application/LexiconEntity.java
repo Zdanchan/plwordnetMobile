@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "lexicon")
 public class LexiconEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "identifier")
     private String identifier;
     @Column(name = "language_name")
@@ -26,11 +26,11 @@ public class LexiconEntity {
     @Column(name = "lexicon_version")
     private String lexicon_version;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

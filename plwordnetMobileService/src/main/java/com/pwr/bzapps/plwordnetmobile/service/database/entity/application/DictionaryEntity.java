@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "dictionaries")
 public class DictionaryEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "dtype")
     private String dtype;
     @Column(name = "description_id")
@@ -34,11 +34,11 @@ public class DictionaryEntity {
         this.dtype = dtype;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

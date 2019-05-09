@@ -13,27 +13,27 @@ import java.util.Collection;
 @Table(name = "sense_examples")
 public class SenseExampleEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "sense_attribute_id")
-    private Integer sense_attribute_id;
+    private Long sense_attribute_id;
     @Column(name = "example")
     private String example;
     @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getSense_attribute_id() {
+    public Long getSense_attribute_id() {
         return sense_attribute_id;
     }
 
-    public void setSense_attribute_id(Integer sense_attribute_id) {
+    public void setSense_attribute_id(Long sense_attribute_id) {
         this.sense_attribute_id = sense_attribute_id;
     }
 
