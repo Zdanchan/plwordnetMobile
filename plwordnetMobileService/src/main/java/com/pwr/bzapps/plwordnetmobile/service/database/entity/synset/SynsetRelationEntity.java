@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  *   `id` bigint(20) NOT NULL AUTO_INCREMENT,
- *   `child_synse_id` bigint(20) NOT NULL,
+ *   `child_synset_id` bigint(20) NOT NULL,
  *   `parent_synset_id` bigint(20) NOT NULL,
  *   `synset_relation_type_id` bigint(20) NOT NULL,
  * */
@@ -15,8 +15,8 @@ import javax.persistence.*;
 public class SynsetRelationEntity {
     @Id
     private Long id;
-    @Column(name = "child_synse_id")
-    private Long childSynseId;
+    @Column(name = "child_synset_id")
+    private Long childSynsetId;
     @Column(name = "parent_synset_id")
     private Long parentSynsetId;
     @ManyToOne
@@ -31,12 +31,12 @@ public class SynsetRelationEntity {
         this.id = id;
     }
 
-    public Long getChildSynseId() {
-        return childSynseId;
+    public Long getChildSynsetId() {
+        return childSynsetId;
     }
 
-    public void setChildSynseId(Long childSynseId) {
-        this.childSynseId = childSynseId;
+    public void setChildSynsetId(Long childSynsetId) {
+        this.childSynsetId = childSynsetId;
     }
 
     public Long getParentSynsetId() {
@@ -59,7 +59,7 @@ public class SynsetRelationEntity {
         String string = "";
         string+="SyRE{";
         string+="id:" + id + ";";
-        string+="childSynseId:" + childSynseId + ";";
+        string+="childSynsetId:" + childSynsetId + ";";
         string+="parentSynsetId:" + parentSynsetId + ";";
         string+="synsetRelationTypeId:" + synsetRelationTypeId.toString();
         string+="}SyRE";

@@ -31,7 +31,7 @@ public class SynsetAttributeEntity {
     @Column(name = "ili_id")
     private String iliId;
 
-    @OneToMany(mappedBy = "synsetAttributesId")
+    @OneToMany(mappedBy = "synsetAttributeId")
     private Collection<SynsetExampleEntity> synsetExamples;
 
     public Long getSynsetId() {
