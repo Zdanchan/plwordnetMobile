@@ -2,9 +2,6 @@ package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -15,7 +12,7 @@ import java.io.Serializable;
  * */
 public class PartOfSpeechEntity implements Entity, Serializable {
     private Integer id;
-    private Integer name_id;
+    private Integer nameId;
     private String color;
 
     public Integer getId() {
@@ -26,12 +23,12 @@ public class PartOfSpeechEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Integer getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
     }
 
     public String getColor() {

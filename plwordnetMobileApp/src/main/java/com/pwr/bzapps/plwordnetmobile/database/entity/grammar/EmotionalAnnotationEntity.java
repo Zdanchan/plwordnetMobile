@@ -1,14 +1,13 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 
 import java.io.Serializable;
 
 /**
  *   `id` bigint(20) NOT NULL AUTO_INCREMENT,
  *   `sense_id` bigint(20) NOT NULL,
- *   `has_emotional_characteristic` bit(1) NOT NULL DEFAULT b'0',
+ *   `hasEmotional_characteristic` bit(1) NOT NULL DEFAULT b'0',
  *   `super_anotation` bit(1) NOT NULL DEFAULT b'0',
  *   `emotions` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  *   `valuations` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
@@ -18,9 +17,9 @@ import java.io.Serializable;
  * */
 public class EmotionalAnnotationEntity implements Entity, Serializable{
     private Integer id;
-    private Integer sense_id;
-    private boolean has_emotional_characteristic;
-    private boolean super_anotation;
+    private Integer senseId;
+    private boolean hasEmotionalCharacteristic;
+    private boolean superAnotation;
     private String emotions;
     private String valuations;
     private String markedness;
@@ -35,28 +34,28 @@ public class EmotionalAnnotationEntity implements Entity, Serializable{
         this.id = id;
     }
 
-    public Integer getSense_id() {
-        return sense_id;
+    public Integer getSenseId() {
+        return senseId;
     }
 
-    public void setSense_id(Integer sense_id) {
-        this.sense_id = sense_id;
+    public void setSenseId(Integer senseId) {
+        this.senseId = senseId;
     }
 
-    public boolean isHas_emotional_characteristic() {
-        return has_emotional_characteristic;
+    public boolean isHasEmotionalCharacteristic() {
+        return hasEmotionalCharacteristic;
     }
 
-    public void setHas_emotional_characteristic(boolean has_emotional_characteristic) {
-        this.has_emotional_characteristic = has_emotional_characteristic;
+    public void setHasEmotionalCharacteristic(boolean hasEmotionalCharacteristic) {
+        this.hasEmotionalCharacteristic = hasEmotionalCharacteristic;
     }
 
-    public boolean isSuper_anotation() {
-        return super_anotation;
+    public boolean isSuperAnotation() {
+        return superAnotation;
     }
 
-    public void setSuper_anotation(boolean super_anotation) {
-        this.super_anotation = super_anotation;
+    public void setSuperAnotation(boolean superAnotation) {
+        this.superAnotation = superAnotation;
     }
 
     public String getEmotions() {

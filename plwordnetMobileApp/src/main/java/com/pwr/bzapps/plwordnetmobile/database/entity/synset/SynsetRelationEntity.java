@@ -2,10 +2,7 @@ package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -17,9 +14,9 @@ import java.io.Serializable;
  * */
 public class SynsetRelationEntity implements Entity, Serializable {
     private Integer id;
-    private Integer child_synset_id;
-    private Integer parent_synset_id;
-    private RelationTypeEntity synset_relation_type_id;
+    private Integer childSynsetId;
+    private Integer parentSynsetId;
+    private RelationTypeEntity synsetRelationTypeId;
 
     public Integer getId() {
         return id;
@@ -29,28 +26,28 @@ public class SynsetRelationEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public Integer getChild_synset_id() {
-        return child_synset_id;
+    public Integer getChildSynsetId() {
+        return childSynsetId;
     }
 
-    public void setChild_synset_id(Integer child_synset_id) {
-        this.child_synset_id = child_synset_id;
+    public void setChildSynsetId(Integer childSynsetId) {
+        this.childSynsetId = childSynsetId;
     }
 
-    public Integer getParent_synset_id() {
-        return parent_synset_id;
+    public Integer getParentSynsetId() {
+        return parentSynsetId;
     }
 
-    public void setParent_synset_id(Integer parent_synset_id) {
-        this.parent_synset_id = parent_synset_id;
+    public void setParentSynsetId(Integer parentSynsetId) {
+        this.parentSynsetId = parentSynsetId;
     }
 
-    public RelationTypeEntity getSynset_relation_type_id() {
-        return synset_relation_type_id;
+    public RelationTypeEntity getSynsetRelationTypeId() {
+        return synsetRelationTypeId;
     }
 
-    public void setSynset_relation_type_id(RelationTypeEntity synset_relation_type_id) {
-        this.synset_relation_type_id = synset_relation_type_id;
+    public void setSynsetRelationTypeId(RelationTypeEntity synsetRelationTypeId) {
+        this.synsetRelationTypeId = synsetRelationTypeId;
     }
 
     @Override

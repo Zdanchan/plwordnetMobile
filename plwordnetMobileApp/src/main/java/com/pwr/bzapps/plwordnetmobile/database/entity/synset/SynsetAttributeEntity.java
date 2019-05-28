@@ -16,23 +16,23 @@ import java.util.Collection;
  *   `ili_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'OMW id',
  * */
 public class SynsetAttributeEntity implements Entity, Serializable {
-    private Integer synset_id;
+    private Integer synsetId;
     private SynsetEntity synset;
     private String comment;
     private String definition;
-    private String princeton_id;
-    private Integer owner_id;
-    private String error_comment;
-    private String ili_id;
+    private String princetonId;
+    private Integer ownerId;
+    private String errorComment;
+    private String iliId;
 
     private Collection<SynsetExampleEntity> synset_examples;
 
-    public Integer getSynset_id() {
-        return synset_id;
+    public Integer getSynsetId() {
+        return synsetId;
     }
 
-    public void setSynset_id(Integer synset_id) {
-        this.synset_id = synset_id;
+    public void setSynsetId(Integer synsetId) {
+        this.synsetId = synsetId;
     }
 
     public SynsetEntity getSynset() {
@@ -59,36 +59,36 @@ public class SynsetAttributeEntity implements Entity, Serializable {
         this.definition = "null".equals(definition) ? null : definition;
     }
 
-    public String getPrinceton_id() {
-        return princeton_id;
+    public String getPrincetonId() {
+        return princetonId;
     }
 
-    public void setPrinceton_id(String princeton_id) {
-        this.princeton_id = "null".equals(princeton_id) ? null : princeton_id;
+    public void setPrincetonId(String princetonId) {
+        this.princetonId = "null".equals(princetonId) ? null : princetonId;
     }
 
-    public Integer getOwner_id() {
-        return owner_id;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(Integer owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = "null".equals(error_comment) ? null : error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = "null".equals(errorComment) ? null : errorComment;
     }
 
-    public String getIli_id() {
-        return ili_id;
+    public String getIliId() {
+        return iliId;
     }
 
-    public void setIli_id(String ili_id) {
-        this.ili_id = "null".equals(ili_id) ? null : ili_id;
+    public void setIliId(String iliId) {
+        this.iliId = "null".equals(iliId) ? null : iliId;
     }
 
     public Collection<SynsetExampleEntity> getSynset_examples() {
@@ -101,6 +101,6 @@ public class SynsetAttributeEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SyA:" + getSynset_id();
+        return "SyA:" + getSynsetId();
     }
 }

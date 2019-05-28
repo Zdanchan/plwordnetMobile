@@ -2,8 +2,6 @@ package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -21,24 +19,24 @@ import java.util.Collection;
  *
  * */
 public class SenseAttributeEntity implements Entity, Serializable {
-    private Integer sense_id;
+    private Integer senseId;
     private String comment;
     private String definition;
     private String link;
-    private Integer register_id;
-    private Integer aspect_id;
-    private Integer user_id;
-    private String error_comment;
-    private boolean proper_name;
+    private Integer registerId;
+    private Integer aspectId;
+    private Integer userId;
+    private String errorComment;
+    private boolean properName;
 
-    private Collection<SenseExampleEntity> sense_examples;
+    private Collection<SenseExampleEntity> senseExamples;
 
-    public Integer getSense_id() {
-        return sense_id;
+    public Integer getSenseId() {
+        return senseId;
     }
 
-    public void setSense_id(Integer sense_id) {
-        this.sense_id = sense_id;
+    public void setSenseId(Integer senseId) {
+        this.senseId = senseId;
     }
 
     public String getComment() {
@@ -65,56 +63,56 @@ public class SenseAttributeEntity implements Entity, Serializable {
         this.link = "null".equals(link) ? null : link;
     }
 
-    public Integer getRegister_id() {
-        return register_id;
+    public Integer getRegisterId() {
+        return registerId;
     }
 
-    public void setRegister_id(Integer register_id) {
-        this.register_id = register_id;
+    public void setRegisterId(Integer registerId) {
+        this.registerId = registerId;
     }
 
-    public Integer getAspect_id() {
-        return aspect_id;
+    public Integer getAspectId() {
+        return aspectId;
     }
 
-    public void setAspect_id(Integer aspect_id) {
-        this.aspect_id = aspect_id;
+    public void setAspectId(Integer aspectId) {
+        this.aspectId = aspectId;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = "null".equals(error_comment) ? null : error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = "null".equals(errorComment) ? null : errorComment;
     }
 
-    public boolean isProper_name() {
-        return proper_name;
+    public boolean isProperName() {
+        return properName;
     }
 
-    public void setProper_name(boolean proper_name) {
-        this.proper_name = proper_name;
+    public void setProperName(boolean properName) {
+        this.properName = properName;
     }
 
-    public Collection<SenseExampleEntity> getSense_examples() {
-        return sense_examples;
+    public Collection<SenseExampleEntity> getSenseExamples() {
+        return senseExamples;
     }
 
-    public void setSense_examples(Collection<SenseExampleEntity> sense_examples) {
-        this.sense_examples = sense_examples;
+    public void setSenseExamples(Collection<SenseExampleEntity> senseExamples) {
+        this.senseExamples = senseExamples;
     }
 
     @Override
     public String getEntityID() {
-        return "SeAE:"+getSense_id();
+        return "SeAE:"+ getSenseId();
     }
 }

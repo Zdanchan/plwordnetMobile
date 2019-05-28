@@ -2,8 +2,6 @@ package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -14,8 +12,8 @@ import java.io.Serializable;
  * */
 public class DomainEntity implements Entity, Serializable {
     private Integer id;
-    private Integer description_id;
-    private Integer name_id;
+    private Integer descriptionId;
+    private Integer nameId;
 
     public Integer getId() {
         return id;
@@ -25,20 +23,20 @@ public class DomainEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public Integer getDescription_id() {
-        return description_id;
+    public Integer getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Integer description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Integer descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Integer getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
     }
 
     @Override

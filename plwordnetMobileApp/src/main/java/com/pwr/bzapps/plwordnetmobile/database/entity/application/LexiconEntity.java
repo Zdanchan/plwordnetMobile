@@ -1,8 +1,6 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -16,9 +14,9 @@ import java.io.Serializable;
 public class LexiconEntity implements Entity, Serializable {
     private Integer id;
     private String identifier;
-    private String language_name;
+    private String languageName;
     private String name;
-    private String lexicon_version;
+    private String lexiconVersion;
 
     public Integer getId() {
         return id;
@@ -36,12 +34,12 @@ public class LexiconEntity implements Entity, Serializable {
         this.identifier = "null".equals(identifier) ? null : identifier;
     }
 
-    public String getLanguage_name() {
-        return language_name;
+    public String getLanguageName() {
+        return languageName;
     }
 
-    public void setLanguage_name(String language_name) {
-        this.language_name = "null".equals(language_name) ? null : language_name;
+    public void setLanguageName(String languageName) {
+        this.languageName = "null".equals(languageName) ? null : languageName;
     }
 
     public String getName() {
@@ -52,12 +50,12 @@ public class LexiconEntity implements Entity, Serializable {
         this.name = "null".equals(name) ? null : name;
     }
 
-    public String getLexicon_version() {
-        return lexicon_version;
+    public String getLexiconVersion() {
+        return lexiconVersion;
     }
 
-    public void setLexicon_version(String lexicon_version) {
-        this.lexicon_version = "null".equals(lexicon_version) ? null : lexicon_version;
+    public void setLexiconVersion(String lexiconVersion) {
+        this.lexiconVersion = "null".equals(lexiconVersion) ? null : lexiconVersion;
     }
 
     @Override

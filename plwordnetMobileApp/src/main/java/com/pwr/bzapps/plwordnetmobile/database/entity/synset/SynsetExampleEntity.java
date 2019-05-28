@@ -12,7 +12,7 @@ import java.io.Serializable;
  * */
 public class SynsetExampleEntity implements Entity, Serializable {
     private Integer id;
-    private Integer synset_attributes_id;
+    private Integer synsetAttributeId;
     private String example;
     private String type;
 
@@ -24,12 +24,12 @@ public class SynsetExampleEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public Integer getSynset_attributes_id() {
-        return synset_attributes_id;
+    public Integer getSynsetAttributeId() {
+        return synsetAttributeId;
     }
 
-    public void setSynset_attributes_id(Integer synset_attributes_id) {
-        this.synset_attributes_id = synset_attributes_id;
+    public void setSynsetAttributeId(Integer synsetAttributeId) {
+        this.synsetAttributeId = synsetAttributeId;
     }
 
     public String getExample() {

@@ -2,9 +2,6 @@ package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
 
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -25,18 +22,18 @@ import java.io.Serializable;
  * */
 public class RelationTypeEntity implements Entity, Serializable {
     private Integer id;
-    private boolean auto_reverse;
+    private boolean autoReverse;
     private boolean multilingual;
-    private Integer description_id;
-    private Integer display_text_id;
-    private Integer name_id;
-    private Integer parent_relation_type_id;
-    private String relation_argument;
-    //private RelationTypeEntity reverse_relation_type;
-    private Integer reverse_relation_type_id;
-    private Integer short_display_text_id;
+    private Integer descriptionId;
+    private Integer displayTextId;
+    private Integer nameId;
+    private Integer parentRelationTypeId;
+    private String relationArgument;
+    //private RelationTypeEntity reverseRelationType;
+    private Integer reverseRelationTypeId;
+    private Integer shortDisplayTextId;
     private String color;
-    private String node_position;
+    private String nodePosition;
     private Integer priority;
 
     public Integer getId() {
@@ -47,12 +44,12 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public boolean isAuto_reverse() {
-        return auto_reverse;
+    public boolean isAutoReverse() {
+        return autoReverse;
     }
 
-    public void setAuto_reverse(boolean auto_reverse) {
-        this.auto_reverse = auto_reverse;
+    public void setAutoReverse(boolean autoReverse) {
+        this.autoReverse = autoReverse;
     }
 
     public boolean isMultilingual() {
@@ -63,69 +60,69 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.multilingual = multilingual;
     }
 
-    public Integer getDescription_id() {
-        return description_id;
+    public Integer getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Integer description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Integer descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Integer getDisplay_text_id() {
-        return display_text_id;
+    public Integer getDisplayTextId() {
+        return displayTextId;
     }
 
-    public void setDisplay_text_id(Integer display_text_id) {
-        this.display_text_id = display_text_id;
+    public void setDisplayTextId(Integer displayTextId) {
+        this.displayTextId = displayTextId;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Integer getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
     }
 
-    public Integer getParent_relation_type_id() {
-        return parent_relation_type_id;
+    public Integer getParentRelationTypeId() {
+        return parentRelationTypeId;
     }
 
-    public void setParent_relation_type_id(Integer parent_relation_type_id) {
-        this.parent_relation_type_id = parent_relation_type_id;
+    public void setParentRelationTypeId(Integer parentRelationTypeId) {
+        this.parentRelationTypeId = parentRelationTypeId;
     }
 
-    public String getRelation_argument() {
-        return relation_argument;
+    public String getRelationArgument() {
+        return relationArgument;
     }
 
-    public void setRelation_argument(String relation_argument) {
-        this.relation_argument = "null".equals(relation_argument) ? null : relation_argument;
+    public void setRelationArgument(String relationArgument) {
+        this.relationArgument = "null".equals(relationArgument) ? null : relationArgument;
     }
 
-    //public RelationTypeEntity getReverse_relation_type() {
-    //    return reverse_relation_type;
+    //public RelationTypeEntity getReverseRelationType() {
+    //    return reverseRelationType;
     //}
 
-    //public void setReverse_relation_type_id(RelationTypeEntity reverse_relation_type) {
-    //    this.reverse_relation_type = reverse_relation_type_;
+    //public void setReverseRelationTypeId(RelationTypeEntity reverseRelationType) {
+    //    this.reverseRelationType = reverseRelationType;
     //}
 
 
-    public Integer getReverse_relation_type_id() {
-        return reverse_relation_type_id;
+    public Integer getReverseRelationTypeId() {
+        return reverseRelationTypeId;
     }
 
-    public void setReverse_relation_type_id(Integer reverse_relation_type_id) {
-        this.reverse_relation_type_id = reverse_relation_type_id;
+    public void setReverseRelationTypeId(Integer reverseRelationTypeId) {
+        this.reverseRelationTypeId = reverseRelationTypeId;
     }
 
-    public Integer getShort_display_text_id() {
-        return short_display_text_id;
+    public Integer getShortDisplayTextId() {
+        return shortDisplayTextId;
     }
 
-    public void setShort_display_text_id(Integer short_display_text_id) {
-        this.short_display_text_id = short_display_text_id;
+    public void setShortDisplayTextId(Integer shortDisplayTextId) {
+        this.shortDisplayTextId = shortDisplayTextId;
     }
 
     public String getColor() {
@@ -136,12 +133,12 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.color = "null".equals(color) ? null : color;
     }
 
-    public String getNode_position() {
-        return node_position;
+    public String getNodePosition() {
+        return nodePosition;
     }
 
-    public void setNode_position(String node_position) {
-        this.node_position = "null".equals(node_position) ? null : node_position;
+    public void setNodePosition(String nodePosition) {
+        this.nodePosition = "null".equals(nodePosition) ? null : nodePosition;
     }
 
     public Integer getPriority() {

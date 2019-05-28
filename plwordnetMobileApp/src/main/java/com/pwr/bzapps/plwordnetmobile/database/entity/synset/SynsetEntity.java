@@ -1,16 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
 
-import android.support.annotation.NonNull;
-
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -23,13 +17,13 @@ import java.util.Collection;
 public class SynsetEntity implements Entity, Serializable {
     private Integer id;
     private Integer split;
-    private LexiconEntity lexicon_id;
-    private Integer status_id;
+    private LexiconEntity lexiconId;
+    private Integer statusId;
     private Short abstract_;
 
-    private Collection<SynsetRelationEntity> relation_child;
-    private Collection<SynsetRelationEntity> relation_parent;
-    private Collection<SynsetAttributeEntity> synset_attributes;
+    private Collection<SynsetRelationEntity> relationChild;
+    private Collection<SynsetRelationEntity> relationParent;
+    private Collection<SynsetAttributeEntity> synsetAttributes;
 
     public Integer getId() {
         return id;
@@ -47,20 +41,20 @@ public class SynsetEntity implements Entity, Serializable {
         this.split = split;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
     public Short getAbstract() {
@@ -71,28 +65,28 @@ public class SynsetEntity implements Entity, Serializable {
         this.abstract_ = abstract_;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_child() {
-        return relation_child;
+    public Collection<SynsetRelationEntity> getRelationChild() {
+        return relationChild;
     }
 
-    public void setRelation_child(Collection<SynsetRelationEntity> relation_child) {
-        this.relation_child = relation_child;
+    public void setRelationChild(Collection<SynsetRelationEntity> relationChild) {
+        this.relationChild = relationChild;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_parent() {
-        return relation_parent;
+    public Collection<SynsetRelationEntity> getRelationParent() {
+        return relationParent;
     }
 
-    public void setRelation_parent(Collection<SynsetRelationEntity> relation_parent) {
-        this.relation_parent = relation_parent;
+    public void setRelationParent(Collection<SynsetRelationEntity> relationParent) {
+        this.relationParent = relationParent;
     }
 
-    public Collection<SynsetAttributeEntity> getSynset_attributes() {
-        return synset_attributes;
+    public Collection<SynsetAttributeEntity> getSynsetAttributes() {
+        return synsetAttributes;
     }
 
-    public void setSynset_attributes(Collection<SynsetAttributeEntity> synset_attributes) {
-        this.synset_attributes = synset_attributes;
+    public void setSynsetAttributes(Collection<SynsetAttributeEntity> synsetAttributes) {
+        this.synsetAttributes = synsetAttributes;
     }
 
     @Override

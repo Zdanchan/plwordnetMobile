@@ -13,7 +13,7 @@ import java.io.Serializable;
  * */
 public class SenseExampleEntity implements Entity, Serializable {
     private Integer id;
-    private Integer sense_attribute_id;
+    private Integer senseAttributeId;
     private String example;
     private String type;
 
@@ -25,12 +25,12 @@ public class SenseExampleEntity implements Entity, Serializable {
         this.id = id;
     }
 
-    public Integer getSense_attribute_id() {
-        return sense_attribute_id;
+    public Integer getSenseAttributeId() {
+        return senseAttributeId;
     }
 
-    public void setSense_attribute_id(Integer sense_attribute_id) {
-        this.sense_attribute_id = sense_attribute_id;
+    public void setSenseAttributeId(Integer senseAttributeId) {
+        this.senseAttributeId = senseAttributeId;
     }
 
     public String getExample() {

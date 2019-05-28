@@ -11,27 +11,27 @@ import java.io.Serializable;
  *   `lexicon_id` bigint(20) NOT NULL,
  * */
 public class RelationTypeAllowedLexiconEntity implements Serializable,Entity {
-    private RelationTypeEntity relation_type_id;
-    private LexiconEntity lexicon_id;
+    private RelationTypeEntity relationTypeId;
+    private LexiconEntity lexiconId;
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
     @Override
     public String getEntityID() {
-        return "RTAL:" + relation_type_id.getId() + "" + lexicon_id.getId();
+        return "RTAL:" + relationTypeId.getId() + "" + lexiconId.getId();
     }
 }

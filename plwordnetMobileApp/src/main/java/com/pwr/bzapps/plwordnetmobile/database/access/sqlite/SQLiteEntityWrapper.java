@@ -36,8 +36,6 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntit
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 
 public class SQLiteEntityWrapper {
 
@@ -197,8 +195,8 @@ public class SQLiteEntityWrapper {
             dictionaryEntity.setDtype(dtype);
             dictionaryEntity.setTag(tag);
             dictionaryEntity.setValue(value);
-            dictionaryEntity.setName_id(handleNullableValue(name_id));
-            dictionaryEntity.setDescription_id(handleNullableValue(description_id));
+            dictionaryEntity.setNameId(handleNullableValue(name_id));
+            dictionaryEntity.setDescriptionId(handleNullableValue(description_id));
 
             EntityManager.putEntity(dictionaryEntity);
             return dictionaryEntity;
@@ -212,8 +210,8 @@ public class SQLiteEntityWrapper {
         else{
             DomainEntity domainEntity = new DomainEntity();
             domainEntity.setId(id);
-            domainEntity.setName_id(handleNullableValue(name_id));
-            domainEntity.setDescription_id(handleNullableValue(description_id));
+            domainEntity.setNameId(handleNullableValue(name_id));
+            domainEntity.setDescriptionId(handleNullableValue(description_id));
 
             EntityManager.putEntity(domainEntity);
             return domainEntity;
@@ -229,8 +227,8 @@ public class SQLiteEntityWrapper {
             lexiconEntity.setId(id);
             lexiconEntity.setName(name);
             lexiconEntity.setIdentifier(identifier);
-            lexiconEntity.setLanguage_name(language_name);
-            lexiconEntity.setLexicon_version(lexicon_version);
+            lexiconEntity.setLanguageName(language_name);
+            lexiconEntity.setLexiconVersion(lexicon_version);
 
             EntityManager.putEntity(lexiconEntity);
             return lexiconEntity;
@@ -247,13 +245,13 @@ public class SQLiteEntityWrapper {
             EmotionalAnnotationEntity emotionalAnnotationEntity = new EmotionalAnnotationEntity();
             emotionalAnnotationEntity.setId(id);
             emotionalAnnotationEntity.setEmotions(emotions);
-            emotionalAnnotationEntity.setHas_emotional_characteristic(has_emotional_characteristic);
+            emotionalAnnotationEntity.setHasEmotionalCharacteristic(has_emotional_characteristic);
             emotionalAnnotationEntity.setMarkedness(markedness);
-            emotionalAnnotationEntity.setSuper_anotation(super_anotation);
+            emotionalAnnotationEntity.setSuperAnotation(super_anotation);
             emotionalAnnotationEntity.setValuations(valuations);
             emotionalAnnotationEntity.setExample1(example1);
             emotionalAnnotationEntity.setExample2(example2);
-            emotionalAnnotationEntity.setSense_id(sense_id);
+            emotionalAnnotationEntity.setSenseId(sense_id);
 
             EntityManager.putEntity(emotionalAnnotationEntity);
             return emotionalAnnotationEntity;
@@ -268,7 +266,7 @@ public class SQLiteEntityWrapper {
             PartOfSpeechEntity partOfSpeechEntity = new PartOfSpeechEntity();
             partOfSpeechEntity.setId(id);
             partOfSpeechEntity.setColor(color);
-            partOfSpeechEntity.setName_id(handleNullableValue(name_id));
+            partOfSpeechEntity.setNameId(handleNullableValue(name_id));
 
             EntityManager.putEntity(partOfSpeechEntity);
             return partOfSpeechEntity;
@@ -294,8 +292,8 @@ public class SQLiteEntityWrapper {
         LexiconDAO lexiconDAO = new LexiconDAO();
         RelationTypeDAO relationTypeDAO = new RelationTypeDAO();
 
-        relationTypeAllowedLexiconEntity.setLexicon_id(lexiconDAO.findById(lexicon_id));
-        relationTypeAllowedLexiconEntity.setRelation_type_id(relationTypeDAO.findById(relation_type_id));
+        relationTypeAllowedLexiconEntity.setLexiconId(lexiconDAO.findById(lexicon_id));
+        relationTypeAllowedLexiconEntity.setRelationTypeId(relationTypeDAO.findById(relation_type_id));
 
         if(EntityManager.contains(relationTypeAllowedLexiconEntity.getEntityID())){
             return (RelationTypeAllowedLexiconEntity) EntityManager.getEntity(relationTypeAllowedLexiconEntity.getEntityID());
@@ -311,8 +309,8 @@ public class SQLiteEntityWrapper {
         PartOfSpeechDAO partOfSpeechDAO = new PartOfSpeechDAO();
         RelationTypeDAO relationTypeDAO = new RelationTypeDAO();
 
-        relationTypeAllowedLexiconEntity.setPart_of_speech_id(partOfSpeechDAO.findById(part_of_speech_id));
-        relationTypeAllowedLexiconEntity.setRelation_type_id(relationTypeDAO.findById(relation_type_id));
+        relationTypeAllowedLexiconEntity.setPartOfSpeechId(partOfSpeechDAO.findById(part_of_speech_id));
+        relationTypeAllowedLexiconEntity.setRelationTypeId(relationTypeDAO.findById(relation_type_id));
 
         if(EntityManager.contains(relationTypeAllowedLexiconEntity.getEntityID())){
             return (RelationTypeAllowedPartOfSpeechEntity) EntityManager.getEntity(relationTypeAllowedLexiconEntity.getEntityID());
@@ -334,18 +332,18 @@ public class SQLiteEntityWrapper {
             RelationTypeEntity relationTypeEntity = new RelationTypeEntity();
             relationTypeEntity.setId(id);
             relationTypeEntity.setPriority(priority);
-            relationTypeEntity.setNode_position(node_position);
+            relationTypeEntity.setNodePosition(node_position);
             relationTypeEntity.setColor(color);
-            relationTypeEntity.setRelation_argument(relation_argument);
+            relationTypeEntity.setRelationArgument(relation_argument);
             relationTypeEntity.setMultilingual(multilingual);
-            relationTypeEntity.setAuto_reverse(auto_reverse);
-            relationTypeEntity.setReverse_relation_type_id(reverse_relation_type_id);
+            relationTypeEntity.setAutoReverse(auto_reverse);
+            relationTypeEntity.setReverseRelationTypeId(reverse_relation_type_id);
 
-            relationTypeEntity.setName_id(handleNullableValue(name_id));
-            relationTypeEntity.setDescription_id(handleNullableValue(description_id));
-            relationTypeEntity.setDisplay_text_id(handleNullableValue(display_text_id));
-            relationTypeEntity.setShort_display_text_id(handleNullableValue(short_display_text_id));
-            relationTypeEntity.setParent_relation_type_id(handleNullableValue(parent_relation_type_id));
+            relationTypeEntity.setNameId(handleNullableValue(name_id));
+            relationTypeEntity.setDescriptionId(handleNullableValue(description_id));
+            relationTypeEntity.setDisplayTextId(handleNullableValue(display_text_id));
+            relationTypeEntity.setShortDisplayTextId(handleNullableValue(short_display_text_id));
+            relationTypeEntity.setParentRelationTypeId(handleNullableValue(parent_relation_type_id));
 
             EntityManager.putEntity(relationTypeEntity);
             return relationTypeEntity;
@@ -362,17 +360,17 @@ public class SQLiteEntityWrapper {
             SenseExampleDAO senseExampleDAO = new SenseExampleDAO();
 
             SenseAttributeEntity senseAttributeEntity = new SenseAttributeEntity();
-            senseAttributeEntity.setSense_id(sense_id);
-            senseAttributeEntity.setProper_name(proper_name);
-            senseAttributeEntity.setError_comment(error_comment);
-            senseAttributeEntity.setUser_id(user_id);
-            senseAttributeEntity.setAspect_id(aspect_id);
-            senseAttributeEntity.setRegister_id(register_id);
+            senseAttributeEntity.setSenseId(sense_id);
+            senseAttributeEntity.setProperName(proper_name);
+            senseAttributeEntity.setErrorComment(error_comment);
+            senseAttributeEntity.setUserId(user_id);
+            senseAttributeEntity.setAspectId(aspect_id);
+            senseAttributeEntity.setRegisterId(register_id);
             senseAttributeEntity.setLink(link);
             senseAttributeEntity.setDefinition(definition!=null ? definition.replaceAll("<'>","\"") : null);
             senseAttributeEntity.setComment(comment);
 
-            senseAttributeEntity.setSense_examples(new ArrayList<SenseExampleEntity>(
+            senseAttributeEntity.setSenseExamples(new ArrayList<SenseExampleEntity>(
                     senseExampleDAO.findAllForSenseAttribute(sense_id)));
 
             EntityManager.putEntity(senseAttributeEntity);
@@ -397,16 +395,16 @@ public class SQLiteEntityWrapper {
 
             SenseEntity senseEntity = new SenseEntity();
             senseEntity.setId(id);
-            senseEntity.setStatus_id(status_id);
-            senseEntity.setSynset_position(handleNullableValue(synset_position));
+            senseEntity.setStatusId(status_id);
+            senseEntity.setSynsetPosition(handleNullableValue(synset_position));
             senseEntity.setVariant(variant);
-            senseEntity.setSynset_id(synsetDAO.findById(synset_id));
-            senseEntity.setDomain_id(domainDAO.findById(domain_id));
-            senseEntity.setLexicon_id(lexiconDAO.findById(lexicon_id));
-            senseEntity.setWord_id(wordDAO.findById(word_id));
-            senseEntity.setPart_of_speech_id(partOfSpeechDAO.findById(part_of_speech_id));
-            senseEntity.setSense_attributes(new ArrayList<SenseAttributeEntity>(senseAttributeDAO.findAllForSenseId(id)));
-            senseEntity.setEmotional_annotations(new ArrayList<EmotionalAnnotationEntity>(
+            senseEntity.setSynsetId(synsetDAO.findById(synset_id));
+            senseEntity.setDomainId(domainDAO.findById(domain_id));
+            senseEntity.setLexiconId(lexiconDAO.findById(lexicon_id));
+            senseEntity.setWordId(wordDAO.findById(word_id));
+            senseEntity.setPartOfSpeechId(partOfSpeechDAO.findById(part_of_speech_id));
+            senseEntity.setSenseAttributes(new ArrayList<SenseAttributeEntity>(senseAttributeDAO.findAllForSenseId(id)));
+            senseEntity.setEmotionalAnnotations(new ArrayList<EmotionalAnnotationEntity>(
                     emotionalAnnotationDAO.findAllForSenseId(id)));
 
             EntityManager.putEntity(senseEntity);
@@ -423,7 +421,7 @@ public class SQLiteEntityWrapper {
             senseExampleEntity.setId(id);
             senseExampleEntity.setExample(example);
             senseExampleEntity.setType(type);
-            senseExampleEntity.setSense_attribute_id(handleNullableValue(sense_attribute_id));
+            senseExampleEntity.setSenseAttributeId(handleNullableValue(sense_attribute_id));
 
             EntityManager.putEntity(senseExampleEntity);
             return senseExampleEntity;
@@ -439,9 +437,9 @@ public class SQLiteEntityWrapper {
 
             SenseRelationEntity senseRelationEntity = new SenseRelationEntity();
             senseRelationEntity.setId(id);
-            senseRelationEntity.setParent_sense_id(handleNullableValue(parent_sense_id));
-            senseRelationEntity.setChild_sense_id(handleNullableValue(child_sense_id));
-            senseRelationEntity.setRelation_type_id(relationTypeDAO.findById(relation_type_id));
+            senseRelationEntity.setParentSenseId(handleNullableValue(parent_sense_id));
+            senseRelationEntity.setChildSenseId(handleNullableValue(child_sense_id));
+            senseRelationEntity.setRelationTypeId(relationTypeDAO.findById(relation_type_id));
 
             EntityManager.putEntity(senseRelationEntity);
             return senseRelationEntity;
@@ -457,13 +455,13 @@ public class SQLiteEntityWrapper {
             SynsetExampleDAO synsetExampleDAO = new SynsetExampleDAO();
 
             SynsetAttributeEntity synsetAttributeEntity = new SynsetAttributeEntity();
-            synsetAttributeEntity.setSynset_id(synset_id);
+            synsetAttributeEntity.setSynsetId(synset_id);
             synsetAttributeEntity.setDefinition(definition!=null ? definition.replaceAll("<'>","\"") : null);
             synsetAttributeEntity.setComment(comment);
-            synsetAttributeEntity.setError_comment(error_comment);
-            synsetAttributeEntity.setIli_id(ili_id);
-            synsetAttributeEntity.setOwner_id(owner_id);
-            synsetAttributeEntity.setPrinceton_id(princeton_id);
+            synsetAttributeEntity.setErrorComment(error_comment);
+            synsetAttributeEntity.setIliId(ili_id);
+            synsetAttributeEntity.setOwnerId(owner_id);
+            synsetAttributeEntity.setPrincetonId(princeton_id);
             synsetAttributeEntity.setSynset_examples(new ArrayList<SynsetExampleEntity>(
                     synsetExampleDAO.findAllForSynsetAttribute(synset_id)));
 
@@ -484,14 +482,14 @@ public class SQLiteEntityWrapper {
             SynsetEntity synsetEntity = new SynsetEntity();
             synsetEntity.setId(id);
             synsetEntity.setSplit(handleNullableValue(split));
-            synsetEntity.setStatus_id(handleNullableValue(status_id));
+            synsetEntity.setStatusId(handleNullableValue(status_id));
             synsetEntity.setAbstract(handleNullableValue(abstract_.shortValue()));
-            synsetEntity.setLexicon_id(lexiconDAO.findById(lexicon_id));
-            synsetEntity.setRelation_parent(new ArrayList<SynsetRelationEntity>(
+            synsetEntity.setLexiconId(lexiconDAO.findById(lexicon_id));
+            synsetEntity.setRelationParent(new ArrayList<SynsetRelationEntity>(
                     synsetRelationDAO.findChildrenByParentId(id)));
-            synsetEntity.setRelation_child(new ArrayList<SynsetRelationEntity>(
+            synsetEntity.setRelationChild(new ArrayList<SynsetRelationEntity>(
                     synsetRelationDAO.findParentsByChildId(id)));
-            synsetEntity.setSynset_attributes(new ArrayList<SynsetAttributeEntity>(
+            synsetEntity.setSynsetAttributes(new ArrayList<SynsetAttributeEntity>(
                     synsetAttributeDAO.findAllForSynsetId(id)));
 
             EntityManager.putEntity(synsetEntity);
@@ -508,7 +506,7 @@ public class SQLiteEntityWrapper {
             synsetExampleEntity.setId(id);
             synsetExampleEntity.setExample(example);
             synsetExampleEntity.setType(type);
-            synsetExampleEntity.setSynset_attributes_id(handleNullableValue(synset_attributes_id));
+            synsetExampleEntity.setSynsetAttributeId(handleNullableValue(synset_attributes_id));
 
             EntityManager.putEntity(synsetExampleEntity);
             return synsetExampleEntity;
@@ -525,9 +523,9 @@ public class SQLiteEntityWrapper {
 
             SynsetRelationEntity synsetRelationEntity = new SynsetRelationEntity();
             synsetRelationEntity.setId(id);
-            synsetRelationEntity.setParent_synset_id(handleNullableValue(parent_synset_id));
-            synsetRelationEntity.setChild_synset_id(handleNullableValue(child_synset_id));
-            synsetRelationEntity.setSynset_relation_type_id(relationTypeDAO.findById(synset_attributes_id));
+            synsetRelationEntity.setParentSynsetId(handleNullableValue(parent_synset_id));
+            synsetRelationEntity.setChildSynsetId(handleNullableValue(child_synset_id));
+            synsetRelationEntity.setSynsetRelationTypeId(relationTypeDAO.findById(synset_attributes_id));
 
             EntityManager.putEntity(synsetRelationEntity);
             return synsetRelationEntity;
