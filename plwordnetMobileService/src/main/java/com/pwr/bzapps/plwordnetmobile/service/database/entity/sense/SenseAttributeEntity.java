@@ -1,7 +1,5 @@
 package com.pwr.bzapps.plwordnetmobile.service.database.entity.sense;
 
-import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetRelationEntity;
-
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -22,7 +20,7 @@ import java.util.Collection;
 public class SenseAttributeEntity {
     @Id
     @Column(name = "sense_id")
-    private Long sense_id;
+    private Long senseId;
     //@ManyToOne
     //@JoinColumn(name = "sense", referencedColumnName = "id")
     //private SenseEntity sense;
@@ -33,25 +31,25 @@ public class SenseAttributeEntity {
     @Column(name = "link")
     private String link;
     @Column(name = "register_id")
-    private Long register_id;
+    private Long registerId;
     @Column(name = "aspect_id")
-    private Long aspect_id;
+    private Long aspectId;
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
     @Column(name = "error_comment")
-    private String error_comment;
+    private String errorComment;
     @Column(name = "proper_name")
-    private boolean proper_name;
+    private boolean properName;
 
-    @OneToMany(mappedBy = "sense_attribute_id")
-    private Collection<SenseExampleEntity> sense_examples;
+    @OneToMany(mappedBy = "senseAttributeId")
+    private Collection<SenseExampleEntity> senseExamples;
 
-    public Long getSense_id() {
-        return sense_id;
+    public Long getSenseId() {
+        return senseId;
     }
 
-    public void setSense_id(Long sense_id) {
-        this.sense_id = sense_id;
+    public void setSenseId(Long senseId) {
+        this.senseId = senseId;
     }
 
     //public SenseEntity getSense() {
@@ -86,67 +84,67 @@ public class SenseAttributeEntity {
         this.link = link;
     }
 
-    public Long getRegister_id() {
-        return register_id;
+    public Long getRegisterId() {
+        return registerId;
     }
 
-    public void setRegister_id(Long register_id) {
-        this.register_id = register_id;
+    public void setRegisterId(Long registerId) {
+        this.registerId = registerId;
     }
 
-    public Long getAspect_id() {
-        return aspect_id;
+    public Long getAspectId() {
+        return aspectId;
     }
 
-    public void setAspect_id(Long aspect_id) {
-        this.aspect_id = aspect_id;
+    public void setAspectId(Long aspectId) {
+        this.aspectId = aspectId;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = errorComment;
     }
 
-    public boolean isProper_name() {
-        return proper_name;
+    public boolean isProperName() {
+        return properName;
     }
 
-    public void setProper_name(boolean proper_name) {
-        this.proper_name = proper_name;
+    public void setProperName(boolean properName) {
+        this.properName = properName;
     }
 
-    public Collection<SenseExampleEntity> getSense_examples() {
-        return sense_examples;
+    public Collection<SenseExampleEntity> getSenseExamples() {
+        return senseExamples;
     }
 
-    public void setSense_examples(Collection<SenseExampleEntity> sense_examples) {
-        this.sense_examples = sense_examples;
+    public void setSenseExamples(Collection<SenseExampleEntity> senseExamples) {
+        this.senseExamples = senseExamples;
     }
 
     public String toString(){
         String string = "";
         string+="SeAE{";
-        string+="sense_id:" + sense_id + ";";
+        string+="senseId:" + senseId + ";";
         string+="comment:" + comment + ";";
         string+="definition:" + definition + ";";
         string+="link:" + link + ";";
-        string+="register_id:" + register_id + ";";
-        string+="aspect_id:" + aspect_id + ";";
-        string+="user_id:" + user_id + ";";
-        string+="error_comment:" + error_comment + ";";
-        string+="proper_name:" + proper_name;
-        //string+="senses_examples: " + sense_examples;
+        string+="registerId:" + registerId + ";";
+        string+="aspectId:" + aspectId + ";";
+        string+="userId:" + userId + ";";
+        string+="errorComment:" + errorComment + ";";
+        string+="properName:" + properName;
+        //string+="sensesExamples: " + senseExamples;
         string+="}SeAE";
 
         return string;

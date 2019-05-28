@@ -1,7 +1,5 @@
 package com.pwr.bzapps.plwordnetmobile.service.database.entity.synset;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.application.LexiconEntity;
 
 import javax.persistence.*;
@@ -23,18 +21,18 @@ public class SynsetEntity {
     private Integer split;
     @ManyToOne
     @JoinColumn(name = "lexicon_id", referencedColumnName = "id")
-    private LexiconEntity lexicon_id;
+    private LexiconEntity lexiconId;
     @Column(name = "status_id")
-    private Integer status_id;
+    private Integer statusId;
     @Column(name = "abstract")
     private Short abstract_;
 
-    @OneToMany(mappedBy = "child_synset_id")
-    private Collection<SynsetRelationEntity> relation_child;
-    @OneToMany(mappedBy = "parent_synset_id")
-    private Collection<SynsetRelationEntity> relation_parent;
-    @OneToMany(mappedBy = "synset_id")
-    private Collection<SynsetAttributeEntity> synset_attributes;
+    @OneToMany(mappedBy = "childSynsetId")
+    private Collection<SynsetRelationEntity> relationChild;
+    @OneToMany(mappedBy = "parentSynsetId")
+    private Collection<SynsetRelationEntity> relationParent;
+    @OneToMany(mappedBy = "synsetId")
+    private Collection<SynsetAttributeEntity> synsetAttributes;
 
 
     public Long getId() {
@@ -53,20 +51,20 @@ public class SynsetEntity {
         this.split = split;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
     public Short getAbstract() {
@@ -77,28 +75,28 @@ public class SynsetEntity {
         this.abstract_ = abstract_;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_child() {
-        return relation_child;
+    public Collection<SynsetRelationEntity> getRelationChild() {
+        return relationChild;
     }
 
-    public void setRelation_child(Collection<SynsetRelationEntity> relation_child) {
-        this.relation_child = relation_child;
+    public void setRelationChild(Collection<SynsetRelationEntity> relationChild) {
+        this.relationChild = relationChild;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_parent() {
-        return relation_parent;
+    public Collection<SynsetRelationEntity> getRelationParent() {
+        return relationParent;
     }
 
-    public void setRelation_parent(Collection<SynsetRelationEntity> relation_parent) {
-        this.relation_parent = relation_parent;
+    public void setRelationParent(Collection<SynsetRelationEntity> relationParent) {
+        this.relationParent = relationParent;
     }
 
-    public Collection<SynsetAttributeEntity> getSynset_attributes() {
-        return synset_attributes;
+    public Collection<SynsetAttributeEntity> getSynsetAttributes() {
+        return synsetAttributes;
     }
 
-    public void setSynset_attributes(Collection<SynsetAttributeEntity> synset_attributes) {
-        this.synset_attributes = synset_attributes;
+    public void setSynsetAttributes(Collection<SynsetAttributeEntity> synsetAttributes) {
+        this.synsetAttributes = synsetAttributes;
     }
 
     public String toString(){
@@ -106,12 +104,12 @@ public class SynsetEntity {
         string+="SyE{";
         string+="id:" + id + ";";
         string+="split:" + split + ";";
-        string+="lexicon_id:" + lexicon_id.toString() + ";";
-        string+="status_id:" + status_id + ";";
+        string+="lexiconId:" + lexiconId.toString() + ";";
+        string+="statusId:" + statusId + ";";
         string+="abstract_:" + abstract_ + ";";
-        string+="relation_child:" + relation_child.toString() + ";";
-        string+="relation_parent:" + relation_parent.toString() + ";";
-        string+="synset_attributes:" + synset_attributes.toString();
+        string+="relationChild:" + relationChild.toString() + ";";
+        string+="relationParent:" + relationParent.toString() + ";";
+        string+="synsetAttributes:" + synsetAttributes.toString();
         string+="}SyE";
 
         return string;

@@ -17,33 +17,33 @@ public class RelationTypeAllowedLexiconEntity implements Serializable{
     @Id
     @ManyToOne
     @JoinColumn(name = "relation_type_id", referencedColumnName = "id")
-    private RelationTypeEntity relation_type_id;
+    private RelationTypeEntity relationTypeId;
     @Id
     @ManyToOne
     @JoinColumn(name = "lexicon_id", referencedColumnName = "id")
-    private LexiconEntity lexicon_id;
+    private LexiconEntity lexiconId;
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
     public String toString(){
         String string = "";
         string+="RTALE{";
-        string+="relation_type_id:" + relation_type_id.toString() + ";";
-        string+="lexicon_id:" + lexicon_id.toString();
+        string+="relationTypeId:" + relationTypeId.toString() + ";";
+        string+="lexiconId:" + lexiconId.toString();
         string+="}RTALE";
 
         return string;

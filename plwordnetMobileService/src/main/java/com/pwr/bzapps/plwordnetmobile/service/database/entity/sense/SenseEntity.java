@@ -28,31 +28,31 @@ public class SenseEntity implements Comparable<SenseEntity>{
     @Id
     private Long id;
     @Column(name = "synset_position")
-    private Integer synset_position;
+    private Integer synsetPosition;
     @Column(name = "variant")
     private Integer variant;
     @ManyToOne
     @JoinColumn(name = "domain_id", referencedColumnName = "id")
-    private DomainEntity domain_id;
+    private DomainEntity domainId;
     @ManyToOne
     @JoinColumn(name = "lexicon_id", referencedColumnName = "id")
-    private LexiconEntity lexicon_id;
+    private LexiconEntity lexiconId;
     @ManyToOne
     @JoinColumn(name = "part_of_speech_id", referencedColumnName = "id")
-    private PartOfSpeechEntity part_of_speech_id;
+    private PartOfSpeechEntity partOfSpeechId;
     @ManyToOne
     @JoinColumn(name = "synset_id", referencedColumnName = "id")
-    private SynsetEntity synset_id;
+    private SynsetEntity synsetId;
     @ManyToOne
     @JoinColumn(name = "word_id", referencedColumnName = "id")
-    private WordEntity word_id;
+    private WordEntity wordId;
     @Column(name = "status_id")
-    private Integer status_id;
+    private Integer statusId;
 
-    @OneToMany(mappedBy = "sense_id")
-    private Collection<SenseAttributeEntity> sense_attributes;
-    @OneToMany(mappedBy = "sense_id")
-    private Collection<EmotionalAnnotationEntity> emotional_annotations;
+    @OneToMany(mappedBy = "senseId")
+    private Collection<SenseAttributeEntity> senseAttributes;
+    @OneToMany(mappedBy = "senseId")
+    private Collection<EmotionalAnnotationEntity> emotionalAnnotations;
 
     public Long getId() {
         return id;
@@ -62,12 +62,12 @@ public class SenseEntity implements Comparable<SenseEntity>{
         this.id = id;
     }
 
-    public Integer getSynset_position() {
-        return synset_position;
+    public Integer getSynsetPosition() {
+        return synsetPosition;
     }
 
-    public void setSynset_position(Integer synset_position) {
-        this.synset_position = synset_position;
+    public void setSynsetPosition(Integer synsetPosition) {
+        this.synsetPosition = synsetPosition;
     }
 
     public Integer getVariant() {
@@ -78,85 +78,85 @@ public class SenseEntity implements Comparable<SenseEntity>{
         this.variant = variant;
     }
 
-    public DomainEntity getDomain_id() {
-        return domain_id;
+    public DomainEntity getDomainId() {
+        return domainId;
     }
 
-    public void setDomain_id(DomainEntity domain_id) {
-        this.domain_id = domain_id;
+    public void setDomainId(DomainEntity domainId) {
+        this.domainId = domainId;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
-    public PartOfSpeechEntity getPart_of_speech_id() {
-        return part_of_speech_id;
+    public PartOfSpeechEntity getPartOfSpeechId() {
+        return partOfSpeechId;
     }
 
-    public void setPart_of_speech_id(PartOfSpeechEntity part_of_speech_id) {
-        this.part_of_speech_id = part_of_speech_id;
+    public void setPartOfSpeechId(PartOfSpeechEntity partOfSpeechId) {
+        this.partOfSpeechId = partOfSpeechId;
     }
 
-    public SynsetEntity getSynset_id() {
-        return synset_id;
+    public SynsetEntity getSynsetId() {
+        return synsetId;
     }
 
-    public void setSynset_id(SynsetEntity synset_id) {
-        this.synset_id = synset_id;
+    public void setSynsetId(SynsetEntity synsetId) {
+        this.synsetId = synsetId;
     }
 
-    public WordEntity getWord_id() {
-        return word_id;
+    public WordEntity getWordId() {
+        return wordId;
     }
 
-    public void setWord_id(WordEntity word_id) {
-        this.word_id = word_id;
+    public void setWordId(WordEntity wordId) {
+        this.wordId = wordId;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
-    public Collection<SenseAttributeEntity> getSense_attributes() {
-        return sense_attributes;
+    public Collection<SenseAttributeEntity> getSenseAttributes() {
+        return senseAttributes;
     }
 
-    public void setSense_attributes(Collection<SenseAttributeEntity> sense_attributes) {
-        this.sense_attributes = sense_attributes;
+    public void setSenseAttributes(Collection<SenseAttributeEntity> senseAttributes) {
+        this.senseAttributes = senseAttributes;
     }
 
-    public Collection<EmotionalAnnotationEntity> getEmotional_annotations() {
-        return emotional_annotations;
+    public Collection<EmotionalAnnotationEntity> getEmotionalAnnotations() {
+        return emotionalAnnotations;
     }
 
-    public void setEmotional_annotations(Collection<EmotionalAnnotationEntity> emotional_annotations) {
-        this.emotional_annotations = emotional_annotations;
+    public void setEmotionalAnnotations(Collection<EmotionalAnnotationEntity> emotionalAnnotations) {
+        this.emotionalAnnotations = emotionalAnnotations;
     }
 
     public String toString(){
         String string = "";
         string+="SeE{";
         string+="id:" + id + ";";
-        string+="synset_position:" + synset_position + ";";
+        string+="synsetPosition:" + synsetPosition + ";";
         string+="variant:" + variant + ";";
-        string+="domain_id:" + domain_id.toString() + ";";
-        string+="lexicon_id:" + lexicon_id.toString() + ";";
-        string+="part_of_speech_id:" + part_of_speech_id.toString() + ";";
-        string+="synset_id:" + synset_id.toString() + ";";
-        string+="word_id:" + word_id.toString() + ";";
-        string+="status_id:" + status_id + ";";
+        string+="domainId:" + domainId.toString() + ";";
+        string+="lexiconId:" + lexiconId.toString() + ";";
+        string+="partOfSpeechId:" + partOfSpeechId.toString() + ";";
+        string+="synsetId:" + synsetId.toString() + ";";
+        string+="wordId:" + wordId.toString() + ";";
+        string+="statusId:" + statusId + ";";
         //string+="relation_child:" + relation_child.toString() + ";";
         //string+="relation_parent:" + relation_parent.toString()  + ";";
-        string+="sense_attributes:" + sense_attributes.toString() ;
+        string+="senseAttributes:" + senseAttributes.toString() ;
         string+="}SeE";
 
         return string;
@@ -165,17 +165,17 @@ public class SenseEntity implements Comparable<SenseEntity>{
     @Override
     public int compareTo(@NonNull SenseEntity entity) {
         int comparison = 0;
-        if(this.getWord_id().getWord().length()<entity.getWord_id().getWord().length()){
+        if(this.getWordId().getWord().length()<entity.getWordId().getWord().length()){
             comparison = -1;
         }
-        else if(this.getWord_id().getWord().length()>entity.getWord_id().getWord().length()){
+        else if(this.getWordId().getWord().length()>entity.getWordId().getWord().length()){
             comparison = 1;
         }
         else{
             comparison = 0;
         }
         if(comparison==0){
-            comparison = this.getWord_id().getWord().toLowerCase().compareTo(entity.getWord_id().getWord().toLowerCase());
+            comparison = this.getWordId().getWord().toLowerCase().compareTo(entity.getWordId().getWord().toLowerCase());
         }
         if(comparison==0){
             if(this.getVariant()<entity.getVariant()){
@@ -189,10 +189,10 @@ public class SenseEntity implements Comparable<SenseEntity>{
             }
         }
         if(comparison==0){
-            if(this.getLexicon_id().getId()<entity.getLexicon_id().getId()){
+            if(this.getLexiconId().getId()<entity.getLexiconId().getId()){
                 comparison = -1;
             }
-            else if(this.getLexicon_id().getId()>entity.getLexicon_id().getId()){
+            else if(this.getLexiconId().getId()>entity.getLexiconId().getId()){
                 comparison = 1;
             }
             else{
@@ -200,10 +200,10 @@ public class SenseEntity implements Comparable<SenseEntity>{
             }
         }
         if(comparison==0){
-            if(this.getPart_of_speech_id().getId()<entity.getPart_of_speech_id().getId()){
+            if(this.getPartOfSpeechId().getId()<entity.getPartOfSpeechId().getId()){
                 comparison = -1;
             }
-            else if(this.getPart_of_speech_id().getId()>entity.getPart_of_speech_id().getId()){
+            else if(this.getPartOfSpeechId().getId()>entity.getPartOfSpeechId().getId()){
                 comparison = 1;
             }
             else{

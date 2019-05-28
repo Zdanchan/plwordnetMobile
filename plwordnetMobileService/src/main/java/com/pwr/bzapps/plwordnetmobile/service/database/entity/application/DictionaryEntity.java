@@ -18,9 +18,9 @@ public class DictionaryEntity {
     @Column(name = "dtype")
     private String dtype;
     @Column(name = "description_id")
-    private Integer description_id;
+    private Integer descriptionId;
     @Column(name = "name_id")
-    private Integer name_id;
+    private Integer nameId;
     @Column(name = "tag")
     private String tag;
     @Column(name = "value")
@@ -42,20 +42,20 @@ public class DictionaryEntity {
         this.id = id;
     }
 
-    public Integer getDescription_id() {
-        return description_id;
+    public Integer getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Integer description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Integer descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Integer getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
     }
 
     public String getTag() {
@@ -79,8 +79,8 @@ public class DictionaryEntity {
         string+="DiE{";
         string+="id:" + id + ";";
         string+="dtype:" + dtype + ";";
-        string+="description_id:" + description_id.toString() + ";";
-        string+="name_id:" + name_id.toString() + ";";
+        string+="descriptionId:" + descriptionId.toString() + ";";
+        string+="nameId:" + nameId.toString() + ";";
         string+="tag:" + tag + ";";
         string+="value:" + value;
         string+="}DiE";

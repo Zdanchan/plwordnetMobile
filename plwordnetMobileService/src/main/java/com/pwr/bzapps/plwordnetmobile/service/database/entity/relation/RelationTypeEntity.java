@@ -23,27 +23,27 @@ public class RelationTypeEntity {
     @Id
     private Long id;
     @Column(name = "auto_reverse")
-    private boolean auto_reverse;
+    private boolean autoReverse;
     @Column(name = "multilingual")
     private boolean multilingual;
     @Column(name = "description_id")
-    private Long description_id;
+    private Long descriptionId;
     @Column(name = "display_text_id")
-    private Long display_text_id;
+    private Long displayTextId;
     @Column(name = "name_id")
-    private Long name_id;
+    private Long nameId;
     @Column(name = "parent_relation_type_id")
-    private Long parent_relation_type_id;
+    private Long parentRelationTypeId;
     @Column(name = "relation_argument")
-    private String relation_argument;
+    private String relationArgument;
     @Column(name = "reverse_relation_type_id")
-    private Long reverse_relation_type_id;
+    private Long reverseRelationTypeId;
     @Column(name = "short_display_text_id")
-    private Long short_display_text_id;
+    private Long shortDisplayTextId;
     @Column(name = "color")
     private String color;
     @Column(name = "node_position")
-    private String node_position;
+    private String nodePosition;
     @Column(name = "priority")
     private Integer priority;
 
@@ -55,12 +55,12 @@ public class RelationTypeEntity {
         this.id = id;
     }
 
-    public boolean isAuto_reverse() {
-        return auto_reverse;
+    public boolean isAutoReverse() {
+        return autoReverse;
     }
 
-    public void setAuto_reverse(boolean auto_reverse) {
-        this.auto_reverse = auto_reverse;
+    public void setAutoReverse(boolean autoReverse) {
+        this.autoReverse = autoReverse;
     }
 
     public boolean isMultilingual() {
@@ -71,60 +71,60 @@ public class RelationTypeEntity {
         this.multilingual = multilingual;
     }
 
-    public Long getDescription_id() {
-        return description_id;
+    public Long getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Long description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Long descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Long getDisplay_text_id() {
-        return display_text_id;
+    public Long getDisplayTextId() {
+        return displayTextId;
     }
 
-    public void setDisplay_text_id(Long display_text_id) {
-        this.display_text_id = display_text_id;
+    public void setDisplayTextId(Long displayTextId) {
+        this.displayTextId = displayTextId;
     }
 
-    public Long getName_id() {
-        return name_id;
+    public Long getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Long name_id) {
-        this.name_id = name_id;
+    public void setNameId(Long nameId) {
+        this.nameId = nameId;
     }
 
-    public Long getParent_relation_type_id() {
-        return parent_relation_type_id;
+    public Long getParentRelationTypeId() {
+        return parentRelationTypeId;
     }
 
-    public void setParent_relation_type_id(Long parent_relation_type_id) {
-        this.parent_relation_type_id = parent_relation_type_id;
+    public void setParentRelationTypeId(Long parentRelationTypeId) {
+        this.parentRelationTypeId = parentRelationTypeId;
     }
 
-    public String getRelation_argument() {
-        return relation_argument;
+    public String getRelationArgument() {
+        return relationArgument;
     }
 
-    public void setRelation_argument(String relation_argument) {
-        this.relation_argument = relation_argument;
+    public void setRelationArgument(String relationArgument) {
+        this.relationArgument = relationArgument;
     }
 
-    public Long getReverse_relation_type_id() {
-        return reverse_relation_type_id;
+    public Long getReverseRelationTypeId() {
+        return reverseRelationTypeId;
     }
 
-    public void setReverse_relation_type_id(Long reverse_relation_type_id) {
-        this.reverse_relation_type_id = reverse_relation_type_id;
+    public void setReverseRelationTypeId(Long reverseRelationTypeId) {
+        this.reverseRelationTypeId = reverseRelationTypeId;
     }
 
-    public Long getShort_display_text_id() {
-        return short_display_text_id;
+    public Long getShortDisplayTextId() {
+        return shortDisplayTextId;
     }
 
-    public void setShort_display_text_id(Long short_display_text_id) {
-        this.short_display_text_id = short_display_text_id;
+    public void setShortDisplayTextId(Long shortDisplayTextId) {
+        this.shortDisplayTextId = shortDisplayTextId;
     }
 
     public String getColor() {
@@ -135,12 +135,12 @@ public class RelationTypeEntity {
         this.color = color;
     }
 
-    public String getNode_position() {
-        return node_position;
+    public String getNodePosition() {
+        return nodePosition;
     }
 
-    public void setNode_position(String node_position) {
-        this.node_position = node_position;
+    public void setNodePosition(String nodePosition) {
+        this.nodePosition = nodePosition;
     }
 
     public Integer getPriority() {
@@ -155,17 +155,17 @@ public class RelationTypeEntity {
         String string = "";
         string+="RTE{";
         string+="id:" + id + ";";
-        string+="auto_reverse:" + auto_reverse + ";";
+        string+="autoReverse:" + autoReverse + ";";
         string+="multilingual:" + multilingual + ";";
-        string+="description_id:" + description_id.toString() + ";";
-        string+="display_text_id:" + display_text_id.toString() + ";";
-        string+="name_id:" + name_id.toString() + ";";
-        string+="parent_relation_type_id:" + parent_relation_type_id + ";";
-        string+="relation_argument:" + relation_argument + ";";
-        string+="reverse_relation_type_id:" + reverse_relation_type_id + ";";
-        string+="short_display_text_id:" + short_display_text_id.toString() + ";";
+        string+="descriptionId:" + descriptionId.toString() + ";";
+        string+="displayTextId:" + displayTextId.toString() + ";";
+        string+="nameId:" + nameId.toString() + ";";
+        string+="parentRelationTypeId:" + parentRelationTypeId + ";";
+        string+="relationArgument:" + relationArgument + ";";
+        string+="reverseRelationTypeId:" + reverseRelationTypeId + ";";
+        string+="shortDisplayTextId:" + shortDisplayTextId.toString() + ";";
         string+="color:" + color + ";";
-        string+="node_position:" + node_position + ";";
+        string+="nodePosition:" + nodePosition + ";";
         string+="priority:" + priority;
         string+="}RTE";
 

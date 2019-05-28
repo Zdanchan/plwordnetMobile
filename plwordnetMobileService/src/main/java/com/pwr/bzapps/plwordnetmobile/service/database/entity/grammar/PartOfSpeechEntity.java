@@ -13,7 +13,7 @@ public class PartOfSpeechEntity {
     @Id
     private Long id;
     @Column(name = "name_id")
-    private Long name_id;
+    private Long nameId;
     @Column(name = "color")
     private String color;
 
@@ -25,12 +25,12 @@ public class PartOfSpeechEntity {
         this.id = id;
     }
 
-    public Long getName_id() {
-        return name_id;
+    public Long getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Long name_id) {
-        this.name_id = name_id;
+    public void setNameId(Long nameId) {
+        this.nameId = nameId;
     }
 
     public String getColor() {
@@ -45,7 +45,7 @@ public class PartOfSpeechEntity {
         String string = "";
         string+="POSE{";
         string+="id:" + id + ";";
-        string+="name_id:" + name_id.toString() + ";";
+        string+="nameId:" + nameId.toString() + ";";
         string+="color:" + color;
         string+="}POSE";
 
