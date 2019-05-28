@@ -18,9 +18,9 @@ import java.util.List;
  * */
 
 public interface SynsetAttributeRepository extends CrudRepository<SynsetAttributeEntity, Long> {
-    @Query("SELECT sa FROM SynsetAttributeEntity sa WHERE sa.synset_id IN (:synset_ids)")
+    @Query("SELECT sa FROM SynsetAttributeEntity sa WHERE sa.synsetId IN (:synset_ids)")
     public List<SynsetAttributeEntity> findMultipleBySynsetId(@Param("synset_ids") Long[] synset_ids);
-    @Query("SELECT sa.id FROM SynsetAttributeEntity sa WHERE sa.synset_id IN (:synset_ids)")
+    @Query("SELECT sa.id FROM SynsetAttributeEntity sa WHERE sa.synsetId IN (:synset_ids)")
     public List<Long> findIdsMultipleBySynsetId(@Param("synset_ids") Long[] synset_ids);
 
     @Query(value = "SELECT CONCAT(" +

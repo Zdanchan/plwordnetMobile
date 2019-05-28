@@ -31,8 +31,8 @@ public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalA
             ",IF(ea.example2 IS NULL,'null',CONCAT('\"',REPLACE(ea.example2,'\"','####'),'\"'))) " +
             " FROM emotional_annotations ea " +
             "JOIN sense s ON ea.sense_id = s.id " +
-            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseIdsAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
+            "WHERE s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSenseIdsAndParseString(@Param("lexiconIds") Long[] lexiconIds);
 
     @Query(value = "SELECT CONCAT(ea.id,','" +
             ",ea.sense_id,','" +
@@ -59,8 +59,8 @@ public interface EmotionalAnnotationRepository extends CrudRepository<EmotionalA
             "FROM emotional_annotations ea " +
             "JOIN sense s ON ea.sense_id = s.id " +
             "WHERE ea.sense_id>=:begin AND ea.sense_id<:end " +
-            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSenseIdsAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+            "AND s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSenseIdsAndParseStringBatch(@Param("lexiconIds") Long[] lexiconIds,
                                                               @Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM emotional_annotations", nativeQuery = true)

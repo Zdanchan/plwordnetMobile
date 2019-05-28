@@ -710,7 +710,7 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getChildSynseId(),
+                    element.getChildSynsetId(),
                     element.getParentSynsetId(),
                     element.getSynsetRelationTypeId()})
                     + "),";

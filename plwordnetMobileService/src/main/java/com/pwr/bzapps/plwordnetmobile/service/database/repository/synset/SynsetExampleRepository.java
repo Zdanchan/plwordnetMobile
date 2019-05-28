@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEntity, Long> {
-    @Query("SELECT se FROM SynsetExampleEntity se WHERE synset_attributes_id IN (:ids)")
+    @Query("SELECT se FROM SynsetExampleEntity se WHERE synsetAttributesId IN (:ids)")
     public List<SynsetExampleEntity> findMultipleBySynsetAttributeId(@Param("ids") Long[] ids);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
@@ -24,8 +24,8 @@ public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEnt
             "IF(se.type IS NULL,'null',CONCAT('\"',se.type,'\"'))" +
             ") FROM synset_examples se " +
             "JOIN synset s ON se.id = s.id " +
-            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetAttributesAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
+            "WHERE s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSynsetAttributesAndParseString(@Param("lexiconIds") Long[] lexiconIds);
     @Query(value = "SELECT CONCAT(" +
             "se.id,','," +
             "se.synset_attributes_id,','," +
@@ -42,8 +42,8 @@ public interface SynsetExampleRepository extends CrudRepository<SynsetExampleEnt
             ") FROM synset_examples se " +
             "JOIN synset s ON se.id = s.id " +
             "WHERE se.synset_attributes_id>=:begin AND se.synset_attributes_id<:end " +
-            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSynsetAttributesAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+            "AND s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSynsetAttributesAndParseStringBatch(@Param("lexiconIds") Long[] lexiconIds,
                                                                       @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(id) FROM synset_examples", nativeQuery = true)
     public Long getMaxIndex();

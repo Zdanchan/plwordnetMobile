@@ -9,13 +9,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SenseRelationRepository extends CrudRepository<SenseRelationEntity, Long> {
-    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.child_sense_id IN (:sense_ids) AND sr.parent_sense_id IN (:sense_ids)")
+    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.childSenseId IN (:sense_ids) AND sr.parentSenseId IN (:sense_ids)")
     public List<SenseRelationEntity> findMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
 
-    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relation_type_id IN (:relation_type_ids)")
+    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relationTypeId IN (:relation_type_ids)")
     public List<SenseRelationEntity> findByRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
 
-    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relation_type_id NOT IN (:relation_type_ids)")
+    @Query("SELECT sr FROM SenseRelationEntity sr WHERE sr.relationTypeId NOT IN (:relation_type_ids)")
     public List<SenseRelationEntity> findExcludingRelationTypes(@Param("relation_type_ids") Long[] relation_type_ids);
 
     @Query(value = "SELECT CONCAT(" +

@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SenseAttributeRepository extends CrudRepository<SenseAttributeEntity, Long> {
-    @Query("SELECT sa FROM SenseAttributeEntity sa WHERE sa.sense_id IN (:sense_ids)")
-    public List<SenseAttributeEntity> findMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
-    @Query("SELECT sa.id FROM SenseAttributeEntity sa WHERE sa.sense_id IN (:sense_ids)")
-    public List<Long> findIdsMultipleBySenseId(@Param("sense_ids") Long[] sense_ids);
+    @Query("SELECT sa FROM SenseAttributeEntity sa WHERE sa.senseId IN (:senseIds)")
+    public List<SenseAttributeEntity> findMultipleBySenseId(@Param("senseIds") Long[] senseIds);
+    @Query("SELECT sa.id FROM SenseAttributeEntity sa WHERE sa.senseId IN (:senseIds)")
+    public List<Long> findIdsMultipleBySenseId(@Param("senseIds") Long[] senseIds);
 
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
@@ -37,8 +37,8 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             "IF(sa.proper_name=1,1,0)" +
             ")FROM sense_attributes sa " +
             "JOIN sense s ON sa.sense_id = s.id " +
-            "WHERE s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
+            "WHERE s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseString(@Param("lexiconIds") Long[] lexiconIds);
     @Query(value = "SELECT CONCAT(" +
             "sa.sense_id,','," +
             "IF(sa.comment IS NULL,'null',CONCAT('\"',REPLACE(sa.comment,'\"','####'),'\"')),','," +
@@ -65,8 +65,8 @@ public interface SenseAttributeRepository extends CrudRepository<SenseAttributeE
             ")FROM sense_attributes sa " +
             "JOIN sense s ON sa.sense_id = s.id " +
             "WHERE sa.sense_id>=:begin AND sa.sense_id<:end " +
-            "AND s.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForSensesAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids, @Param("begin") Long begin, @Param("end") Long end);
+            "AND s.lexicon_id IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForSensesAndParseStringBatch(@Param("lexiconIds") Long[] lexiconIds, @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(sense_id) FROM sense_attributes", nativeQuery = true)
     public Long getMaxIndex();
 }

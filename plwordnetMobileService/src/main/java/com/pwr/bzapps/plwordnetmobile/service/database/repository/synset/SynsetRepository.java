@@ -20,11 +20,11 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Long> {
     @Query("SELECT s FROM SynsetEntity s WHERE id IN (:ids)")
     public List<SynsetEntity> findMultipleByIds(@Param("ids") Long[] ids);
 
-    @Query("SELECT s FROM SynsetEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
-    public List<SynsetEntity> findAllForLanguage(@Param("lexicon_ids") Long[] lexicon_ids);
+    @Query("SELECT s FROM SynsetEntity s WHERE s.lexiconId.id IN (:lexiconIds)")
+    public List<SynsetEntity> findAllForLanguage(@Param("lexiconIds") Long[] lexiconIds);
 
-    @Query("SELECT s.id FROM SynsetEntity s WHERE s.lexicon_id.id IN (:lexicon_ids)")
-    public List<Long> findIdsForLanguage(@Param("lexicon_ids") Long[] lexicon_ids);
+    @Query("SELECT s.id FROM SynsetEntity s WHERE s.lexiconId.id IN (:lexiconIds)")
+    public List<Long> findIdsForLanguage(@Param("lexiconIds") Long[] lexiconIds);
 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
@@ -40,8 +40,8 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Long> {
             "s.lexicon_id,','," +
             "IF(s.status_id IS NULL, 'null', s.status_id),','," +
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
-            ")FROM synset s WHERE s.lexicon_id  IN (:lexicon_ids)", nativeQuery = true)
-    public List<String> findAllForLexiconsAndParseString(@Param("lexicon_ids") Long[] lexicon_ids);
+            ")FROM synset s WHERE s.lexicon_id  IN (:lexiconIds)", nativeQuery = true)
+    public List<String> findAllForLexiconsAndParseString(@Param("lexiconIds") Long[] lexiconIds);
 
     @Query(value = "SELECT CONCAT(" +
             "s.id,','," +
@@ -58,9 +58,9 @@ public interface SynsetRepository extends CrudRepository<SynsetEntity, Long> {
             "s.lexicon_id,','," +
             "IF(s.status_id IS NULL, 'null', s.status_id),','," +
             "IF(s.abstract IS NULL, 'null', s.abstract)" +
-            ")FROM synset s WHERE s.lexicon_id  IN (:lexicon_ids)" +
+            ")FROM synset s WHERE s.lexicon_id  IN (:lexiconIds)" +
             " AND s.id>=:begin AND s.id<:end", nativeQuery = true)
-    public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexicon_ids") Long[] lexicon_ids,
+    public List<String> findAllForLexiconsAndParseStringBatch(@Param("lexiconIds") Long[] lexiconIds,
                                                               @Param("begin") Long begin, @Param("end") Long end);
     @Query(value = "SELECT MAX(id) FROM synset", nativeQuery = true)
     public Long getMaxIndex();

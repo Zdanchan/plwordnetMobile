@@ -16,7 +16,7 @@ public interface LexiconRepository extends CrudRepository<LexiconEntity, Long> {
             " WHERE le.id>=:begin AND le.id<:end", nativeQuery = true)
     public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
-    @Query("SELECT le FROM LexiconEntity le WHERE LOWER(le.language_name) LIKE LOWER(:language)")
+    @Query("SELECT le FROM LexiconEntity le WHERE LOWER(le.languageName) LIKE LOWER(:language)")
     public List<LexiconEntity> getAllLexiconsForLanguage(@Param("language") String language);
 
     @Query(value = "SELECT le.id FROM lexicon le WHERE LOWER(le.language_name) LIKE LOWER(:language)", nativeQuery = true)
