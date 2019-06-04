@@ -35,4 +35,16 @@ public class StringUtil {
         }
         return list.toArray(new Integer[0]);
     }
+    public static Long[] parseStringToLongArray(String string){
+        if("null".equals(string))
+            return new Long[0];
+        LinkedList<Long> list = new LinkedList<Long>();
+        string = string.replace("[","").replace("]","");
+        String[] string_values = string.split(",");
+        for(int i=0; i<string_values.length; i++){
+            if(!"null".equals(string_values[i].trim()))
+                list.add(Long.parseLong(string_values[i].trim()));
+        }
+        return list.toArray(new Long[0]);
+    }
 }
