@@ -10,6 +10,7 @@ import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.SearchResultsListActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
@@ -60,7 +61,8 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
             if(!SQLiteDBFileManager.doesLocalDBExists())
                 return "NoLocalDatabase";
             try {
-                resultHolder = new ArrayList<SenseEntity>((new SenseDAO()).findByWord(strings[0], Settings.RESULTS_LIMIT));
+                resultHolder = new ArrayList<SenseEntity>(SQLiteConnector.getDatabaseInstance().senseDAO()
+                        .findByWord(strings[0], Settings.RESULTS_LIMIT));
                 Collections.sort((ArrayList<SenseEntity>) resultHolder);
             }catch (SQLiteException e){
                 return "LocalDBException";

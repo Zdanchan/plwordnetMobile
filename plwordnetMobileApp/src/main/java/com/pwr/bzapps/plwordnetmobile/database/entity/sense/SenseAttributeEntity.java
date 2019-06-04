@@ -1,10 +1,18 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
+import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *   `sense_id` bigint(20) NOT NULL,
@@ -18,24 +26,36 @@ import java.util.Collection;
  *   `proper_name` bit(1) NOT NULL DEFAULT b'0',
  *
  * */
+@android.arch.persistence.room.Entity(tableName = "sense_attributes")
 public class SenseAttributeEntity implements Entity, Serializable {
-    private Integer senseId;
+    @PrimaryKey
+    @ColumnInfo(name = "sense_id")
+    private Long senseId;
+    @ColumnInfo(name = "comment")
     private String comment;
+    @ColumnInfo(name = "definition")
     private String definition;
+    @ColumnInfo(name = "link")
     private String link;
+    @ColumnInfo(name = "register_id")
     private Integer registerId;
+    @ColumnInfo(name = "aspect_id")
     private Integer aspectId;
+    @ColumnInfo(name = "user_id")
     private Integer userId;
+    @ColumnInfo(name = "error_comment")
     private String errorComment;
+    @ColumnInfo(name = "proper_name")
     private boolean properName;
 
-    private Collection<SenseExampleEntity> senseExamples;
+    @Ignore
+    private List<SenseExampleEntity> senseExamples;
 
-    public Integer getSenseId() {
+    public Long getSenseId() {
         return senseId;
     }
 
-    public void setSenseId(Integer senseId) {
+    public void setSenseId(Long senseId) {
         this.senseId = senseId;
     }
 
@@ -103,11 +123,13 @@ public class SenseAttributeEntity implements Entity, Serializable {
         this.properName = properName;
     }
 
-    public Collection<SenseExampleEntity> getSenseExamples() {
+    public List<SenseExampleEntity> getSenseExamples() {
+        if(Settings.isOfflineMode() && senseExamples==null)
+            senseExamples = SQLiteConnector.getDatabaseInstance().senseExampleDAO().findAllForSenseAttribute(senseId);
         return senseExamples;
     }
 
-    public void setSenseExamples(Collection<SenseExampleEntity> senseExamples) {
+    public void setSenseExamples(List<SenseExampleEntity> senseExamples) {
         this.senseExamples = senseExamples;
     }
 

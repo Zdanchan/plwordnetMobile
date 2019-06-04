@@ -1,46 +1,31 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class SynsetRelationDAO {
-    static final String HEADER = "SELECT id, parent_synset_id, child_synset_id, synset_relation_type_id FROM " + SQLiteTablesConstNames.SYNSET_RELATION_NAME;
+@Dao
+public interface SynsetRelationDAO {
 
-    public Collection<SynsetRelationEntity> getAll(){
-        String query = HEADER;
-        Collection<SynsetRelationEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetRelationEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM synset_relation AS sr LIMIT 1")
+    public SynsetRelationEntity checkTable();
 
-    public SynsetRelationEntity findById(Integer id){
-        if(EntityManager.contains("SyR:"+id)){
-            return (SynsetRelationEntity) EntityManager.getEntity("SyR:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SynsetRelationEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SynsetRelationEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM synset_relation AS sr")
+    public List<SynsetRelationEntity> getAll();
 
-    public Collection<SynsetRelationEntity> findChildrenByParentId(Integer parent_synset_id){
-        String query = HEADER
-                + " WHERE parent_synset_id = " + parent_synset_id;
-        Collection<SynsetRelationEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetRelationEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM synset_relation AS sr WHERE sr.id = :id")
+    public SynsetRelationEntity findById(Long id);
 
-    public Collection<SynsetRelationEntity> findParentsByChildId(Integer child_synset_id){
-        String query = HEADER
-                + " WHERE child_synset_id = " + child_synset_id;
-        Collection<SynsetRelationEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetRelationEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM synset_relation AS sr WHERE sr.parent_synset_id = :parent_synset_id")
+    public List<SynsetRelationEntity> findChildrenByParentId(Long parent_synset_id);
+
+    @Query("SELECT * FROM synset_relation AS sr WHERE sr.child_synset_id = :child_synset_id")
+    public List<SynsetRelationEntity> findParentsByChildId(Long child_synset_id);
 }

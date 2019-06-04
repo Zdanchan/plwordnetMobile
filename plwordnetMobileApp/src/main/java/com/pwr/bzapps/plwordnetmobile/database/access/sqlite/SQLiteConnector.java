@@ -1,82 +1,36 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import com.pwr.bzapps.plwordnetmobile.activities.MainActivity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.File;
-import java.sql.*;
-import java.util.Collection;
 
-public class SQLiteConnector extends SQLiteOpenHelper {
+public class SQLiteConnector {
 
-    private static SQLiteConnector instance;
+    private static SQLiteLanguageDatabase database;
     private static Context context;
 
-    public SQLiteConnector(Context context) {
-        super(context, new File(Settings.getSqliteDbFile()).getAbsolutePath(), null, 1);
+    public static SQLiteLanguageDatabase getDatabaseInstance() {
+        return getDatabaseInstance(context);
     }
 
-    public static SQLiteConnector getInstance() {
-        if(instance==null)
-            reloadInstance(context);
-        return instance;
+    public static SQLiteLanguageDatabase getDatabaseInstance(Context context) {
+        if(database==null)
+            reloadDatabaseInstance(context);
+        return database;
     }
 
-    public static SQLiteConnector reloadInstance(Context context){
-        SQLiteConnector.context = context;
-        instance = new SQLiteConnector(context);
-        return instance;
-    }
-
-    public void runQuery(String query){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.rawQuery(query, null);
-    }
-
-    public <T extends Entity> T getResultForQuery(String query, Class<T> clazz){
-        SQLiteDatabase db = this.getWritableDatabase();
-        T result = null;
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        result = SQLiteEntityWrapper.wrapWithEntity(cursor, clazz);
-        cursor.close();
-        return result;
-    }
-
-    public <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz, int resultLimit){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Collection<T> results = null;
-        Cursor cursor = db.rawQuery(query, null);
-        results = SQLiteEntityWrapper.wrapWithEntityCollection(cursor, clazz, resultLimit);
-        cursor.close();
-        return results;
-    }
-
-    public <T extends Entity> Collection<T> getResultListForQuery(String query, Class<T> clazz){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Collection<T> results = null;
-        Cursor cursor = db.rawQuery(query, null);
-        results = SQLiteEntityWrapper.wrapWithEntityCollection(cursor, clazz);
-        cursor.close();
-        return results;
+    public static SQLiteLanguageDatabase reloadDatabaseInstance(Context context){
+        SQLiteLanguageDatabase database = Room.databaseBuilder(context,
+                SQLiteLanguageDatabase.class, new File(Settings.getSqliteDbFile()).getAbsolutePath())
+                .build();
+        SQLiteConnector.database = database;
+        return database;
     }
 
     public static void setContext(Context context) {
         SQLiteConnector.context = context;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
     }
 }

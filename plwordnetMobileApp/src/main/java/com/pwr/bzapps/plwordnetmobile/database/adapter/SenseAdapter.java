@@ -98,11 +98,11 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
         return flag_id;
     }
 
-    private String getPartOfSpeechString(Integer id){
+    private String getPartOfSpeechString(Long id){
         return getPartOfSpeechString(id,context);
     }
 
-    public static String getPartOfSpeechString(Integer id, Context context) {
+    public static String getPartOfSpeechString(Long id, Context context) {
         switch(id.intValue()){
             case 1:
                 return context.getResources().getString(R.string.verb);

@@ -1,6 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -11,25 +13,31 @@ import java.io.Serializable;
  *   `example` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  * */
+@android.arch.persistence.room.Entity(tableName = "sense_examples")
 public class SenseExampleEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer senseAttributeId;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "sense_attribute_id")
+    private Long senseAttributeId;
+    @ColumnInfo(name = "example")
     private String example;
+    @ColumnInfo(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getSenseAttributeId() {
+    public Long getSenseAttributeId() {
         return senseAttributeId;
     }
 
-    public void setSenseAttributeId(Integer senseAttributeId) {
+    public void setSenseAttributeId(Long senseAttributeId) {
         this.senseAttributeId = senseAttributeId;
     }
 

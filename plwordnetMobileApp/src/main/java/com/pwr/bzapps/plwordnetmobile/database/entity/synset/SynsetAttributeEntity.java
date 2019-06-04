@@ -1,10 +1,14 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
-
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  *   `synset_id` bigint(20) NOT NULL,
@@ -15,32 +19,33 @@ import java.util.Collection;
  *   `error_comment` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `ili_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'OMW id',
  * */
+@android.arch.persistence.room.Entity(tableName = "synset_attributes")
 public class SynsetAttributeEntity implements Entity, Serializable {
-    private Integer synsetId;
-    private SynsetEntity synset;
+    @PrimaryKey
+    @ColumnInfo(name = "synset_id")
+    private Long synsetId;
+    @ColumnInfo(name = "comment")
     private String comment;
+    @ColumnInfo(name = "definition")
     private String definition;
+    @ColumnInfo(name = "princeton_id")
     private String princetonId;
+    @ColumnInfo(name = "owner_id")
     private Integer ownerId;
+    @ColumnInfo(name = "error_comment")
     private String errorComment;
+    @ColumnInfo(name = "ili_id")
     private String iliId;
 
-    private Collection<SynsetExampleEntity> synset_examples;
+    @Ignore
+    private List<SynsetExampleEntity> synsetExamples;
 
-    public Integer getSynsetId() {
+    public Long getSynsetId() {
         return synsetId;
     }
 
-    public void setSynsetId(Integer synsetId) {
+    public void setSynsetId(Long synsetId) {
         this.synsetId = synsetId;
-    }
-
-    public SynsetEntity getSynset() {
-        return synset;
-    }
-
-    public void setSynset(SynsetEntity synset) {
-        this.synset = synset;
     }
 
     public String getComment() {
@@ -91,12 +96,14 @@ public class SynsetAttributeEntity implements Entity, Serializable {
         this.iliId = "null".equals(iliId) ? null : iliId;
     }
 
-    public Collection<SynsetExampleEntity> getSynset_examples() {
-        return synset_examples;
+    public List<SynsetExampleEntity> getSynsetExamples() {
+        if(Settings.isOfflineMode() && synsetExamples ==null)
+            synsetExamples = SQLiteConnector.getDatabaseInstance().synsetExampleDAO().findAllForSynsetAttribute(synsetId);
+        return synsetExamples;
     }
 
-    public void setSynset_examples(Collection<SynsetExampleEntity> synset_examples) {
-        this.synset_examples = synset_examples;
+    public void setSynsetExamples(List<SynsetExampleEntity> synsetExamples) {
+        this.synsetExamples = synsetExamples;
     }
 
     @Override

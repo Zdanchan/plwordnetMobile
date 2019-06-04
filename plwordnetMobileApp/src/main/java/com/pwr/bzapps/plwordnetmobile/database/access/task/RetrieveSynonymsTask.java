@@ -8,6 +8,7 @@ import android.view.View;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
@@ -35,7 +36,7 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
                 return "NoLocalDatabase";
             try{
                 resultHolder = new ArrayList<SenseEntity>(
-                        (new SenseDAO()).findBySynsetId(Integer.parseInt(strings[0])));
+                        SQLiteConnector.getDatabaseInstance().senseDAO().findBySynsetId(Long.parseLong(strings[0])));
             }catch (SQLiteException e){
                 return "LocalDBException";
             }

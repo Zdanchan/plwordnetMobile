@@ -10,6 +10,7 @@ import com.pwr.bzapps.plwordnetmobile.activities.BookmarksActivity;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
@@ -36,7 +37,8 @@ public class RetrieveSelectedSensesTask extends AsyncTask<String,Void,String> {
         if(Settings.isOfflineMode()) {
             try{
                 resultHolder = new ArrayList<SenseEntity>(
-                        (new SenseDAO()).findMultipleByIds(StringUtil.parseStringToIntegerArray(strings[0])));
+                        SQLiteConnector.getDatabaseInstance().senseDAO()
+                                .findMultipleByIds(StringUtil.parseStringToLongArray(strings[0])));
             }catch (SQLiteException e){
                 return "LocalDBException";
             }

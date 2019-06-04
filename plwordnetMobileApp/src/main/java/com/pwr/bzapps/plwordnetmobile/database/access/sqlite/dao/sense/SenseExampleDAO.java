@@ -1,38 +1,28 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseExampleEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class SenseExampleDAO {
-    static final String HEADER = "SELECT id, example, type, sense_attribute_id FROM " + SQLiteTablesConstNames.SENSE_EXAMPLE_NAME;
+@Dao
+public interface SenseExampleDAO {
 
-    public Collection<SenseExampleEntity> getAll(){
-        String query = HEADER;
-        Collection<SenseExampleEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SenseExampleEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM sense_examples AS se LIMIT 1")
+    public SenseExampleEntity checkTable();
 
-    public SenseExampleEntity findById(Integer id){
-        if(EntityManager.contains("SeEx:"+id)){
-            return (SenseExampleEntity) EntityManager.getEntity("SeEx:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SenseExampleEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SenseExampleEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM sense_examples AS se")
+    public List<SenseExampleEntity> getAll();
 
-    public Collection<SenseExampleEntity> findAllForSenseAttribute(Integer sense_attribute_id){
-        String query = HEADER
-                + " WHERE sense_attribute_id = " + sense_attribute_id;
-        Collection<SenseExampleEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SenseExampleEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM sense_examples AS se WHERE se.id = :id")
+    public SenseExampleEntity findById(Long id);
+
+    @Query("SELECT * FROM sense_examples AS se WHERE se.sense_attribute_id = :sense_attribute_id")
+    public List<SenseExampleEntity> findAllForSenseAttribute(Long sense_attribute_id);
 }

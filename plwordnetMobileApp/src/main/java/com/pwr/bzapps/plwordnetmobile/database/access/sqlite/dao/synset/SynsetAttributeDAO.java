@@ -1,38 +1,33 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class SynsetAttributeDAO {
-    static final String HEADER = "SELECT synset_id, definition, comment, error_comment, ili_id, owner_id, princeton_id FROM " + SQLiteTablesConstNames.SYNSET_ATTRIBUTE_NAME;
+@Dao
+public interface SynsetAttributeDAO {
 
-    public Collection<SynsetAttributeEntity> getAll(){
-        String query = HEADER;
-        Collection<SynsetAttributeEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetAttributeEntity.class);
-        return results;
-    }
+    @Transaction
+    @Query("SELECT * FROM synset_attributes AS sa LIMIT 1")
+    public SynsetAttributeEntity checkTable();
 
-    public SynsetAttributeEntity findById(Integer id){
-        if(EntityManager.contains("SyA:"+id)){
-            return (SynsetAttributeEntity) EntityManager.getEntity("SyA:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SynsetAttributeEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SynsetAttributeEntity.class);
-        return result;
-    }
+    @Transaction
+    @Query("SELECT * FROM synset_attributes AS sa")
+    public List<SynsetAttributeEntity> getAll();
 
-    public Collection<SynsetAttributeEntity> findAllForSynsetId(Integer synset_id){
-        String query = HEADER
-                + " WHERE synset_id = " + synset_id;
-        Collection<SynsetAttributeEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetAttributeEntity.class);
-        return results;
-    }
+    @Transaction
+    @Query("SELECT * FROM synset_attributes AS sa WHERE sa.synset_id = :id")
+    public SynsetAttributeEntity findById(Long id);
+
+    @Transaction
+    @Query("SELECT * FROM synset_attributes AS sa WHERE sa.synset_id = :synset_id")
+    public List<SynsetAttributeEntity> findAllForSynsetId(Long synset_id);
 }

@@ -1,30 +1,25 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseRelationEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class SenseRelationDAO {
-    static final String HEADER = "SELECT id, parent_sense_id, child_sense_id, relation_type_id FROM " + SQLiteTablesConstNames.SENSE_RELATION_NAME;
+@Dao
+public interface SenseRelationDAO {
 
-    public Collection<SenseRelationEntity> getAll(){
-        String query = HEADER;
-        Collection<SenseRelationEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SenseRelationEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM sense_relation AS sr LIMIT 1")
+    public SenseRelationEntity checkTable();
 
-    public SenseRelationEntity findById(Integer id){
-        if(EntityManager.contains("SeR:"+id)){
-            return (SenseRelationEntity) EntityManager.getEntity("SeR:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SenseRelationEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SenseRelationEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM sense_relation AS sr")
+    public List<SenseRelationEntity> getAll();
+
+    @Query("SELECT * FROM sense_relation AS sr WHERE sr.id = :id")
+    public SenseRelationEntity findById(Long id);
 }

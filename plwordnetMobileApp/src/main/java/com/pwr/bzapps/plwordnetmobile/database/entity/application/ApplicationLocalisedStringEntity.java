@@ -1,8 +1,9 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
+
 
 import java.io.Serializable;
 
@@ -11,16 +12,21 @@ import java.io.Serializable;
  *   `value` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  * */
+@android.arch.persistence.room.Entity(tableName = "application_localised_string")
 public class ApplicationLocalisedStringEntity implements Entity, Serializable {
-    private Integer id;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "value")
     private String value;
+    @ColumnInfo(name = "language")
     private String language;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,30 +1,25 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.grammar;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.PartOfSpeechEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class WordDAO {
-    static final String HEADER = "SELECT id, word FROM " + SQLiteTablesConstNames.WORD_NAME;
+@Dao
+public interface WordDAO {
 
-    public Collection<WordEntity> getAll(){
-        String query = HEADER;
-        Collection<WordEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,WordEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM word w LIMIT 1")
+    public WordEntity checkTable();
 
-    public WordEntity findById(Integer id){
-        if(EntityManager.contains("Wo:"+id)){
-            return (WordEntity) EntityManager.getEntity("Wo:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        WordEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,WordEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM word w")
+    public List<WordEntity> getAll();
+
+    @Query("SELECT * FROM word w WHERE w.id = :id")
+    public WordEntity findById(Long id);
 }

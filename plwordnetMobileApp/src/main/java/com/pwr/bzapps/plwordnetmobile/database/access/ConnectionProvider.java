@@ -84,7 +84,7 @@ public class ConnectionProvider{
         }
     }
 
-    public String getRelatedSensesForWord(String word, String language, Integer part_of_speech){
+    public String getRelatedSensesForWord(String word, String language, Long part_of_speech){
         try {
             String url = context.getString(R.string.spring_interface_address)
                     + "/sense/findRelatedSensesByWordLanguageAndPartOfSpeech?word=" + word + "&language=" + language + "&part_of_speech=" + part_of_speech;
@@ -101,7 +101,7 @@ public class ConnectionProvider{
         }
     }
 
-    public String getSenseById(int id){
+    public String getSenseById(Long id){
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findById?id=" + id;
 

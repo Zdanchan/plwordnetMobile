@@ -1,6 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -20,27 +22,43 @@ import java.io.Serializable;
  *   `node_position` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Position in node LEFT,TOP,RIGHT,BOTTOM',
  *   `priority` int(11) DEFAULT NULL,
  * */
+@android.arch.persistence.room.Entity(tableName = "relation_type")
 public class RelationTypeEntity implements Entity, Serializable {
-    private Integer id;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "auto_reverse")
     private boolean autoReverse;
+    @ColumnInfo(name = "multilingual")
     private boolean multilingual;
-    private Integer descriptionId;
-    private Integer displayTextId;
-    private Integer nameId;
-    private Integer parentRelationTypeId;
+    @ColumnInfo(name = "description_id")
+    private Long descriptionId;
+    @ColumnInfo(name = "display_text_id")
+    private Long displayTextId;
+    @ColumnInfo(name = "name_id")
+    private Long nameId;
+    @ColumnInfo(name = "parent_relation_type_id")
+    private Long parentRelationTypeId;
+    @ColumnInfo(name = "relation_argument")
     private String relationArgument;
+//    @ColumnInfo(name = "reverse_relation_type_id")
     //private RelationTypeEntity reverseRelationType;
-    private Integer reverseRelationTypeId;
-    private Integer shortDisplayTextId;
+    @ColumnInfo(name = "reverse_relation_type_id")
+    private Long reverseRelationTypeId;
+    @ColumnInfo(name = "short_display_text_id")
+    private Long shortDisplayTextId;
+    @ColumnInfo(name = "color")
     private String color;
+    @ColumnInfo(name = "node_position")
     private String nodePosition;
+    @ColumnInfo(name = "priority")
     private Integer priority;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,35 +78,35 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.multilingual = multilingual;
     }
 
-    public Integer getDescriptionId() {
+    public Long getDescriptionId() {
         return descriptionId;
     }
 
-    public void setDescriptionId(Integer descriptionId) {
+    public void setDescriptionId(Long descriptionId) {
         this.descriptionId = descriptionId;
     }
 
-    public Integer getDisplayTextId() {
+    public Long getDisplayTextId() {
         return displayTextId;
     }
 
-    public void setDisplayTextId(Integer displayTextId) {
+    public void setDisplayTextId(Long displayTextId) {
         this.displayTextId = displayTextId;
     }
 
-    public Integer getNameId() {
+    public Long getNameId() {
         return nameId;
     }
 
-    public void setNameId(Integer nameId) {
+    public void setNameId(Long nameId) {
         this.nameId = nameId;
     }
 
-    public Integer getParentRelationTypeId() {
+    public Long getParentRelationTypeId() {
         return parentRelationTypeId;
     }
 
-    public void setParentRelationTypeId(Integer parentRelationTypeId) {
+    public void setParentRelationTypeId(Long parentRelationTypeId) {
         this.parentRelationTypeId = parentRelationTypeId;
     }
 
@@ -109,19 +127,19 @@ public class RelationTypeEntity implements Entity, Serializable {
     //}
 
 
-    public Integer getReverseRelationTypeId() {
+    public Long getReverseRelationTypeId() {
         return reverseRelationTypeId;
     }
 
-    public void setReverseRelationTypeId(Integer reverseRelationTypeId) {
+    public void setReverseRelationTypeId(Long reverseRelationTypeId) {
         this.reverseRelationTypeId = reverseRelationTypeId;
     }
 
-    public Integer getShortDisplayTextId() {
+    public Long getShortDisplayTextId() {
         return shortDisplayTextId;
     }
 
-    public void setShortDisplayTextId(Integer shortDisplayTextId) {
+    public void setShortDisplayTextId(Long shortDisplayTextId) {
         this.shortDisplayTextId = shortDisplayTextId;
     }
 

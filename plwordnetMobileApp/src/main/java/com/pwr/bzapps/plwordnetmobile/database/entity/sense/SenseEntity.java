@@ -1,7 +1,9 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
+import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
 
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.DomainEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
@@ -9,9 +11,11 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.EmotionalAnnotatio
 import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.PartOfSpeechEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetEntity;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -24,27 +28,41 @@ import java.util.Collection;
  * `word_id` bigint(20) NOT NULL,
  * `status_id` bigint(20) DEFAULT NULL,
  * */
+@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
+@android.arch.persistence.room.Entity(tableName = "sense")
 public class SenseEntity implements Entity, Comparable<SenseEntity>, Serializable{
-    private Integer id;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "synset_position")
     private Integer synsetPosition;
+    @ColumnInfo(name = "variant")
     private Integer variant;
+    @Embedded(prefix = "domain_")
     private DomainEntity domainId;
+    @Embedded(prefix = "lexicon_")
     private LexiconEntity lexiconId;
+    @Embedded(prefix = "part_of_speech_")
     private PartOfSpeechEntity partOfSpeechId;
+    @Embedded(prefix = "synset_")
     private SynsetEntity synsetId;
+    @Embedded(prefix = "word_")
     private WordEntity wordId;
+    @ColumnInfo(name = "status_id")
     private Integer statusId;
 
     //private Collection<SenseRelationEntity> relationChild;
     //private Collection<SenseRelationEntity> relationParent;
-    private Collection<SenseAttributeEntity> senseAttributes;
-    private Collection<EmotionalAnnotationEntity> emotionalAnnotations;
+    @Ignore
+    private List<SenseAttributeEntity> senseAttributes;
+    @Ignore
+    private List<EmotionalAnnotationEntity> emotionalAnnotations;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -128,19 +146,23 @@ public class SenseEntity implements Entity, Comparable<SenseEntity>, Serializabl
     //    this.relationParent = relationParent;
     //}
 
-    public Collection<SenseAttributeEntity> getSenseAttributes() {
+    public List<SenseAttributeEntity> getSenseAttributes() {
+        if(Settings.isOfflineMode() && senseAttributes==null)
+            senseAttributes = SQLiteConnector.getDatabaseInstance().senseAttributeDAO().findAllForSenseId(id);
         return senseAttributes;
     }
 
-    public void setSenseAttributes(Collection<SenseAttributeEntity> senseAttributes) {
+    public void setSenseAttributes(List<SenseAttributeEntity> senseAttributes) {
         this.senseAttributes = senseAttributes;
     }
 
-    public Collection<EmotionalAnnotationEntity> getEmotionalAnnotations() {
+    public List<EmotionalAnnotationEntity> getEmotionalAnnotations() {
+        if(Settings.isOfflineMode() && emotionalAnnotations==null)
+            emotionalAnnotations = SQLiteConnector.getDatabaseInstance().emotionalAnnotationDAO().findAllForSenseId(id);
         return emotionalAnnotations;
     }
 
-    public void setEmotionalAnnotations(Collection<EmotionalAnnotationEntity> emotionalAnnotations) {
+    public void setEmotionalAnnotations(List<EmotionalAnnotationEntity> emotionalAnnotations) {
         this.emotionalAnnotations = emotionalAnnotations;
     }
 

@@ -167,28 +167,28 @@ public class Settings {
     }
 
 
-    public static Integer[] getBookmarkedIds(Context ctx){
+    public static Long[] getBookmarkedIds(Context ctx){
         context=ctx;
         if(preferences==null){
             preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
         }
         String[] bookmarked = preferences.getString("bookmarks", "").split(";");
         if(bookmarked.length==1 && bookmarked[0].isEmpty())
-            return new Integer[0];
-        Integer[] ids = new Integer[bookmarked.length];
+            return new Long[0];
+        Long[] ids = new Long[bookmarked.length];
         for(int i=0; i <ids.length; i++){
-            ids[i]=Integer.parseInt(bookmarked[i]);
+            ids[i]=Long.parseLong(bookmarked[i]);
         }
         return ids;
     }
 
-    public static boolean isSenseBookmarked(Context ctx, Integer id){
-        Integer[] ids = getBookmarkedIds(ctx);
+    public static boolean isSenseBookmarked(Context ctx, Long id){
+        Long[] ids = getBookmarkedIds(ctx);
         return contains(ids,id);
     }
 
-    public static void addOrRemoveBookmark(Context ctx, Integer id){
-        Integer[] ids = getBookmarkedIds(ctx);
+    public static void addOrRemoveBookmark(Context ctx, Long id){
+        Long[] ids = getBookmarkedIds(ctx);
         String bookmarked = "";
         if(contains(ids,id)){
             for(int i=0; i<ids.length;i++){
@@ -212,7 +212,7 @@ public class Settings {
         editor.commit();
     }
 
-    private static boolean contains(Integer[] ids, Integer id){
+    private static boolean contains(Long[] ids, Long id){
         for(int i=0; i<ids.length; i++){
             if(ids[i].intValue()==id.intValue())
                 return true;

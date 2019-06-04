@@ -1,6 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -10,24 +12,29 @@ import java.io.Serializable;
  *   `name_id` bigint(20) DEFAULT NULL COMMENT 'Name of part of speech',
  *   `color` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Color displayed on visualisation',
  * */
+@android.arch.persistence.room.Entity(tableName = "part_of_speech")
 public class PartOfSpeechEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer nameId;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "name_id")
+    private Long nameId;
+    @ColumnInfo(name = "color")
     private String color;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getNameId() {
+    public Long getNameId() {
         return nameId;
     }
 
-    public void setNameId(Integer nameId) {
+    public void setNameId(Long nameId) {
         this.nameId = nameId;
     }
 

@@ -1,30 +1,25 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.grammar;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.EmotionalAnnotationEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.PartOfSpeechEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class PartOfSpeechDAO {
-    static final String HEADER = "SELECT id, color, name_id FROM " + SQLiteTablesConstNames.PART_OF_SPEECH_NAME;
+@Dao
+public interface PartOfSpeechDAO {
 
-    public Collection<PartOfSpeechEntity> getAll(){
-        String query = HEADER;
-        Collection<PartOfSpeechEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,PartOfSpeechEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM part_of_speech pos LIMIT 1")
+    public PartOfSpeechEntity checkTable();
 
-    public PartOfSpeechEntity findById(Integer id){
-        if(EntityManager.contains("POS:"+id)){
-            return (PartOfSpeechEntity) EntityManager.getEntity("POS:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        PartOfSpeechEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,PartOfSpeechEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM part_of_speech pos")
+    public List<PartOfSpeechEntity> getAll();
+
+    @Query("SELECT * FROM part_of_speech pos WHERE pos.id = :id")
+    public PartOfSpeechEntity findById(Long id);
 }

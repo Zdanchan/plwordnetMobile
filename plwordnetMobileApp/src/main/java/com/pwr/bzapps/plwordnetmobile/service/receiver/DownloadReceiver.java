@@ -100,32 +100,25 @@ public class DownloadReceiver extends ResultReceiver {
 
     private boolean isLocalDBFine(int retries){
         try {
-            String checkQuery = "";
-            String[] tables = {
-                    SQLiteTablesConstNames.APPLICATION_LOCALISED_STRING_NAME,
-                    SQLiteTablesConstNames.DICTIONARY_NAME,
-                    SQLiteTablesConstNames.DOMAIN_NAME,
-                    SQLiteTablesConstNames.LEXICON_NAME,
-                    SQLiteTablesConstNames.EMOTIONAL_ANNOTATION_NAME,
-                    SQLiteTablesConstNames.PART_OF_SPEECH_NAME,
-                    SQLiteTablesConstNames.WORD_NAME,
-                    SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_LEXICON_NAME,
-                    SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME,
-                    SQLiteTablesConstNames.RELATION_TYPE_NAME,
-                    SQLiteTablesConstNames.SENSE_ATTRIBUTE_NAME,
-                    SQLiteTablesConstNames.SENSE_NAME,
-                    SQLiteTablesConstNames.SENSE_EXAMPLE_NAME,
-                    SQLiteTablesConstNames.SENSE_RELATION_NAME,
-                    SQLiteTablesConstNames.SYNSET_ATTRIBUTE_NAME,
-                    SQLiteTablesConstNames.SYNSET_NAME,
-                    SQLiteTablesConstNames.SYNSET_EXAMPLE_NAME,
-                    SQLiteTablesConstNames.SYNSET_RELATION_NAME
-            };
-            for (int i = 0; i < tables.length; i++) {
-                checkQuery += "SELECT * FROM " + tables[i] + " LIMIT 1; ";
-            }
-            SQLiteConnector.getInstance().runQuery(checkQuery);
-        } catch (SQLiteException e){
+            SQLiteConnector.getDatabaseInstance().applicationLocalisedStringDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().dictionaryDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().domainDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().lexiconDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().emotionalAnnotationDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().partOfSpeechDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().wordDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().relationTypeAllowedLexiconDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().relationTypeAllowedPartOfSpeechDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().relationTypeDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().senseAttributeDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().senseDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().senseExampleDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().senseRelationDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().synsetAttributeDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().synsetDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().synsetExampleDAO().checkTable();
+            SQLiteConnector.getDatabaseInstance().synsetRelationDAO().checkTable();
+        } catch (Exception e){
             if(retries<10)
                 return isLocalDBFine(retries+1);
             return false;

@@ -1,31 +1,25 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.DictionaryEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class DictionaryDAO {
+@Dao
+public interface DictionaryDAO {
 
-    static final String HEADER = "SELECT id, dtype, tag, value, name_id, description_id FROM " + SQLiteTablesConstNames.DICTIONARY_NAME;
+    @Query("SELECT * FROM dictionaries AS d LIMIT 1")
+    public DictionaryEntity checkTable();
 
-    public Collection<DictionaryEntity> getAll(){
-        String query = HEADER;
-        Collection<DictionaryEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,DictionaryEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM dictionaries AS d")
+    public List<DictionaryEntity> getAll();
 
-    public DictionaryEntity findById(Integer id){
-        if(EntityManager.contains("Di:"+id)){
-            return (DictionaryEntity) EntityManager.getEntity("Di:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        DictionaryEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,DictionaryEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM dictionaries AS d WHERE d.id = :id")
+    public DictionaryEntity findById(Long id);
 }

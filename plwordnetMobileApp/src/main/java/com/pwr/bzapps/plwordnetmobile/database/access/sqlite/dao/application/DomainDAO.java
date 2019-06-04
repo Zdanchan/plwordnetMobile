@@ -1,30 +1,25 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.pwr.bzapps.plwordnetmobile.database.entity.application.DictionaryEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.DomainEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class DomainDAO {
-    static final String HEADER = "SELECT id, name_id, description_id FROM " + SQLiteTablesConstNames.DOMAIN_NAME;
+@Dao
+public interface DomainDAO {
 
-    public Collection<DomainEntity> getAll(){
-        String query = HEADER;
-        Collection<DomainEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,DomainEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM domain AS d LIMIT 1")
+    public DomainEntity checkTable();
 
-    public DomainEntity findById(Integer id){
-        if(EntityManager.contains("Do:"+id)){
-            return (DomainEntity) EntityManager.getEntity("Do:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        DomainEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,DomainEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM domain AS d")
+    public List<DomainEntity> getAll();
+
+    @Query("SELECT * FROM domain AS d WHERE d.id = :id")
+    public DomainEntity findById(Long id);
 }

@@ -148,7 +148,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     private void handleRelatedSenses(){
         LinearLayout sense_relations_container = findViewById(R.id.sense_relations_container);
 
-        Map<Integer,ArrayList<SynsetRelationEntity>> relations_grouped = new HashMap<>();
+        Map<Long,ArrayList<SynsetRelationEntity>> relations_grouped = new HashMap<>();
 
         for(SynsetRelationEntity relation : relations){
             if(!relations_grouped.containsKey(relation.getSynsetRelationTypeId().getId())){
@@ -157,10 +157,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
             ArrayList<SynsetRelationEntity> list = relations_grouped.get(relation.getSynsetRelationTypeId().getId());
             list.add(relation);
         }
-        ArrayList<Integer> keys = new ArrayList<Integer>();
+        ArrayList<Long> keys = new ArrayList<Long>();
         keys.addAll(relations_grouped.keySet());
         Collections.sort(keys);
-        for(Integer key : keys){
+        for(Long key : keys){
             ArrayList<SynsetRelationEntity> list = relations_grouped.get(key);
             if(getResources().getIdentifier("rel_type_" + list.get(0).getSynsetRelationTypeId().getId(),"string",getPackageName())!=0) {
                 RelativeLayout type = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
@@ -172,7 +172,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 boolean contains_senses = false;
                 for (SynsetRelationEntity relation : list) {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
-                    Integer other = (relation.getChildSynsetId().equals(entity.getSynsetId().getId()) ? relation.getParentSynsetId() : relation.getChildSynsetId());
+                    Long other = (relation.getChildSynsetId().equals(entity.getSynsetId().getId()) ? relation.getParentSynsetId() : relation.getChildSynsetId());
                     final SenseEntity sense = findRelatedBySynsetId(other);
                     if(sense==null)
                         continue;
@@ -217,7 +217,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
         }
     }
 
-    private SenseEntity findRelatedById(Integer id){
+    private SenseEntity findRelatedById(Long id){
         for(SenseEntity sense : related){
             if(sense.getId().equals(id)){
                 return sense;
@@ -226,7 +226,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
         return null;
     }
 
-    private SenseEntity findRelatedBySynsetId(Integer id){
+    private SenseEntity findRelatedBySynsetId(Long id){
         for(SenseEntity sense : related){
             if(sense.getSynsetId().getId().equals(id)){
                 return sense;
@@ -297,7 +297,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
         }
         else if(!entity.getSynsetId().getSynsetAttributes().isEmpty()){
             ArrayList<SynsetExampleEntity> examples = (ArrayList<SynsetExampleEntity>)((ArrayList<SynsetAttributeEntity>)entity.getSynsetId()
-                    .getSynsetAttributes()).get(0).getSynset_examples();
+                    .getSynsetAttributes()).get(0).getSynsetExamples();
             if(examples.size()<1){
                 ((RelativeLayout)findViewById(R.id.examples_row)).setVisibility(View.GONE);
                 ((TextView)findViewById(R.id.sense_attribute_examples)).setVisibility(View.GONE);
@@ -540,7 +540,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 }
                 else {
                     Intent intent = new Intent(getApplicationContext(), GraphBrowserActivity.class);
-                    intent.putExtra("synset_id", entity.getSynsetId().getId().intValue());
+                    intent.putExtra("synset_id", entity.getSynsetId().getId().longValue());
                     startActivity(intent);
                 }
             }

@@ -1,27 +1,26 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.relation;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
+import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeAllowedPartOfSpeechEntity;
 
 import java.util.Collection;
+import java.util.List;
 
-public class RelationTypeAllowedPartOfSpeechDAO {
-    static final String HEADER = "SELECT part_of_speech_id, relation_type_id FROM " + SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME;
+@Dao
+public interface RelationTypeAllowedPartOfSpeechDAO {
 
-    public Collection<RelationTypeAllowedPartOfSpeechEntity> getAll(){
-        String query = HEADER;
-        Collection<RelationTypeAllowedPartOfSpeechEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM relation_type_allowed_parts_of_speech AS rtapos LIMIT 1")
+    public RelationTypeAllowedPartOfSpeechEntity checkTable();
 
-    public RelationTypeAllowedPartOfSpeechEntity findById(Integer relation_type_id, Integer part_of_speech_id){
-        String query = HEADER
-                + " WHERE relation_type_id = " + relation_type_id
-                + " AND part_of_speech_id = " + part_of_speech_id;
-        RelationTypeAllowedPartOfSpeechEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM relation_type_allowed_parts_of_speech AS rtapos")
+    public List<RelationTypeAllowedPartOfSpeechEntity> getAll();
+
+    @Query("SELECT * FROM relation_type_allowed_parts_of_speech AS rtapos " +
+            "WHERE rtapos.relation_type_id = :relation_type_id " +
+            "AND rtapos.part_of_speech_id = :part_of_speech_id")
+    public RelationTypeAllowedPartOfSpeechEntity findById(Long relation_type_id, Long part_of_speech_id);
 }

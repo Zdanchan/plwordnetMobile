@@ -1,5 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Query;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
@@ -7,33 +9,20 @@ import com.pwr.bzapps.plwordnetmobile.database.entity.application.ApplicationLoc
 import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.util.Collection;
+import java.util.List;
 
-public class ApplicationLocalisedStringDAO {
-    private static final String HEADER = "SELECT id, language, value FROM " + SQLiteTablesConstNames.APPLICATION_LOCALISED_STRING_NAME;
+@Dao
+public interface ApplicationLocalisedStringDAO {
 
-    public Collection<ApplicationLocalisedStringEntity> getAll(){
-        String query = HEADER;
-        Collection<ApplicationLocalisedStringEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,ApplicationLocalisedStringEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM application_localised_string AS als LIMIT 1")
+    public ApplicationLocalisedStringEntity checkTable();
 
-    public ApplicationLocalisedStringEntity findById(Integer id){
-        if(EntityManager.contains("ALS:"+id)){
-            return (ApplicationLocalisedStringEntity)EntityManager.getEntity("ALS:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        ApplicationLocalisedStringEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,ApplicationLocalisedStringEntity.class);
-        return result;
-    }
+    @Query("SELECT * FROM application_localised_string AS als")
+    public List<ApplicationLocalisedStringEntity> getAll();
 
-    public Collection<ApplicationLocalisedStringEntity> findByMultipleIds(Integer[] ids){
-        String query = HEADER
-                + " WHERE id IN (" + StringUtil.parseIntegerArrayToString(ids) + ")";
-        Collection<ApplicationLocalisedStringEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,ApplicationLocalisedStringEntity.class);
-        return results;
-    }
+    @Query("SELECT * FROM application_localised_string AS als WHERE als.id = :id")
+    public ApplicationLocalisedStringEntity findById(Long id);
+
+    @Query("SELECT * FROM application_localised_string AS als WHERE als.id IN (:ids)")
+    public List<ApplicationLocalisedStringEntity> findByMultipleIds(Long[] ids);
 }

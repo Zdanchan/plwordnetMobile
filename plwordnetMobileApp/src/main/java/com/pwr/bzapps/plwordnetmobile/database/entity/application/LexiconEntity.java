@@ -1,5 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -11,18 +13,25 @@ import java.io.Serializable;
  *   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  *   `lexicon_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL COMMENT 'Lexicon name',
  * */
+@android.arch.persistence.room.Entity(tableName = "lexicon")
 public class LexiconEntity implements Entity, Serializable {
-    private Integer id;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "identifier")
     private String identifier;
+    @ColumnInfo(name = "language_name")
     private String languageName;
+    @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "lexicon_version")
     private String lexiconVersion;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
