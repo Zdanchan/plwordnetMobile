@@ -120,7 +120,7 @@ public class SQLiteComponent {
                 if(isTableEmpty(db_path,classes[i])) {
                     log.info("Inserting data for " + classes[i].getSimpleName());
                     Long max_index = helper.getMaxIndexForEntity(classes[i]);
-                    if(batch_size == -1 || max_index==Integer.MAX_VALUE)
+                    if(batch_size == -1 || max_index==Long.MAX_VALUE)
                         executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
                     else {
                         for(long ind=0; ind<max_index; ind+=batch_size) {
@@ -177,7 +177,7 @@ public class SQLiteComponent {
                 if(isTableEmpty(db_path,classes[i])) {
                     log.info("Inserting data for " + classes[i].getSimpleName());
                     Long max_index = helper.getMaxIndexForEntity(classes[i]);
-                    if(batch_size == -1 || max_index==Integer.MAX_VALUE)
+                    if(batch_size == -1 || max_index==Long.MAX_VALUE)
                         executeQuery(db_path, helper.generateSQLInsertForStrings(helper.findAllForEntityAndParseString(classes[i]), classes[i]));
                     else {
                         for(long ind=0; ind<max_index; ind+=batch_size) {

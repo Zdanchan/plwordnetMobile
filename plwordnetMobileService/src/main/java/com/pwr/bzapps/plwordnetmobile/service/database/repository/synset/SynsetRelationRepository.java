@@ -31,8 +31,8 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             ")FROM synset_relation sr " +
             "JOIN synset sec ON sr.child_synset_id = sec.id " +
             "JOIN synset sep ON sr.parent_synset_id = sep.id " +
-            "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexiconIds)", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseString(@Param("lexiconIds") Long[] lexiconIds);
+            "WHERE sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids)", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseString(@Param("lexicon_ids") Long[] lexiconIds);
     @Query(value = "SELECT CONCAT(" +
             "sr.id,','," +
             "sr.child_synset_id,','," +
@@ -50,8 +50,8 @@ public interface SynsetRelationRepository extends CrudRepository<SynsetRelationE
             "JOIN synset sec ON sr.child_synset_id = sec.id " +
             "JOIN synset sep ON sr.parent_synset_id = sep.id " +
             "WHERE sr.id>=:begin AND sr.id<:end " +
-            "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexiconIds))", nativeQuery = true)
-    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexiconIds") Long[] lexiconIds,
+            "AND (sec.lexicon_id IN (:lexicon_ids) OR sep.lexicon_id IN (:lexicon_ids))", nativeQuery = true)
+    public List<String> findAllForSynsetsAndParseStringBatch(@Param("lexicon_ids") Long[] lexiconIds,
                                                              @Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM synset_relation", nativeQuery = true)
