@@ -17,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.pwr.bzapps.plwordnetmobile.R;
-import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.activities.global.GlobalValues;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.adapter.SQLiteDictionaryAdapter;
@@ -31,14 +30,14 @@ import java.util.ArrayList;
 public class SettingsLocalDatabaseFragment extends Fragment {
 
     private LinearLayout container;
-    private RelativeLayout choose_local_db_label, offline_mode, synchronize_button, remove_button, status_button;
-    private Switch offline_mode_switch;
+    private RelativeLayout chooseLocalDbLabel, offlineMode, synchronizeButton, removeButton, statusButton;
+    private Switch offlineModeSwitch;
     private CheckLocalSQLiteDBWithServerTask checkLocalSQLiteDBWithServerTask;
-    private Animation rotation_anim;
-    private ProgressBar sync_progress;
-    private ImageView sync_icon;
-    private TextView status_value;
-    private boolean buttons_enabled, isPopupUp = false;
+    private Animation rotationAnim;
+    private ProgressBar syncProgress;
+    private ImageView syncIcon;
+    private TextView statusValue, syncProgressPercentage;
+    private boolean buttonsEnabled, isPopupUp = false;
     private int status;
     private SQLiteDictionaryAdapter adapter;
 
@@ -47,27 +46,30 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                              Bundle savedInstanceState) {
         //set the layout you want to display in First Fragment
         View view = inflater.inflate(R.layout.settings_database_fragment, container, false);
-        buttons_enabled = true;
-        offline_mode = view.findViewById(R.id.offline_mode);
-        choose_local_db_label = view.findViewById(R.id.local_database);
-        synchronize_button = view.findViewById(R.id.sync_databases);
+        buttonsEnabled = true;
+        offlineMode = view.findViewById(R.id.offline_mode);
+        chooseLocalDbLabel = view.findViewById(R.id.local_database);
+        synchronizeButton = view.findViewById(R.id.sync_databases);
         this.container = (LinearLayout)view.findViewById(R.id.available_dictionaries);
-        remove_button = view.findViewById(R.id.remove_databases);
-        status_button = view.findViewById(R.id.status);
-        offline_mode_switch = offline_mode.findViewById(R.id.offline_mode_switch);
-        offline_mode_switch.setChecked(Settings.isOfflineMode());
-        offline_mode_switch.setClickable(false);
-        offline_mode.setOnClickListener(new View.OnClickListener() {
+        removeButton = view.findViewById(R.id.remove_databases);
+        statusButton = view.findViewById(R.id.status);
+        offlineModeSwitch = offlineMode.findViewById(R.id.offline_mode_switch);
+        offlineModeSwitch.setChecked(Settings.isOfflineMode());
+        offlineModeSwitch.setClickable(false);
+        offlineMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!buttons_enabled && Settings.isOfflineMode()) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.sync_please_wait), Toast.LENGTH_LONG).show();
+                if(!buttonsEnabled && Settings.isOfflineMode()) {
+                    Toast.makeText(getActivity(),
+                            getResources().getString(R.string.sync_please_wait),
+                            Toast.LENGTH_LONG)
+                            .show();
 
                 }
                 else{
-                    offline_mode_switch.setChecked(!offline_mode_switch.isChecked());
-                    Settings.setOfflineMode(offline_mode_switch.isChecked());
-                    if(offline_mode_switch.isChecked())
+                    offlineModeSwitch.setChecked(!offlineModeSwitch.isChecked());
+                    Settings.setOfflineMode(offlineModeSwitch.isChecked());
+                    if(offlineModeSwitch.isChecked())
                         enableLocalDBSettings();
                     else
                         disableLocalDBSettings();
@@ -76,15 +78,17 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             }
         });
         prepareDictionarySelectors();
-        sync_progress = (ProgressBar) view.findViewById(R.id.sync_progress_bar);
-        sync_progress.setVisibility(View.GONE);
-        sync_icon = (ImageView) view.findViewById(R.id.sync_databases_icon);
-        status_value = view.findViewById(R.id.status_value);
+        syncProgress = (ProgressBar) view.findViewById(R.id.sync_progress_bar);
+        syncProgress.setVisibility(View.GONE);
+        syncProgressPercentage = (TextView) view.findViewById(R.id.sync_progress_percentage);
+        syncProgressPercentage.setVisibility(View.GONE);
+        syncIcon = (ImageView) view.findViewById(R.id.sync_databases_icon);
+        statusValue = view.findViewById(R.id.status_value);
 
-        synchronize_button.setOnClickListener(new View.OnClickListener() {
+        synchronizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(buttons_enabled) {
+                if(buttonsEnabled) {
                     if (requestPermissions()) {
                         synchronizeLocalDB();
                     }
@@ -95,10 +99,10 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             }
         });
 
-        status_button.setOnClickListener(new View.OnClickListener() {
+        statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(buttons_enabled) {
+                if(buttonsEnabled) {
                     refreshStatus();
                 }
                 else {
@@ -107,16 +111,19 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             }
         });
 
-        remove_button.setOnClickListener(new View.OnClickListener() {
+        removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(buttons_enabled) {
+                if(buttonsEnabled) {
                     if(requestPermissions()) {
-                        SQLiteDBFileManager.removeLocalDB();
-                        status_value.setText(R.string.status_no_local_db);
-                        status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
+                        SQLiteDBFileManager.getInstance(getActivity().getApplicationContext()).removeLocalDB();
+                        statusValue.setText(R.string.status_no_local_db);
+                        statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                         setStatus(2);
-                        Toast.makeText(getActivity(), getResources().getString(R.string.remove_all_local_db_toast), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),
+                                getResources().getString(R.string.remove_all_local_db_toast),
+                                Toast.LENGTH_LONG)
+                                .show();
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -134,7 +141,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         if(DownloadReceiver.isInitialized()){
             if(DownloadReceiver.getInstance().isRunning()) {
                 DownloadReceiver.getInstance().setSettingsLocalDatabaseFragment(this);
-                DownloadReceiver.getInstance().setProgressBar(sync_progress);
+                DownloadReceiver.getInstance().setProgressBar(syncProgress);
                 startSyncAction();
             }
         }
@@ -164,7 +171,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 public void onClick(View view) {
                     Settings.loadPossibleDBLangs();
                     String[] packs = Settings.POSSIBLE_DB_LANGS;
-                    if(buttons_enabled) {
+                    if(buttonsEnabled) {
                         adapter.checkDictionaryByID(index);
                         saveCheckedDictionaries();
                         refreshStatus();
@@ -187,22 +194,24 @@ public class SettingsLocalDatabaseFragment extends Fragment {
 
     public void startSyncAction(){
         setStatus(4);
-        sync_progress.setVisibility(View.VISIBLE);
-        status_value.setText(R.string.status_synchronizing);
-        status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
-        if (rotation_anim == null) {
-            rotation_anim = (Animation) AnimationUtils.loadAnimation(
+        syncProgress.setVisibility(View.VISIBLE);
+        syncProgressPercentage.setVisibility(View.VISIBLE);
+        statusValue.setText(R.string.status_synchronizing);
+        statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
+        if (rotationAnim == null) {
+            rotationAnim = (Animation) AnimationUtils.loadAnimation(
                     getActivity().getApplicationContext(), R.anim.rotate_360_anim);
         }
-        rotation_anim.setRepeatCount(Animation.INFINITE);
-        sync_icon.startAnimation(rotation_anim);
-        rotation_anim.setFillAfter(true);
+        rotationAnim.setRepeatCount(Animation.INFINITE);
+        syncIcon.startAnimation(rotationAnim);
+        rotationAnim.setFillAfter(true);
         disableButtons();
     }
 
     public void stopSyncAction(){
-        sync_progress.setVisibility(View.GONE);
-        sync_icon.clearAnimation();
+        syncProgress.setVisibility(View.GONE);
+        syncProgressPercentage.setVisibility(View.GONE);
+        syncIcon.clearAnimation();
         enableButtons();
         adapter.notifyDataSetChanged();
     }
@@ -214,81 +223,100 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             startSyncAction();
             Intent intent = new Intent(getActivity(), DownloadService.class);
             intent.putExtra("db_type", Settings.getDbType());
-            intent.putExtra("receiver", DownloadReceiver.getInstance(sync_progress, SettingsLocalDatabaseFragment.this));
+            intent.putExtra("receiver",
+                    DownloadReceiver.getInstance(
+                            syncProgress,
+                            syncProgressPercentage,
+                            SettingsLocalDatabaseFragment.this));
             getActivity().startService(intent);
         }
     }
 
     public boolean areButtonsEnabled(){
-        return buttons_enabled;
+        return buttonsEnabled;
     }
 
     public void disableButtons(){
-        buttons_enabled = false;
-        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        buttonsEnabled = false;
+        chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.colorInactive));
         adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         adapter.setIsEnabled(false);
-        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
-        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
     }
 
     public void enableButtons(){
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-        buttons_enabled = true;
-        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        buttonsEnabled = true;
+        chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
         adapter.setBackgroundsResource(outValue.resourceId);
         adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setIsEnabled(true);
-        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        synchronize_button.setBackgroundResource(outValue.resourceId);
-        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        remove_button.setBackgroundResource(outValue.resourceId);
-        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        synchronizeButton.setBackgroundResource(outValue.resourceId);
+        ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor
+                (getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        removeButton.setBackgroundResource(outValue.resourceId);
+        ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
     }
 
     public void disableLocalDBSettings(){
-        buttons_enabled = false;
-        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        buttonsEnabled = false;
+        chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.colorInactive));
         adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         adapter.setIsEnabled(false);
-        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
-        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
-        status_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
-        ((TextView)status_button.findViewById(R.id.status_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
-        ((TextView)status_button.findViewById(R.id.status_value)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        statusButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.colorInactive));
+        ((TextView) statusButton.findViewById(R.id.status_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+        ((TextView) statusButton.findViewById(R.id.status_value)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
 
     }
 
     public void enableLocalDBSettings(){
-        buttons_enabled = true;
-        choose_local_db_label.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView)choose_local_db_label.findViewById(R.id.database_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        buttonsEnabled = true;
+        chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
         adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setIsEnabled(true);
-        synchronize_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView)synchronize_button.findViewById(R.id.sync_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        remove_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView)remove_button.findViewById(R.id.remove_databases_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        status_button.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView)status_button.findViewById(R.id.status_text)).setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        statusButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+        ((TextView) statusButton.findViewById(R.id.status_text)).setTextColor(
+                getActivity().getApplicationContext().getColor(R.color.colorMainText));
         setStatus(status);
     }
 
     public void setStatus(int status){
-        if(status!=3 && !SQLiteDBFileManager.doesLocalDBExists()){
+        if(status!=3 && !SQLiteDBFileManager.getInstance(getActivity().getApplicationContext()).doesLocalDBExists()){
             status = 2;
         }
         if(getActivity()==null)
@@ -296,36 +324,36 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         this.status = status;
         switch (status){
             case 0:
-                status_value.setText(R.string.status_up_to_date);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorUpToDate));
+                statusValue.setText(R.string.status_up_to_date);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorUpToDate));
                 break;
             case 1:
-                status_value.setText(R.string.status_needs_update);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNeedsUpdate));
+                statusValue.setText(R.string.status_needs_update);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNeedsUpdate));
                 break;
             case 2:
-                status_value.setText(R.string.status_no_local_db);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
+                statusValue.setText(R.string.status_no_local_db);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                 break;
             case 3:
-                status_value.setText(R.string.status_checking);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
+                statusValue.setText(R.string.status_checking);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
                 break;
             case 4:
-                status_value.setText(R.string.status_synchronizing);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
+                statusValue.setText(R.string.status_synchronizing);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorSynchronizing));
                 break;
             case 5:
-                status_value.setText(R.string.status_connection_problem);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
+                statusValue.setText(R.string.status_connection_problem);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorNoLocalDB));
                 break;
             case 6:
-                status_value.setText(R.string.status_error);
-                status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorError));
+                statusValue.setText(R.string.status_error);
+                statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorError));
                 break;
         }
         if(!Settings.isOfflineMode()){
-            status_value.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
+            statusValue.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorTextInactive));
         }
     }
 
@@ -365,7 +393,10 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.acquired_permissions), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),
+                        getResources().getString(R.string.acquired_permissions),
+                        Toast.LENGTH_LONG)
+                        .show();
                 return true;
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
@@ -387,7 +418,10 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     synchronizeLocalDB();
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.requires_permissions), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),
+                            getResources().getString(R.string.requires_permissions),
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
                 return;
             }
