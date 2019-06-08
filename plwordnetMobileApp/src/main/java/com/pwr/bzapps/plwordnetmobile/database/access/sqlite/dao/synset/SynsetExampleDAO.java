@@ -31,6 +31,6 @@ public class SynsetExampleDAO {
         return new Select()
                 .from(SynsetExampleEntity.class)
                 .where("synset_attributes_id = ?",synset_attribute_id)
-                .executeSingle();
+                .execute();
     }
 }
