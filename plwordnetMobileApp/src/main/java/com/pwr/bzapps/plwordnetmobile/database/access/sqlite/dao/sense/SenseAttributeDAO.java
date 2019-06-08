@@ -32,6 +32,6 @@ public class SenseAttributeDAO {
         return new Select()
                 .from(SenseAttributeEntity.class)
                 .where("sense_id = ?",sense_id)
-                .executeSingle();
+                .execute();
     }
 }

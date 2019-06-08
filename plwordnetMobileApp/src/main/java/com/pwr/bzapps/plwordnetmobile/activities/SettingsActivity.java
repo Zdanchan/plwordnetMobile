@@ -3,9 +3,11 @@ package com.pwr.bzapps.plwordnetmobile.activities;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
+import android.widget.Toast;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.fragments.*;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -37,6 +39,10 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
     public void onBackPressed() {
         Settings.saveSettings(getApplication());
         if (settingsCategoriesFragment != null && settingsCategoriesFragment.isVisible()) {
+            if(!SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()).exists()){
+                Settings.setOfflineMode(false);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.selected_unavailable), Toast.LENGTH_LONG).show();
+            }
             if(!"none".equals(Settings.getDbType()))
                 SQLiteConnector.reloadDatabaseInstance(getApplicationContext());
             else{

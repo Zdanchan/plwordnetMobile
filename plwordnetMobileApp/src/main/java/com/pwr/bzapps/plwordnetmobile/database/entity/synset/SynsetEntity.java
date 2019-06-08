@@ -20,7 +20,7 @@ import java.util.List;
  *   `status_id` bigint(20) DEFAULT NULL,
  *   `abstract` tinyint(1) DEFAULT NULL COMMENT 'is synset abstract',
  * */
-@Table(name = "synset", id = "idid")
+@Table(name = "synset", id = "id")
 public class SynsetEntity extends Model implements Entity, Serializable {
     @Column(name = "id", unique = true)
     private Long id;

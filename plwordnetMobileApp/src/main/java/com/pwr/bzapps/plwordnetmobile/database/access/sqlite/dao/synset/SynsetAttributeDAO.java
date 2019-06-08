@@ -32,6 +32,6 @@ public class SynsetAttributeDAO {
         return new Select()
                 .from(SynsetAttributeEntity.class)
                 .where("synset_id = ?",synset_id)
-                .executeSingle();
+                .execute();
     }
 }
