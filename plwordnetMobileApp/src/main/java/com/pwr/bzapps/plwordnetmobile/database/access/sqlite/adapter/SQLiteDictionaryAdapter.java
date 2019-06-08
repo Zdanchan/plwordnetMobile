@@ -38,7 +38,6 @@ public class SQLiteDictionaryAdapter {
     }
 
     public void notifyDataSetChanged(){
-        checkDictionaryByID(getCheckedDictionaryID());
         int i = 0;
         for(SQLiteDictionaryRowItem row : rows){
             if(SQLiteDBFileManager.getInstance().doesLocalDBExists(data.get(i))) {
@@ -51,9 +50,6 @@ public class SQLiteDictionaryAdapter {
                 row.cell_remove_button.setVisibility(View.GONE);
                 row.dictionary_size.setVisibility(View.GONE);
             }
-
-            if(data.get(i).equals(Settings.getDbType()) || (i==0 && "none".equals(Settings.getDbType())))
-                row.cell_radio_button.setChecked(true);
 
             i++;
         }
@@ -72,18 +68,7 @@ public class SQLiteDictionaryAdapter {
         sqLiteDictionaryRowItem.dictionary_size = ((TextView) convertView.findViewById(R.id.dictionary_size));
         sqLiteDictionaryRowItem.cell_remove_button = ((ImageButton) convertView.findViewById(R.id.cell_remove_button));
         sqLiteDictionaryRowItem.cell_radio_button = (RadioButton) convertView.findViewById(R.id.cell_radio_button);
-
-        sqLiteDictionaryRowItem.cell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for(SQLiteDictionaryRowItem row : rows){
-                    if(row.cell_radio_button.equals(view))
-                        row.cell_radio_button.setChecked(true);
-                    else
-                        row.cell_radio_button.setChecked(false);
-                }
-            }
-        });
+        sqLiteDictionaryRowItem.data = item;
         sqLiteDictionaryRowItem.cell_radio_button.setClickable(false);
 
 
@@ -115,11 +100,15 @@ public class SQLiteDictionaryAdapter {
             sqLiteDictionaryRowItem.dictionary_size.setText(
                     "(" + SQLiteDBFileManager.getInstance().getLocalDBSizeString(item) + ")");
 
-        if(item.equals(Settings.getDbType()) || (position==0 && "none".equals(Settings.getDbType())))
-            sqLiteDictionaryRowItem.cell_radio_button.setChecked(true);
-
         rows.add(sqLiteDictionaryRowItem);
+
         return convertView;
+    }
+
+    public void uncheckAll(){
+        for(SQLiteDictionaryRowItem row : rows){
+            row.cell_radio_button.setChecked(false);
+        }
     }
 
     public int getCheckedDictionaryID(){
@@ -132,6 +121,14 @@ public class SQLiteDictionaryAdapter {
         return -1;
     }
 
+    public void checkDictionaryByDbType(String dbtype){
+        for(SQLiteDictionaryRowItem row : rows){
+            if(row.data.equals(dbtype))
+                row.cell_radio_button.setChecked(true);
+            else
+                row.cell_radio_button.setChecked(false);
+        }
+    }
     public void checkDictionaryByID(int id){
         int i = 0;
         for(SQLiteDictionaryRowItem row : rows){
@@ -143,12 +140,19 @@ public class SQLiteDictionaryAdapter {
         }
     }
 
+    private void checkDictionaryByView(View view){
+        for(SQLiteDictionaryRowItem row : rows){
+            if(row.cell.equals(view))
+                row.cell_radio_button.setChecked(true);
+            else
+                row.cell_radio_button.setChecked(false);
+        }
+    }
+
     public String getCheckedDictionary(){
-        int i = 0;
         for(SQLiteDictionaryRowItem row : rows){
             if(row.cell_radio_button.isChecked())
-                return data.get(i);
-            i++;
+                return row.data;
         }
         return "none";
     }
@@ -180,5 +184,6 @@ public class SQLiteDictionaryAdapter {
         TextView dictionary_size;
         ImageButton cell_remove_button;
         RadioButton cell_radio_button;
+        String data;
     }
 }

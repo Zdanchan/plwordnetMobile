@@ -149,6 +149,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             refreshStatus();
         }
         requestPermissions();
+        refreshSelectedDictionary();
         return view;
     }
 
@@ -182,6 +183,13 @@ public class SettingsLocalDatabaseFragment extends Fragment {
                     Settings.setDbType(packs[index]);
                 }
             });
+        }
+    }
+
+    public void refreshSelectedDictionary(){
+        if(adapter!=null){
+        adapter.uncheckAll();
+        adapter.checkDictionaryByDbType(Settings.getDbType());
         }
     }
 

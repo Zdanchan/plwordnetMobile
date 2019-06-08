@@ -73,12 +73,18 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
         Fragment fragment = settingsCategoriesFragment;
         switch (fragment_class.getSimpleName()) {
             case "SettingsLocalDatabaseFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsLocalDatabaseFragment).commit();
+                settingsLocalDatabaseFragment = new SettingsLocalDatabaseFragment();
                 fragment = settingsLocalDatabaseFragment;
                 break;
             case "SettingsVisualFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsVisualFragment).commit();
+                settingsVisualFragment = new SettingsVisualFragment();
                 fragment = settingsVisualFragment;
                 break;
             case "SettingsHistoryAndBookmarksFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsHistoryAndBookmarksFragment).commit();
+                settingsHistoryAndBookmarksFragment = new SettingsHistoryAndBookmarksFragment();
                 fragment = settingsHistoryAndBookmarksFragment;
                 break;
         }
