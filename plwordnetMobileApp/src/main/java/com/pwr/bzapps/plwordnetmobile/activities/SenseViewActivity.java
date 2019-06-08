@@ -64,18 +64,18 @@ public class SenseViewActivity extends DrawerMenuActivity {
         }
         relations = new ArrayList<SynsetRelationEntity>();
         relations.addAll(entity.getSynsetId().getRelationChild());
-        //relations.addAll(entity.getSynsetId().getRelationParent());
+        //relations.addAll(entity.getSynsetAttributeId().getRelationParent());
 
         LinkedList ids = new LinkedList();
 
         for(SynsetRelationEntity relation : entity.getSynsetId().getRelationChild()){
             ids.add(relation.getParentSynsetId());
         }
-        //for(SynsetRelationEntity relation : entity.getSynsetId().getRelationParent()){
+        //for(SynsetRelationEntity relation : entity.getSynsetAttributeId().getRelationParent()){
         //    ids.add(relation.getChildSynsetId());
         //}
 
-        bookmarked = Settings.isSenseBookmarked(getApplicationContext(),entity.getId());
+        bookmarked = Settings.isSenseBookmarked(getApplicationContext(),entity.getSenseId());
 
         if(!bookmarked){
             Animation slideAnimation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(),R.anim.remove_bookmark_tape_no_anim);
@@ -84,12 +84,12 @@ public class SenseViewActivity extends DrawerMenuActivity {
         }
 
         retrieveSelectedSensesTask = new RetrieveSensesBySynsetsTask(this,getApplicationContext()).execute(ids.toString());
-        retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynsetId().getId().toString());
+        retrieveSynonymsTask = new RetrieveSynonymsTask(this,getApplicationContext()).execute(entity.getSynsetId().getSynsetId().toString());
         if(word_related_senses==null){
             retrieveWordRelatedSensesTask = new RetrieveWordRelatedSensesTask(this,getApplicationContext())
                     .execute(entity.getWordId().getWord(),
                             entity.getLexiconId().getLanguageName(),
-                            entity.getPartOfSpeechId().getId() + "");
+                            entity.getPartOfSpeechId().getPartOfSpeechId() + "");
         }
         bookmark_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                     bookmark_tape.startAnimation(slideAnimation);
                     //slideAnimation.setFillAfter(true);
                 }
-                Settings.addOrRemoveBookmark(getApplication(),entity.getId());
+                Settings.addOrRemoveBookmark(getApplication(),entity.getSenseId());
                 bookmarked = !bookmarked;
             }
         });
@@ -151,10 +151,10 @@ public class SenseViewActivity extends DrawerMenuActivity {
         Map<Long,ArrayList<SynsetRelationEntity>> relations_grouped = new HashMap<>();
 
         for(SynsetRelationEntity relation : relations){
-            if(!relations_grouped.containsKey(relation.getSynsetRelationTypeId().getId())){
-                relations_grouped.put(relation.getSynsetRelationTypeId().getId(), new ArrayList<SynsetRelationEntity>());
+            if(!relations_grouped.containsKey(relation.getSynsetRelationTypeId().getRelationTypeId())){
+                relations_grouped.put(relation.getSynsetRelationTypeId().getRelationTypeId(), new ArrayList<SynsetRelationEntity>());
             }
-            ArrayList<SynsetRelationEntity> list = relations_grouped.get(relation.getSynsetRelationTypeId().getId());
+            ArrayList<SynsetRelationEntity> list = relations_grouped.get(relation.getSynsetRelationTypeId().getRelationTypeId());
             list.add(relation);
         }
         ArrayList<Long> keys = new ArrayList<Long>();
@@ -162,9 +162,9 @@ public class SenseViewActivity extends DrawerMenuActivity {
         Collections.sort(keys);
         for(Long key : keys){
             ArrayList<SynsetRelationEntity> list = relations_grouped.get(key);
-            if(getResources().getIdentifier("rel_type_" + list.get(0).getSynsetRelationTypeId().getId(),"string",getPackageName())!=0) {
+            if(getResources().getIdentifier("rel_type_" + list.get(0).getSynsetRelationTypeId().getRelationTypeId(),"string",getPackageName())!=0) {
                 RelativeLayout type = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_type_template, null);
-                ((TextView) type.findViewById(R.id.relation_type_name)).setText(RelationInterpreter.getRelationTypeLabel(getApplicationContext(),list.get(0).getSynsetRelationTypeId().getId(),getPackageName()));
+                ((TextView) type.findViewById(R.id.relation_type_name)).setText(RelationInterpreter.getRelationTypeLabel(getApplicationContext(),list.get(0).getSynsetRelationTypeId().getRelationTypeId(),getPackageName()));
                 final LinearLayout cell_container = type.findViewById(R.id.relations_container);
                 final ImageView expander = ((ImageView) type.findViewById(R.id.drawer_icon));
                 //expander.setOnClickListener(new OnClickExpander(false,cell_container,expander,getApplicationContext()));
@@ -172,7 +172,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 boolean contains_senses = false;
                 for (SynsetRelationEntity relation : list) {
                     RelativeLayout cell = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.relation_template, null);
-                    Long other = (relation.getChildSynsetId().equals(entity.getSynsetId().getId()) ? relation.getParentSynsetId() : relation.getChildSynsetId());
+                    Long other = (relation.getChildSynsetId().equals(entity.getSynsetId().getSynsetId()) ? relation.getParentSynsetId() : relation.getChildSynsetId());
                     final SenseEntity sense = findRelatedBySynsetId(other);
                     if(sense==null)
                         continue;
@@ -194,7 +194,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                     else {
                         String domain_label = getResources().getText(R.string.domain).toString().toLowerCase();
                         ((TextView) cell.findViewById(R.id.relation_description)).setText(domain_label + ": "
-                                + LanguageManager.getStringByResourceName(getApplicationContext(), "dom_" + sense.getDomainId().getId()));
+                                + LanguageManager.getStringByResourceName(getApplicationContext(), "dom_" + sense.getDomainId().getDomainId()));
                     }
                     cell_container.addView(cell);
                     cell.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +219,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
 
     private SenseEntity findRelatedById(Long id){
         for(SenseEntity sense : related){
-            if(sense.getId().equals(id)){
+            if(sense.getSenseId().equals(id)){
                 return sense;
             }
         }
@@ -228,7 +228,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
 
     private SenseEntity findRelatedBySynsetId(Long id){
         for(SenseEntity sense : related){
-            if(sense.getSynsetId().getId().equals(id)){
+            if(sense.getSynsetId().getSynsetId().equals(id)){
                 return sense;
             }
         }
@@ -250,7 +250,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
 
 
         sense_word.setText(entity.getWordId().getWord() + "-" + entity.getVariant());
-        sense_part_of_speech.setText(SenseAdapter.getPartOfSpeechString(entity.getPartOfSpeechId().getId(), getApplicationContext()).toUpperCase());
+        sense_part_of_speech.setText(SenseAdapter.getPartOfSpeechString(entity.getPartOfSpeechId().getPartOfSpeechId(), getApplicationContext()).toUpperCase());
         String language = entity.getLexiconId().getLanguageName();
         language_flag.setImageResource(SenseAdapter.getFlagResource(getApplicationContext(),language));
         if(SenseAdapter.checkIfContainsSenseAttributes(entity)) {
@@ -263,7 +263,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
             sense_description.setText("");
             sense_description.setVisibility(View.GONE);
         }
-        sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomainId().getId()));
+        sense_domain.setText(LanguageManager.getStringByResourceName(getApplicationContext(),"dom_" + entity.getDomainId().getDomainId()));
         sense_source.setText(entity.getLexiconId().getName());
 
         setExamples(sense_examples_container);
@@ -540,7 +540,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
                 }
                 else {
                     Intent intent = new Intent(getApplicationContext(), GraphBrowserActivity.class);
-                    intent.putExtra("synset_id", entity.getSynsetId().getId().longValue());
+                    intent.putExtra("synset_id", entity.getSynsetId().getSynsetId().longValue());
                     startActivity(intent);
                 }
             }

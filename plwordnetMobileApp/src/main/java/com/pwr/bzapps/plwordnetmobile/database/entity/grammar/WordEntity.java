@@ -1,10 +1,9 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -12,19 +11,18 @@ import java.io.Serializable;
  *   `id` bigint(20) NOT NULL AUTO_INCREMENT,
  *   `word` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "word")
-public class WordEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "word", id = "id")
+public class WordEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "word")
+    @Column(name = "word")
     private String word;
 
-    public Long getId() {
+    public Long getWordId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setWordId(Long id) {
         this.id = id;
     }
 
@@ -38,6 +36,6 @@ public class WordEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "Wo:" + getId();
+        return "Wo:" + getWordId();
     }
 }

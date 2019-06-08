@@ -316,11 +316,11 @@ public class SettingsLocalDatabaseFragment extends Fragment {
     }
 
     public void setStatus(int status){
+        if(getActivity()==null)
+            return;
         if(status!=3 && !SQLiteDBFileManager.getInstance(getActivity().getApplicationContext()).doesLocalDBExists()){
             status = 2;
         }
-        if(getActivity()==null)
-            return;
         this.status = status;
         switch (status){
             case 0:

@@ -28,7 +28,9 @@ public class SQLiteDictionaryAdapter {
         rows = new LinkedHashSet<SQLiteDictionaryRowItem>();
     }
 
-    public SQLiteDictionaryAdapter(Context context, ArrayList<String> data, SettingsLocalDatabaseFragment settingsLocalDatabaseFragment){
+    public SQLiteDictionaryAdapter(Context context,
+                                   ArrayList<String> data,
+                                   SettingsLocalDatabaseFragment settingsLocalDatabaseFragment){
         this.context=context;
         this.data = data;
         this.settingsLocalDatabaseFragment=settingsLocalDatabaseFragment;
@@ -39,10 +41,11 @@ public class SQLiteDictionaryAdapter {
         checkDictionaryByID(getCheckedDictionaryID());
         int i = 0;
         for(SQLiteDictionaryRowItem row : rows){
-            if(SQLiteDBFileManager.doesLocalDBExists(data.get(i))) {
+            if(SQLiteDBFileManager.getInstance().doesLocalDBExists(data.get(i))) {
                 row.cell_remove_button.setVisibility(View.VISIBLE);
                 row.dictionary_size.setVisibility(View.VISIBLE);
-                row.dictionary_size.setText("(" + SQLiteDBFileManager.getLocalDBSizeString(data.get(i)) + ")");
+                row.dictionary_size.setText(
+                        "(" + SQLiteDBFileManager.getInstance().getLocalDBSizeString(data.get(i)) + ")");
             }
             else {
                 row.cell_remove_button.setVisibility(View.GONE);
@@ -60,7 +63,8 @@ public class SQLiteDictionaryAdapter {
     public View getView(final int position) {
         View convertView;
         final String item = data.get(position);
-        SQLiteDictionaryAdapter.SQLiteDictionaryRowItem sqLiteDictionaryRowItem = new SQLiteDictionaryAdapter.SQLiteDictionaryRowItem();
+        SQLiteDictionaryAdapter.SQLiteDictionaryRowItem sqLiteDictionaryRowItem =
+                new SQLiteDictionaryAdapter.SQLiteDictionaryRowItem();
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(R.layout.sqlite_pack_row, null);
         sqLiteDictionaryRowItem.cell = ((RelativeLayout) convertView.findViewById(R.id.dictionary_cell));
@@ -83,28 +87,33 @@ public class SQLiteDictionaryAdapter {
         sqLiteDictionaryRowItem.cell_radio_button.setClickable(false);
 
 
-        String name = context.getResources().getString(context.getResources().getIdentifier("dictionary_"+item,"string",context.getPackageName()));
+        String name = context.getResources().getString(
+                context.getResources().getIdentifier("dictionary_"+item,"string",context.getPackageName()));
         sqLiteDictionaryRowItem.cell_text.setText(name);
 
         sqLiteDictionaryRowItem.cell_remove_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isEnabled){
-                    SQLiteDBFileManager.removeLocalDB(item);
+                    SQLiteDBFileManager.getInstance().removeLocalDB(item);
                     notifyDataSetChanged();
-                    Toast.makeText(context, context.getResources().getString(R.string.remove_local_db_toast), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,
+                            context.getResources().getString(R.string.remove_local_db_toast),
+                            Toast.LENGTH_LONG)
+                            .show();
                     if(settingsLocalDatabaseFragment!=null)
                         settingsLocalDatabaseFragment.refreshStatus();
                 }
             }
         });
 
-        if(!SQLiteDBFileManager.doesLocalDBExists(item)) {
+        if(!SQLiteDBFileManager.getInstance().doesLocalDBExists(item)) {
             sqLiteDictionaryRowItem.cell_remove_button.setVisibility(View.GONE);
             sqLiteDictionaryRowItem.dictionary_size.setVisibility(View.GONE);
         }
         else
-            sqLiteDictionaryRowItem.dictionary_size.setText("(" + SQLiteDBFileManager.getLocalDBSizeString(item) + ")");
+            sqLiteDictionaryRowItem.dictionary_size.setText(
+                    "(" + SQLiteDBFileManager.getInstance().getLocalDBSizeString(item) + ")");
 
         if(item.equals(Settings.getDbType()) || (position==0 && "none".equals(Settings.getDbType())))
             sqLiteDictionaryRowItem.cell_radio_button.setChecked(true);

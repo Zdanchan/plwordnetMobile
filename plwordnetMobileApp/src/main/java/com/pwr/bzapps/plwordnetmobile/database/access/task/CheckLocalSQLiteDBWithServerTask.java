@@ -29,7 +29,7 @@ public class CheckLocalSQLiteDBWithServerTask extends AsyncTask<String,Void,Stri
         if(result==Long.MAX_VALUE){
             return "ConnectionException";
         }
-        long last_update = SQLiteDBFileManager.getLocalDBLastModifiedTime();
+        long last_update = SQLiteDBFileManager.getInstance(context).getLocalDBLastModifiedTime();
         if(last_update == Long.MIN_VALUE){
             return "no-local-db";
         }

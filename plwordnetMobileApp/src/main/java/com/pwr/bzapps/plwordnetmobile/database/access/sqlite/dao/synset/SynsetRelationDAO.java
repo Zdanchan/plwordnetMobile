@@ -1,31 +1,43 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetRelationEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SynsetRelationDAO {
+public class SynsetRelationDAO {
 
-    @Query("SELECT * FROM synset_relation AS sr LIMIT 1")
-    public SynsetRelationEntity checkTable();
+    public static SynsetRelationEntity checkTable(){
+        return new Select()
+                .from(SynsetRelationEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM synset_relation AS sr")
-    public List<SynsetRelationEntity> getAll();
+    public static List<SynsetRelationEntity> getAll(){
+        return new Select()
+                .from(SynsetRelationEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM synset_relation AS sr WHERE sr.id = :id")
-    public SynsetRelationEntity findById(Long id);
+    public static SynsetRelationEntity findById(Long id){
+        return new Select()
+                .from(SynsetRelationEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM synset_relation AS sr WHERE sr.parent_synset_id = :parent_synset_id")
-    public List<SynsetRelationEntity> findChildrenByParentId(Long parent_synset_id);
+    public static List<SynsetRelationEntity> findChildrenByParentId(Long parent_synset_id){
+        return new Select()
+                .from(SynsetRelationEntity.class)
+                .where("parent_synset_id = ?",parent_synset_id)
+                .execute();
+    }
 
-    @Query("SELECT * FROM synset_relation AS sr WHERE sr.child_synset_id = :child_synset_id")
-    public List<SynsetRelationEntity> findParentsByChildId(Long child_synset_id);
+    public static List<SynsetRelationEntity> findParentsByChildId(Long child_synset_id){
+        return new Select()
+                .from(SynsetRelationEntity.class)
+                .where("child_synset_id = ?",child_synset_id)
+                .execute();
+    }
 }

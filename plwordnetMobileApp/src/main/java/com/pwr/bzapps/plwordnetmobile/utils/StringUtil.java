@@ -23,6 +23,14 @@ public class StringUtil {
         return string.substring(0,string.length()-1);
     }
 
+    public static String parseLongArrayToString(Long[] array){
+        String string = "";
+        for(int i=0; i<array.length; i++){
+            string+=array[i]+",";
+        }
+        return string.substring(0,string.length()-1);
+    }
+
     public static Integer[] parseStringToIntegerArray(String string){
         if("null".equals(string))
             return new Integer[0];

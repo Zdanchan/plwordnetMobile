@@ -1,89 +1,117 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.RoomWarnings;
-import android.arch.persistence.room.Transaction;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseAttributeEntity;
+import com.activeandroid.query.Select;
+import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
+import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SenseDAO {
+public class SenseDAO {
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s LIMIT 1")
-    public SenseEntity checkTable();
+    public static SenseEntity checkTable(){
+        return new Select()
+                .from(SenseEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s")
-    public List<SenseEntity> getAll();
+    public static List<SenseEntity> getAll(){
+        return new Select()
+                .from(SenseEntity.class)
+                .execute();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s WHERE s.id = :id")
-    public SenseEntity findById(Long id);
+    public static SenseEntity findById(Long id){
+        return new Select()
+                .from(SenseEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s WHERE s.id IN (:ids)")
-    public List<SenseEntity> findMultipleByIds(Long[] ids);
+    public static List<SenseEntity> findMultipleByIds(Long[] ids){
+        return new Select()
+                .from(SenseEntity.class)
+                .where("id IN (" +StringUtil.parseLongArrayToString(ids)+ ")")
+                .execute();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s WHERE s.synset_id = :id")
-    public List<SenseEntity> findBySynsetId(Long id);
+    public static List<SenseEntity> findBySynsetId(Long id){
+        return new Select()
+                .from(SenseEntity.class)
+                .where("synset_id = ?",id)
+                .execute();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM sense AS s WHERE s.synset_id IN (:ids)")
-    public List<SenseEntity> findMultipleBySynsetIds(Long[] ids);
+    public static List<SenseEntity> findMultipleBySynsetIds(Long[] ids){
+        return new Select()
+                .from(SenseEntity.class)
+                .where("synset_id IN (" +StringUtil.parseLongArrayToString(ids)+ ")")
+                .execute();
+    }
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Transaction
-    @Query("SELECT * FROM sense AS s " +
-            "JOIN word AS w ON s.word_id = w.id " +
-            "WHERE LOWER(w.word) LIKE LOWER('%' + :word + '%') " +
-            "ORDER BY LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC")
-    public List<SenseEntity> findByWord(String word);
+    public static List<SenseEntity> findByWord(String word){
+        return new Select()
+                .from(SenseEntity.class)
+                .join(WordEntity.class)
+                .as("w")
+                .on("w.id = word_id")
+                .where("LOWER(w.word) LIKE LOWER(?)","%"+word+"%")
+                .orderBy("LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC")
+                .execute();
+    }
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Transaction
-    @Query("SELECT * FROM sense AS s " +
-            "JOIN word AS w ON s.word_id = w.id " +
-            "WHERE LOWER(w.word) LIKE LOWER('%' + :word + '%') " +
-            "ORDER BY LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC " +
-            "LIMIT :resultLimit")
-    public List<SenseEntity> findByWord(String word, int resultLimit);
+    public static List<SenseEntity> findByWord(String word, int resultLimit){
+        return new Select()
+                .from(SenseEntity.class)
+                .join(WordEntity.class)
+                .as("w")
+                .on("w.id = word_id")
+                .where("LOWER(w.word) LIKE LOWER(?)","%"+word+"%")
+                .orderBy("LENGTH(w.word), w.word, variant, part_of_speech_id, lexicon_id ASC")
+                .limit("" + resultLimit)
+                .execute();
+    }
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Transaction
-    @Query("SELECT * FROM sense AS s " +
-            "JOIN word AS w ON s.word_id = w.id " +
-            "WHERE w.word = :word")
-    public List<SenseEntity> findRelatedForWord(String word);
+    public static List<SenseEntity> findRelatedForWord(String word){
+        return new Select()
+                .from(SenseEntity.class)
+                .join(WordEntity.class)
+                .as("w")
+                .on("w.id = word_id")
+                .where("w.word = ?", word)
+                .execute();
+    }
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Transaction
-    @Query("SELECT * FROM sense AS s " +
-            "JOIN word AS w ON s.word_id = w.id " +
-            "JOIN lexicon AS l ON l.id = s.lexicon_id " +
-            "WHERE w.word = :word " +
-            "AND LOWER(l.language_name) LIKE LOWER(:language)")
-    public List<SenseEntity> findRelatedForWordAndLanguage(String word, String language);
+    public static List<SenseEntity> findRelatedForWordAndLanguage(String word, String language){
+        return new Select()
+                .from(SenseEntity.class)
+                .join(WordEntity.class)
+                .as("w")
+                .on("w.id = word_id")
+                .join(LexiconEntity.class)
+                .as("l")
+                .on("l.id = lexicon_id")
+                .where("w.word = ?", word)
+                .and("LOWER(l.language_name) LIKE LOWER(?)",language)
+                .execute();
+    }
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Transaction
-    @Query("SELECT * FROM sense AS s " +
-            "JOIN word AS w ON s.word_id = w.id " +
-            "JOIN lexicon AS l ON l.id = s.lexicon_id " +
-            "WHERE w.word = :word " +
-            "AND LOWER(l.language_name) LIKE LOWER(:language) " +
-            "AND s.part_of_speech_id = :part_of_speech")
-    public List<SenseEntity> findRelatedForWordLanguageAndPartOfSpeech(String word,
+    public static List<SenseEntity> findRelatedForWordLanguageAndPartOfSpeech(String word,
                                                                              String language,
-                                                                       Long part_of_speech);
+                                                                       Long part_of_speech){
+        return new Select()
+                .from(SenseEntity.class)
+                .join(WordEntity.class)
+                .as("w")
+                .on("w.id = word_id")
+                .join(LexiconEntity.class)
+                .as("l")
+                .on("l.id = lexicon_id")
+                .where("w.word = ?", word)
+                .and("LOWER(l.language_name) LIKE LOWER(?)",language)
+                .and("part_of_speech_id = ?",part_of_speech)
+                .execute();
+    }
 }

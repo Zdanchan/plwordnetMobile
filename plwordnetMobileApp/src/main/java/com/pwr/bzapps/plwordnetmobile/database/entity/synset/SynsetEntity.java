@@ -1,14 +1,16 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
 
-import android.arch.persistence.room.*;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetAttributeDAO;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetRelationDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,33 +20,29 @@ import java.util.List;
  *   `status_id` bigint(20) DEFAULT NULL,
  *   `abstract` tinyint(1) DEFAULT NULL COMMENT 'is synset abstract',
  * */
-@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
-@android.arch.persistence.room.Entity(tableName = "synset")
-public class SynsetEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "synset", id = "idid")
+public class SynsetEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "split")
+    @Column(name = "split")
     private Integer split;
-    @Embedded(prefix = "lexicon_")
+    @Column(name = "lexicon_")
     private LexiconEntity lexiconId;
-    @ColumnInfo(name = "status_id")
+    @Column(name = "status_id")
     private Integer statusId;
-    @ColumnInfo(name = "abstract")
+    @Column(name = "abstract")
     private Short abstract_;
 
-    @Ignore
+
     private List<SynsetRelationEntity> relationChild;
-    @Ignore
     private List<SynsetRelationEntity> relationParent;
-    @Ignore
     private List<SynsetAttributeEntity> synsetAttributes;
 
-    public Long getId() {
+    public Long getSynsetId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setSynsetId(Long id) {
         this.id = id;
     }
 
@@ -90,7 +88,7 @@ public class SynsetEntity implements Entity, Serializable {
 
     public List<SynsetRelationEntity> getRelationChild() {
         if(Settings.isOfflineMode() && relationChild==null)
-            relationChild = SQLiteConnector.getDatabaseInstance().synsetRelationDAO().findParentsByChildId(id);
+            relationChild = SynsetRelationDAO.findParentsByChildId(id);
         return relationChild;
     }
 
@@ -100,17 +98,17 @@ public class SynsetEntity implements Entity, Serializable {
 
     public List<SynsetRelationEntity> getRelationParent() {
         if(Settings.isOfflineMode() && relationParent==null)
-            relationParent = SQLiteConnector.getDatabaseInstance().synsetRelationDAO().findParentsByChildId(id);
+            relationParent = SynsetRelationDAO.findChildrenByParentId(id);
         return relationParent;
     }
 
     public void setRelationParent(List<SynsetRelationEntity> relationParent) {
-        if(Settings.isOfflineMode() && synsetAttributes==null)
-            synsetAttributes = SQLiteConnector.getDatabaseInstance().synsetAttributeDAO().findAllForSynsetId(id);
         this.relationParent = relationParent;
     }
 
     public List<SynsetAttributeEntity> getSynsetAttributes() {
+        if(Settings.isOfflineMode() && synsetAttributes==null)
+            synsetAttributes = SynsetAttributeDAO.findAllForSynsetId(id);
         return synsetAttributes;
     }
 
@@ -120,6 +118,6 @@ public class SynsetEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "Sy:" + getId();
+        return "Sy:" + getSynsetId();
     }
 }

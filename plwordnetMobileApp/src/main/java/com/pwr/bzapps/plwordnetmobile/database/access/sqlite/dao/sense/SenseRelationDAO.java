@@ -1,25 +1,29 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseExampleEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseRelationEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SenseRelationDAO {
+public class SenseRelationDAO {
 
-    @Query("SELECT * FROM sense_relation AS sr LIMIT 1")
-    public SenseRelationEntity checkTable();
+    public static SenseRelationEntity checkTable(){
+        return new Select()
+                .from(SenseRelationEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM sense_relation AS sr")
-    public List<SenseRelationEntity> getAll();
+    public static List<SenseRelationEntity> getAll(){
+        return new Select()
+                .from(SenseRelationEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM sense_relation AS sr WHERE sr.id = :id")
-    public SenseRelationEntity findById(Long id);
+    public static SenseRelationEntity findById(Long id){
+        return new Select()
+                .from(SenseRelationEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 }

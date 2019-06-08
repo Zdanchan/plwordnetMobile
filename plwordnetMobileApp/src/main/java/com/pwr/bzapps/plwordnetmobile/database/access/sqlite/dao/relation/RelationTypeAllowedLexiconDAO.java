@@ -1,26 +1,30 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.relation;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeAllowedLexiconEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface RelationTypeAllowedLexiconDAO {
+public class RelationTypeAllowedLexiconDAO {
 
-    @Query("SELECT * FROM relation_type_allowed_lexicons AS rtal LIMIT 1")
-    public RelationTypeAllowedLexiconEntity checkTable();
+    public static RelationTypeAllowedLexiconEntity checkTable(){
+        return new Select()
+                .from(RelationTypeAllowedLexiconEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM relation_type_allowed_lexicons AS rtal")
-    public List<RelationTypeAllowedLexiconEntity> getAll();
+    public static List<RelationTypeAllowedLexiconEntity> getAll(){
+        return new Select()
+                .from(RelationTypeAllowedLexiconEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM relation_type_allowed_lexicons AS rtal " +
-            "WHERE rtal.relation_type_id = :relation_type_id " +
-            "AND rtal.lexicon_id = :lexicon_id")
-    public RelationTypeAllowedLexiconEntity findById(Long relation_type_id, Long lexicon_id);
+    public static RelationTypeAllowedLexiconEntity findById(Long relation_type_id, Long lexicon_id){
+        return new Select()
+                .from(RelationTypeAllowedLexiconEntity.class)
+                .where("relation_type_id = ?",relation_type_id)
+                .and("lexicon_id = ?",lexicon_id)
+                .executeSingle();
+    }
 }

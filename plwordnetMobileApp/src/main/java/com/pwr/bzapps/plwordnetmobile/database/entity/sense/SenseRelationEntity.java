@@ -1,10 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.RoomWarnings;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeEntity;
 
@@ -16,24 +14,22 @@ import java.io.Serializable;
  *   `parent_sense_id` bigint(20) NOT NULL,
  *   `relation_type_id` bigint(20) NOT NULL,
  * */
-@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
-@android.arch.persistence.room.Entity(tableName = "sense_relation")
-public class SenseRelationEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "sense_relation", id = "id")
+public class SenseRelationEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "child_sense_id")
+    @Column(name = "child_sense_id")
     private Long childSenseId;
-    @ColumnInfo(name = "parent_sense_id")
+    @Column(name = "parent_sense_id")
     private Long parentSenseId;
-    @Embedded(prefix = "relation_type_")
+    @Column(name = "relation_type_id")
     private RelationTypeEntity relationTypeId;
 
-    public Long getId() {
+    public Long getSenseRelationId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setSenseRelationId(Long id) {
         this.id = id;
     }
 
@@ -63,6 +59,6 @@ public class SenseRelationEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SeR:" + getId();
+        return "SeR:" + getSenseRelationId();
     }
 }

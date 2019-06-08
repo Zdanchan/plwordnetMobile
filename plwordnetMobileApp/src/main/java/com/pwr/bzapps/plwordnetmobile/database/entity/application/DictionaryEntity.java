@@ -1,8 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -15,20 +15,19 @@ import java.io.Serializable;
  *   `tag` varchar(20) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  *   `value` bigint(20) DEFAULT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "dictionaries")
-public class DictionaryEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "dictionaries", id = "id")
+public class DictionaryEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "dtype")
+    @Column(name = "dtype")
     private String dtype;
-    @ColumnInfo(name = "description_id")
+    @Column(name = "description_id")
     private Integer descriptionId;
-    @ColumnInfo(name = "name_id")
+    @Column(name = "name_id")
     private Integer nameId;
-    @ColumnInfo(name = "tag")
+    @Column(name = "tag")
     private String tag;
-    @ColumnInfo(name = "value")
+    @Column(name = "value")
     private Long value;
 
     public String getDtype() {
@@ -39,11 +38,11 @@ public class DictionaryEntity implements Entity, Serializable {
         this.dtype = "null".equals(dtype) ? null : dtype;
     }
 
-    public Long getId() {
+    public Long getDictionaryId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setDictionaryId(Long id) {
         this.id = id;
     }
 

@@ -1,12 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
-
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.relation.id.RelationTypeAllowedLexiconId;
 
 import java.io.Serializable;
 
@@ -14,43 +12,31 @@ import java.io.Serializable;
  *   `relation_type_id` bigint(20) NOT NULL,
  *   `lexicon_id` bigint(20) NOT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "relation_type_allowed_lexicons")
-public class RelationTypeAllowedLexiconEntity implements Serializable,Entity {
-    @PrimaryKey
-    @Embedded
-    @NonNull
-    private RelationTypeAllowedLexiconId id;
+@Table(name = "relation_type_allowed_lexicons", id = "id")
+public class RelationTypeAllowedLexiconEntity extends Model implements Serializable,Entity {
+    @Column(name = "relation_type_id")
+    private RelationTypeEntity relationTypeId;
+    @Column(name = "lexicon_id")
+    private LexiconEntity lexiconId;
 
-    public RelationTypeAllowedLexiconId getId() {
-        return id;
-    }
-
-    public void setId(RelationTypeAllowedLexiconId id) {
-        this.id = id;
-    }
-
-    public Long getRelationTypeId() {
-        return id.getRelation_type_id();
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
     public void setRelationTypeId(RelationTypeEntity relationTypeId) {
-        if(id==null)
-            id = new RelationTypeAllowedLexiconId();
-        this.id.setRelation_type_id(relationTypeId.getId());
+        this.relationTypeId = relationTypeId;
     }
 
-    public Long getLexiconId() {
-        return id.getLexicon_id();
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
     public void setLexiconId(LexiconEntity lexiconId) {
-        if(id==null)
-            id = new RelationTypeAllowedLexiconId();
-        this.id.setLexicon_id(lexiconId.getId());
+        this.lexiconId = lexiconId;
     }
 
     @Override
     public String getEntityID() {
-        return "RTAL:" + getRelationTypeId() + "" + getLexiconId();
+        return "RTAL:" + relationTypeId.getRelationTypeId() + "" + lexiconId.getLexiconId();
     }
 }

@@ -1,8 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -12,21 +12,20 @@ import java.io.Serializable;
  *   `description_id` bigint(20) DEFAULT NULL,
  *   `name_id` bigint(20) DEFAULT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "domain")
-public class DomainEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "domain", id = "id")
+public class DomainEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "description_id")
+    @Column(name = "description_id")
     private Integer descriptionId;
-    @ColumnInfo(name = "name_id")
+    @Column(name = "name_id")
     private Integer nameId;
 
-    public Long getId() {
+    public Long getDomainId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setDomainId(Long id) {
         this.id = id;
     }
 

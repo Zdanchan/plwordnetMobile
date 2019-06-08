@@ -1,25 +1,28 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.application.DictionaryEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.DomainEntity;
-
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface DomainDAO {
+public class DomainDAO {
 
-    @Query("SELECT * FROM domain AS d LIMIT 1")
-    public DomainEntity checkTable();
+    public static DomainEntity checkTable(){
+        return new Select()
+                .from(DomainEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM domain AS d")
-    public List<DomainEntity> getAll();
+    public static List<DomainEntity> getAll(){
+        return new Select()
+                .from(DomainEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM domain AS d WHERE d.id = :id")
-    public DomainEntity findById(Long id);
+    public static DomainEntity findById(Long id){
+        return new Select()
+                .from(DomainEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 }

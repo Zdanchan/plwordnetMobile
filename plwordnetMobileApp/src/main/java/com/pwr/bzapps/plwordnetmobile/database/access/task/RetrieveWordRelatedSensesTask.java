@@ -30,12 +30,11 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
     protected String doInBackground(String... strings) {
         String result = null;
         if(Settings.isOfflineMode()) {
-            if (!SQLiteDBFileManager.doesLocalDBExists())
+            if (!SQLiteDBFileManager.getInstance(context).doesLocalDBExists())
                 return "NoLocalDatabase";
             try{
                 resultHolder = new ArrayList<SenseEntity>(
-                        SQLiteConnector.getDatabaseInstance().senseDAO()
-                                .findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Long.parseLong(strings[2])));
+                        SenseDAO.findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Long.parseLong(strings[2])));
             }catch (SQLiteException e){
                 return "LocalDBException";
             }

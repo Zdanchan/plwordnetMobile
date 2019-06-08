@@ -1,25 +1,30 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.relation;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeAllowedPartOfSpeechEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface RelationTypeDAO {
 
-    @Query("SELECT * FROM relation_type AS rt LIMIT 1")
-    public RelationTypeEntity checkTable();
+public class RelationTypeDAO {
 
-    @Query("SELECT * FROM relation_type AS rt")
-    public List<RelationTypeEntity> getAll();
+    public static RelationTypeEntity checkTable(){
+        return new Select()
+                .from(RelationTypeEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM relation_type AS rt WHERE rt.id = :id")
-    public RelationTypeEntity findById(Long id);
+    public static List<RelationTypeEntity> getAll(){
+        return new Select()
+                .from(RelationTypeEntity.class)
+                .execute();
+    }
+
+    public static RelationTypeEntity findById(Long id){
+        return new Select()
+                .from(RelationTypeEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 }

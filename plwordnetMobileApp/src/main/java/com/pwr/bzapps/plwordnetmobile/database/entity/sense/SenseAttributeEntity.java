@@ -1,17 +1,15 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Relation;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseExampleDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,36 +24,34 @@ import java.util.List;
  *   `proper_name` bit(1) NOT NULL DEFAULT b'0',
  *
  * */
-@android.arch.persistence.room.Entity(tableName = "sense_attributes")
-public class SenseAttributeEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "sense_id")
+@Table(name = "sense_attributes", id = "sense_id")
+public class SenseAttributeEntity extends Model implements Entity, Serializable {
+    @Column(name = "sense_id", unique = true)
     private Long senseId;
-    @ColumnInfo(name = "comment")
+    @Column(name = "comment")
     private String comment;
-    @ColumnInfo(name = "definition")
+    @Column(name = "definition")
     private String definition;
-    @ColumnInfo(name = "link")
+    @Column(name = "link")
     private String link;
-    @ColumnInfo(name = "register_id")
+    @Column(name = "register_id")
     private Integer registerId;
-    @ColumnInfo(name = "aspect_id")
+    @Column(name = "aspect_id")
     private Integer aspectId;
-    @ColumnInfo(name = "user_id")
+    @Column(name = "user_id")
     private Integer userId;
-    @ColumnInfo(name = "error_comment")
+    @Column(name = "error_comment")
     private String errorComment;
-    @ColumnInfo(name = "proper_name")
+    @Column(name = "proper_name")
     private boolean properName;
 
-    @Ignore
     private List<SenseExampleEntity> senseExamples;
 
-    public Long getSenseId() {
+    public Long getSenseAttributeId() {
         return senseId;
     }
 
-    public void setSenseId(Long senseId) {
+    public void setSenseAttributeId(Long senseId) {
         this.senseId = senseId;
     }
 
@@ -125,7 +121,7 @@ public class SenseAttributeEntity implements Entity, Serializable {
 
     public List<SenseExampleEntity> getSenseExamples() {
         if(Settings.isOfflineMode() && senseExamples==null)
-            senseExamples = SQLiteConnector.getDatabaseInstance().senseExampleDAO().findAllForSenseAttribute(senseId);
+            senseExamples = SenseExampleDAO.findAllForSenseAttribute(senseId);
         return senseExamples;
     }
 
@@ -135,6 +131,6 @@ public class SenseAttributeEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SeAE:"+ getSenseId();
+        return "SeAE:"+ getSenseAttributeId();
     }
 }

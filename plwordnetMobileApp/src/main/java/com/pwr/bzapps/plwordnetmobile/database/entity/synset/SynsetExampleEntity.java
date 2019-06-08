@@ -1,7 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -12,23 +15,22 @@ import java.io.Serializable;
  *   `example` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "synset_examples")
-public class SynsetExampleEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "synset_examples", id = "id")
+public class SynsetExampleEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "synset_attributes_id")
+    @Column(name = "synset_attributes_id")
     private Long synsetAttributeId;
-    @ColumnInfo(name = "example")
+    @Column(name = "example")
     private String example;
-    @ColumnInfo(name = "type")
+    @Column(name = "type")
     private String type;
 
-    public Long getId() {
+    public Long getSynsetExampleId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setSynsetExampleId(Long id) {
         this.id = id;
     }
 
@@ -58,6 +60,6 @@ public class SynsetExampleEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SynEx:" + getId();
+        return "SynEx:" + getSynsetExampleId();
     }
 }

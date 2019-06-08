@@ -1,9 +1,11 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetExampleDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -19,32 +21,30 @@ import java.util.List;
  *   `error_comment` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `ili_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'OMW id',
  * */
-@android.arch.persistence.room.Entity(tableName = "synset_attributes")
-public class SynsetAttributeEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "synset_id")
+@Table(name = "synset_attributes", id = "synset_id")
+public class SynsetAttributeEntity extends Model implements Entity, Serializable {
+    @Column(name = "synset_id", unique = true)
     private Long synsetId;
-    @ColumnInfo(name = "comment")
+    @Column(name = "comment")
     private String comment;
-    @ColumnInfo(name = "definition")
+    @Column(name = "definition")
     private String definition;
-    @ColumnInfo(name = "princeton_id")
+    @Column(name = "princeton_id")
     private String princetonId;
-    @ColumnInfo(name = "owner_id")
+    @Column(name = "owner_id")
     private Integer ownerId;
-    @ColumnInfo(name = "error_comment")
+    @Column(name = "error_comment")
     private String errorComment;
-    @ColumnInfo(name = "ili_id")
+    @Column(name = "ili_id")
     private String iliId;
 
-    @Ignore
     private List<SynsetExampleEntity> synsetExamples;
 
-    public Long getSynsetId() {
+    public Long getSynsetAttributeId() {
         return synsetId;
     }
 
-    public void setSynsetId(Long synsetId) {
+    public void setSynsetAttributeId(Long synsetId) {
         this.synsetId = synsetId;
     }
 
@@ -98,7 +98,7 @@ public class SynsetAttributeEntity implements Entity, Serializable {
 
     public List<SynsetExampleEntity> getSynsetExamples() {
         if(Settings.isOfflineMode() && synsetExamples ==null)
-            synsetExamples = SQLiteConnector.getDatabaseInstance().synsetExampleDAO().findAllForSynsetAttribute(synsetId);
+            synsetExamples = SynsetExampleDAO.findAllForSynsetAttribute(synsetId);
         return synsetExamples;
     }
 
@@ -108,6 +108,6 @@ public class SynsetAttributeEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SyA:" + getSynsetId();
+        return "SyA:" + getSynsetAttributeId();
     }
 }

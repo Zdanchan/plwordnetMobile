@@ -1,8 +1,11 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -22,43 +25,42 @@ import java.io.Serializable;
  *   `node_position` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Position in node LEFT,TOP,RIGHT,BOTTOM',
  *   `priority` int(11) DEFAULT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "relation_type")
-public class RelationTypeEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "relation_type", id = "id")
+public class RelationTypeEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "auto_reverse")
+    @Column(name = "auto_reverse")
     private boolean autoReverse;
-    @ColumnInfo(name = "multilingual")
+    @Column(name = "multilingual")
     private boolean multilingual;
-    @ColumnInfo(name = "description_id")
+    @Column(name = "description_id")
     private Long descriptionId;
-    @ColumnInfo(name = "display_text_id")
+    @Column(name = "display_text_id")
     private Long displayTextId;
-    @ColumnInfo(name = "name_id")
+    @Column(name = "name_id")
     private Long nameId;
-    @ColumnInfo(name = "parent_relation_type_id")
+    @Column(name = "parent_relation_type_id")
     private Long parentRelationTypeId;
-    @ColumnInfo(name = "relation_argument")
+    @Column(name = "relation_argument")
     private String relationArgument;
-//    @ColumnInfo(name = "reverse_relation_type_id")
+//    @Column(name = "reverse_relation_type_id")
     //private RelationTypeEntity reverseRelationType;
-    @ColumnInfo(name = "reverse_relation_type_id")
+    @Column(name = "reverse_relation_type_id")
     private Long reverseRelationTypeId;
-    @ColumnInfo(name = "short_display_text_id")
+    @Column(name = "short_display_text_id")
     private Long shortDisplayTextId;
-    @ColumnInfo(name = "color")
+    @Column(name = "color")
     private String color;
-    @ColumnInfo(name = "node_position")
+    @Column(name = "node_position")
     private String nodePosition;
-    @ColumnInfo(name = "priority")
+    @Column(name = "priority")
     private Integer priority;
 
-    public Long getId() {
+    public Long getRelationTypeId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setRelationTypeId(Long id) {
         this.id = id;
     }
 
@@ -169,6 +171,6 @@ public class RelationTypeEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "RT:" + getId();
+        return "RT:" + getRelationTypeId();
     }
 }

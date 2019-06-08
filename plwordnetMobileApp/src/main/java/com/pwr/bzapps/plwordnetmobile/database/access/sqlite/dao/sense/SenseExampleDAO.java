@@ -1,28 +1,36 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseExampleEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SenseExampleDAO {
+public class SenseExampleDAO {
 
-    @Query("SELECT * FROM sense_examples AS se LIMIT 1")
-    public SenseExampleEntity checkTable();
+    public static SenseExampleEntity checkTable(){
+        return new Select()
+                .from(SenseExampleEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM sense_examples AS se")
-    public List<SenseExampleEntity> getAll();
+    public static List<SenseExampleEntity> getAll(){
+        return new Select()
+                .from(SenseExampleEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM sense_examples AS se WHERE se.id = :id")
-    public SenseExampleEntity findById(Long id);
+    public static SenseExampleEntity findById(Long id){
+        return new Select()
+                .from(SenseExampleEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM sense_examples AS se WHERE se.sense_attribute_id = :sense_attribute_id")
-    public List<SenseExampleEntity> findAllForSenseAttribute(Long sense_attribute_id);
+    public static List<SenseExampleEntity> findAllForSenseAttribute(Long sense_attribute_id){
+        return new Select()
+                .from(SenseExampleEntity.class)
+                .where("sense_attribute_id = ?",sense_attribute_id)
+                .executeSingle();
+    }
 }

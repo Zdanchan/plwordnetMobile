@@ -1,25 +1,29 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.application.ApplicationLocalisedStringEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.DictionaryEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface DictionaryDAO {
+public class DictionaryDAO {
 
-    @Query("SELECT * FROM dictionaries AS d LIMIT 1")
-    public DictionaryEntity checkTable();
+    public static DictionaryEntity checkTable(){
+        return new Select()
+                .from(DictionaryEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM dictionaries AS d")
-    public List<DictionaryEntity> getAll();
+    public static List<DictionaryEntity> getAll(){
+        return new Select()
+                .from(DictionaryEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM dictionaries AS d WHERE d.id = :id")
-    public DictionaryEntity findById(Long id);
+    public static DictionaryEntity findById(Long id){
+        return new Select()
+                .from(DictionaryEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 }

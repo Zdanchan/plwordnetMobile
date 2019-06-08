@@ -32,11 +32,11 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... strings) {
         String result = null;
         if(Settings.isOfflineMode()) {
-            if (!SQLiteDBFileManager.doesLocalDBExists())
+            if (!SQLiteDBFileManager.getInstance(context).doesLocalDBExists())
                 return "NoLocalDatabase";
             try{
                 resultHolder = new ArrayList<SenseEntity>(
-                        SQLiteConnector.getDatabaseInstance().senseDAO().findBySynsetId(Long.parseLong(strings[0])));
+                        SenseDAO.findBySynsetId(Long.parseLong(strings[0])));
             }catch (SQLiteException e){
                 return "LocalDBException";
             }

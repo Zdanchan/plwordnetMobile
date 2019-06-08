@@ -1,29 +1,36 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetExampleEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SynsetExampleDAO {
+public class SynsetExampleDAO {
 
-    @Query("SELECT * FROM synset_examples AS se LIMIT 1")
-    public SynsetExampleEntity checkTable();
+    public static SynsetExampleEntity checkTable(){
+        return new Select()
+                .from(SynsetExampleEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM synset_examples AS se")
-    public List<SynsetExampleEntity> getAll();
+    public static List<SynsetExampleEntity> getAll(){
+        return new Select()
+                .from(SynsetExampleEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM synset_examples AS se WHERE se.id = :id")
-    public SynsetExampleEntity findById(Long id);
+    public static SynsetExampleEntity findById(Long id){
+        return new Select()
+                .from(SynsetExampleEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM synset_examples AS se WHERE se.synset_attributes_id = :synset_attribute_id")
-    public List<SynsetExampleEntity> findAllForSynsetAttribute(Long synset_attribute_id);
+    public static List<SynsetExampleEntity> findAllForSynsetAttribute(Long synset_attribute_id){
+        return new Select()
+                .from(SynsetExampleEntity.class)
+                .where("synset_attributes_id = ?",synset_attribute_id)
+                .executeSingle();
+    }
 }

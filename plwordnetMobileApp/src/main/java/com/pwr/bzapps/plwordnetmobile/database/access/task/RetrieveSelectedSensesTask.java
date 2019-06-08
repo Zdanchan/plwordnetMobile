@@ -37,8 +37,7 @@ public class RetrieveSelectedSensesTask extends AsyncTask<String,Void,String> {
         if(Settings.isOfflineMode()) {
             try{
                 resultHolder = new ArrayList<SenseEntity>(
-                        SQLiteConnector.getDatabaseInstance().senseDAO()
-                                .findMultipleByIds(StringUtil.parseStringToLongArray(strings[0])));
+                        SenseDAO.findMultipleByIds(StringUtil.parseStringToLongArray(strings[0])));
             }catch (SQLiteException e){
                 return "LocalDBException";
             }

@@ -170,7 +170,7 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
         intent.putExtra("sense_entity",data.get(i));
         for(SenseEntity sense : data){
             if(sense.getWordId().getWord().equals(data.get(i).getWordId().getWord()) &&
-                    sense.getPartOfSpeechId().getId().equals(data.get(i).getPartOfSpeechId().getId()) &&
+                    sense.getPartOfSpeechId().getPartOfSpeechId().equals(data.get(i).getPartOfSpeechId().getPartOfSpeechId()) &&
                     sense.getLexiconId().getLanguageName().equals(data.get(i).getLexiconId().getLanguageName())){
                 word_related_senses.add(sense);
             }

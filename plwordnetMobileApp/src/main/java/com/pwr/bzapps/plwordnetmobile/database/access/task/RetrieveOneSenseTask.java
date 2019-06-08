@@ -30,7 +30,7 @@ public class RetrieveOneSenseTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... strings) {
         String result = null;
         if(Settings.isOfflineMode())
-            resultHolder = SQLiteConnector.getDatabaseInstance().senseDAO().findById(Long.parseLong(strings[0]));
+            resultHolder = SenseDAO.findById(Long.parseLong(strings[0]));
         else
             result = ConnectionProvider.getInstance(context).getSenseById(Long.parseLong(strings[0]));
         return result;

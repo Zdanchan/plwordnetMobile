@@ -1,7 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -17,33 +18,32 @@ import java.io.Serializable;
  *   `example1` varchar(512) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  *   `example2` varchar(512) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  * */
-@android.arch.persistence.room.Entity(tableName = "emotional_annotations")
-public class EmotionalAnnotationEntity implements Entity, Serializable{
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "emotional_annotations", id = "id")
+public class EmotionalAnnotationEntity extends Model implements Entity, Serializable{
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "sense_id")
+    @Column(name = "sense_id")
     private Long senseId;
-    @ColumnInfo(name = "has_emotional_characteristic")
+    @Column(name = "has_emotional_characteristic")
     private boolean hasEmotionalCharacteristic;
-    @ColumnInfo(name = "super_anotation")
+    @Column(name = "super_anotation")
     private boolean superAnotation;
-    @ColumnInfo(name = "emotions")
+    @Column(name = "emotions")
     private String emotions;
-    @ColumnInfo(name = "valuations")
+    @Column(name = "valuations")
     private String valuations;
-    @ColumnInfo(name = "markedness")
+    @Column(name = "markedness")
     private String markedness;
-    @ColumnInfo(name = "example1")
+    @Column(name = "example1")
     private String example1;
-    @ColumnInfo(name = "example2")
+    @Column(name = "example2")
     private String example2;
 
-    public Long getId() {
+    public Long getEmotionalAnnotationId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setEmotionalAnnotationId(Long id) {
         this.id = id;
     }
 
@@ -113,6 +113,6 @@ public class EmotionalAnnotationEntity implements Entity, Serializable{
 
     @Override
     public String getEntityID() {
-        return "EA:" + getId();
+        return "EA:" + getEmotionalAnnotationId();
     }
 }

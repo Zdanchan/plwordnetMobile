@@ -27,7 +27,6 @@ public class Settings {
     public static int RESULTS_LIMIT = 60;
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
-    public static final String FILE_NAME= "plwordnet";
     public static String[] POSSIBLE_DB_LANGS = {"all", "polish", "english"};
 
     public static void loadPossibleDBLangs(){
@@ -239,14 +238,6 @@ public class Settings {
 
     public static void setOfflineMode(boolean offlineMode) {
         Settings.offlineMode = offlineMode;
-    }
-
-    public static String getSqliteDbFileLocation() {
-        return sqlite_db_file_location;
-    }
-
-    public static String getSqliteDbFile() {
-        return sqlite_db_file_location + "/" + FILE_NAME + "_" + db_type + ".db";
     }
 
     public static String changeSqliteDbFileLocation(int location){

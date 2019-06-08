@@ -58,11 +58,10 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
         }
         String result = null;
         if(Settings.isOfflineMode()) {
-            if(!SQLiteDBFileManager.doesLocalDBExists())
+            if(!SQLiteDBFileManager.getInstance(context).doesLocalDBExists())
                 return "NoLocalDatabase";
             try {
-                resultHolder = new ArrayList<SenseEntity>(SQLiteConnector.getDatabaseInstance().senseDAO()
-                        .findByWord(strings[0], Settings.RESULTS_LIMIT));
+                resultHolder = new ArrayList<SenseEntity>(SenseDAO.findByWord(strings[0], Settings.RESULTS_LIMIT));
                 Collections.sort((ArrayList<SenseEntity>) resultHolder);
             }catch (SQLiteException e){
                 return "LocalDBException";

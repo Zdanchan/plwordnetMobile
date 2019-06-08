@@ -51,7 +51,7 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
 
         rowResultItem.word_name.setText(senseEntity.getWordId().getWord() + "-" + senseEntity.getVariant());
         //rowResultItem.word_meaning_id.setText("-" + senseEntity.getVariant());
-        rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPartOfSpeechId().getId()));
+        rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPartOfSpeechId().getPartOfSpeechId()));
         String description = "";
         if(checkIfContainsSenseAttributes(senseEntity)) {
             description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSenseAttributes())).get(0).getDefinition());

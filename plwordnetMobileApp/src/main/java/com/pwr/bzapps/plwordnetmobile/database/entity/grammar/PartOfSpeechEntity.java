@@ -1,8 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -12,21 +12,20 @@ import java.io.Serializable;
  *   `name_id` bigint(20) DEFAULT NULL COMMENT 'Name of part of speech',
  *   `color` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Color displayed on visualisation',
  * */
-@android.arch.persistence.room.Entity(tableName = "part_of_speech")
-public class PartOfSpeechEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "part_of_speech", id = "id")
+public class PartOfSpeechEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "name_id")
+    @Column(name = "name_id")
     private Long nameId;
-    @ColumnInfo(name = "color")
+    @Column(name = "color")
     private String color;
 
-    public Long getId() {
+    public Long getPartOfSpeechId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setPartOfSpeechId(Long id) {
         this.id = id;
     }
 
@@ -48,6 +47,6 @@ public class PartOfSpeechEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "POS:" + getId();
+        return "POS:" + getPartOfSpeechId();
     }
 }

@@ -1,28 +1,37 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.ApplicationLocalisedStringEntity;
 import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface ApplicationLocalisedStringDAO {
+public class ApplicationLocalisedStringDAO {
 
-    @Query("SELECT * FROM application_localised_string AS als LIMIT 1")
-    public ApplicationLocalisedStringEntity checkTable();
+    public static ApplicationLocalisedStringEntity checkTable(){
+        return new Select()
+                .from(ApplicationLocalisedStringEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM application_localised_string AS als")
-    public List<ApplicationLocalisedStringEntity> getAll();
+    public static List<ApplicationLocalisedStringEntity> getAll(){
+        return new Select()
+                .from(ApplicationLocalisedStringEntity.class)
+                .execute();
+    }
 
-    @Query("SELECT * FROM application_localised_string AS als WHERE als.id = :id")
-    public ApplicationLocalisedStringEntity findById(Long id);
+    public static ApplicationLocalisedStringEntity findById(Long id){
+        return new Select()
+                .from(ApplicationLocalisedStringEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 
-    @Query("SELECT * FROM application_localised_string AS als WHERE als.id IN (:ids)")
-    public List<ApplicationLocalisedStringEntity> findByMultipleIds(Long[] ids);
+    public static List<ApplicationLocalisedStringEntity> findByMultipleIds(Long[] ids){
+        return new Select()
+                .from(ApplicationLocalisedStringEntity.class)
+                .where("id IN (" + StringUtil.parseLongArrayToString(ids) + ")")
+                .execute();
+    }
 }

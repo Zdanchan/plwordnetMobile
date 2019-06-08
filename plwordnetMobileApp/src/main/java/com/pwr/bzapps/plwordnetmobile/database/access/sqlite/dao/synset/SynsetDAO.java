@@ -1,29 +1,29 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Transaction;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetEntity;
 
-import java.util.Collection;
 import java.util.List;
 
-@Dao
-public interface SynsetDAO {
+public class SynsetDAO {
 
-    @Transaction
-    @Query("SELECT * FROM synset AS s LIMIT 1")
-    public SynsetEntity checkTable();
+    public static SynsetEntity checkTable(){
+        return new Select()
+                .from(SynsetEntity.class)
+                .limit("1")
+                .executeSingle();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM synset AS s")
-    public List<SynsetEntity> getAll();
+    public static List<SynsetEntity> getAll(){
+        return new Select()
+                .from(SynsetEntity.class)
+                .execute();
+    }
 
-    @Transaction
-    @Query("SELECT * FROM synset AS s WHERE s.id = :id")
-    public SynsetEntity findById(Long id);
+    public static SynsetEntity findById(Long id){
+        return new Select()
+                .from(SynsetEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
+    }
 }

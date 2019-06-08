@@ -1,7 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -13,25 +14,24 @@ import java.io.Serializable;
  *   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  *   `lexicon_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL COMMENT 'Lexicon name',
  * */
-@android.arch.persistence.room.Entity(tableName = "lexicon")
-public class LexiconEntity implements Entity, Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+@Table(name = "lexicon", id = "id")
+public class LexiconEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
     private Long id;
-    @ColumnInfo(name = "identifier")
+    @Column(name = "identifier")
     private String identifier;
-    @ColumnInfo(name = "language_name")
+    @Column(name = "language_name")
     private String languageName;
-    @ColumnInfo(name = "name")
+    @Column(name = "name")
     private String name;
-    @ColumnInfo(name = "lexicon_version")
+    @Column(name = "lexicon_version")
     private String lexiconVersion;
 
-    public Long getId() {
+    public Long getLexiconId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setLexiconId(Long id) {
         this.id = id;
     }
 
@@ -69,6 +69,6 @@ public class LexiconEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "Le:" + getId();
+        return "Le:" + getLexiconId();
     }
 }
