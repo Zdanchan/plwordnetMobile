@@ -51,6 +51,13 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
     }
 
     @Override
+    protected void onDestroy() {
+        if(retrieveSelectedSensesTask!=null)
+            retrieveSelectedSensesTask.cancel(true);
+        super.onDestroy();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getApplicationContext(), SenseViewActivity.class);
         intent.putExtra("sense_entity",data.get(i));

@@ -153,6 +153,13 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        if(checkLocalSQLiteDBWithServerTask!=null)
+            checkLocalSQLiteDBWithServerTask.cancel(true);
+        super.onDestroy();
+    }
+
     private void prepareDictionarySelectors(){
         Settings.loadPossibleDBLangs();
         String[] packs = Settings.POSSIBLE_DB_LANGS;

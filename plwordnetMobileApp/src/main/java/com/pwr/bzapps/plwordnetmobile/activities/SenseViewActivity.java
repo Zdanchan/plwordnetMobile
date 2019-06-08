@@ -275,7 +275,7 @@ public class SenseViewActivity extends DrawerMenuActivity {
     }
 
     private void setExamples(LinearLayout sense_examples_container){
-        if(!entity.getSenseAttributes().isEmpty()
+        if(!entity.getSenseAttributes().isEmpty() && ((ArrayList<SenseAttributeEntity>)entity.getSenseAttributes()).get(0).getSenseExamples() != null
                 && !((ArrayList<SenseAttributeEntity>)entity.getSenseAttributes()).get(0).getSenseExamples().isEmpty()){
             ArrayList<SenseExampleEntity> examples = (ArrayList<SenseExampleEntity>)((ArrayList<SenseAttributeEntity>)entity.getSenseAttributes())
                     .get(0).getSenseExamples();
