@@ -90,6 +90,24 @@ public class DBController {
         }
         return db.lastModified();
     }
+    @GetMapping(path="/get_SQLite_db_size")
+    public @ResponseBody String getSQLiteDBSize(@RequestParam("db_type") String db_type){
+        File db = sqLiteComponent.getFileFor(db_type);
+        String size_string = "0 mb";
+        if(db.exists()){
+            double size = (double) (db.length() / (1024 * 1024));
+            if(size>1024){
+                size = (double) (db.length() / 1024);
+                size_string = String.format( "%.2f", size ) + " Gb";
+            }
+            else
+                size_string = String.format( "%.2f", size ) + " mb";
+
+            return size_string;
+        }
+        else
+            return size_string;
+    }
 
     @GetMapping(path="/generate_SQLite_files")
     public @ResponseBody String generateSQLiteFiles(){
