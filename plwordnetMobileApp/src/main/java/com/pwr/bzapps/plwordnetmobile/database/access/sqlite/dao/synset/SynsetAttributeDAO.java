@@ -1,38 +1,37 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetAttributeEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 public class SynsetAttributeDAO {
-    static final String HEADER = "SELECT synset_id, definition, comment, error_comment, ili_id, owner_id, princeton_id FROM " + SQLiteTablesConstNames.SYNSET_ATTRIBUTE_NAME;
 
-    public Collection<SynsetAttributeEntity> getAll(){
-        String query = HEADER;
-        Collection<SynsetAttributeEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetAttributeEntity.class);
-        return results;
+
+    public static SynsetAttributeEntity checkTable(){
+        return new Select()
+                .from(SynsetAttributeEntity.class)
+                .limit("1")
+                .executeSingle();
     }
 
-    public SynsetAttributeEntity findById(Integer id){
-        if(EntityManager.contains("SyA:"+id)){
-            return (SynsetAttributeEntity) EntityManager.getEntity("SyA:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SynsetAttributeEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SynsetAttributeEntity.class);
-        return result;
+    public static List<SynsetAttributeEntity> getAll(){
+        return new Select()
+                .from(SynsetAttributeEntity.class)
+                .execute();
     }
 
-    public Collection<SynsetAttributeEntity> findAllForSynsetId(Integer synset_id){
-        String query = HEADER
-                + " WHERE synset_id = " + synset_id;
-        Collection<SynsetAttributeEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetAttributeEntity.class);
-        return results;
+    public static SynsetAttributeEntity findById(Long id){
+        return new Select()
+                .from(SynsetAttributeEntity.class)
+                .where("synset_id = ?",id)
+                .executeSingle();
+    }
+
+    public static List<SynsetAttributeEntity> findAllForSynsetId(Long synset_id){
+        return new Select()
+                .from(SynsetAttributeEntity.class)
+                .where("synset_id = ?",synset_id)
+                .execute();
     }
 }

@@ -26,7 +26,7 @@ public class ApplicationLocalisedStringController {
     private ApplicationLocalisedStringRepository repository;
 
     @GetMapping(path="/findById")
-    private @ResponseBody ApplicationLocalisedStringEntity findById(@RequestParam Integer id, @RequestParam String language){
+    private @ResponseBody ApplicationLocalisedStringEntity findById(@RequestParam Long id, @RequestParam String language){
         ApplicationLocalisedStringEntity result = repository.findByIdAndLang(id,language);
         return (result);
     }

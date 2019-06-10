@@ -27,7 +27,6 @@ public class Settings {
     public static int RESULTS_LIMIT = 60;
     public static final int DEVICE_LOCATION = 0;
     public static final int SDCARD_LOCATION = 1;
-    public static final String FILE_NAME= "plwordnet";
     public static String[] POSSIBLE_DB_LANGS = {"all", "polish", "english"};
 
     public static void loadPossibleDBLangs(){
@@ -167,28 +166,28 @@ public class Settings {
     }
 
 
-    public static Integer[] getBookmarkedIds(Context ctx){
+    public static Long[] getBookmarkedIds(Context ctx){
         context=ctx;
         if(preferences==null){
             preferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file_key),Context.MODE_PRIVATE);
         }
         String[] bookmarked = preferences.getString("bookmarks", "").split(";");
         if(bookmarked.length==1 && bookmarked[0].isEmpty())
-            return new Integer[0];
-        Integer[] ids = new Integer[bookmarked.length];
+            return new Long[0];
+        Long[] ids = new Long[bookmarked.length];
         for(int i=0; i <ids.length; i++){
-            ids[i]=Integer.parseInt(bookmarked[i]);
+            ids[i]=Long.parseLong(bookmarked[i]);
         }
         return ids;
     }
 
-    public static boolean isSenseBookmarked(Context ctx, Integer id){
-        Integer[] ids = getBookmarkedIds(ctx);
+    public static boolean isSenseBookmarked(Context ctx, Long id){
+        Long[] ids = getBookmarkedIds(ctx);
         return contains(ids,id);
     }
 
-    public static void addOrRemoveBookmark(Context ctx, Integer id){
-        Integer[] ids = getBookmarkedIds(ctx);
+    public static void addOrRemoveBookmark(Context ctx, Long id){
+        Long[] ids = getBookmarkedIds(ctx);
         String bookmarked = "";
         if(contains(ids,id)){
             for(int i=0; i<ids.length;i++){
@@ -212,7 +211,7 @@ public class Settings {
         editor.commit();
     }
 
-    private static boolean contains(Integer[] ids, Integer id){
+    private static boolean contains(Long[] ids, Long id){
         for(int i=0; i<ids.length; i++){
             if(ids[i].intValue()==id.intValue())
                 return true;
@@ -239,14 +238,6 @@ public class Settings {
 
     public static void setOfflineMode(boolean offlineMode) {
         Settings.offlineMode = offlineMode;
-    }
-
-    public static String getSqliteDbFileLocation() {
-        return sqlite_db_file_location;
-    }
-
-    public static String getSqliteDbFile() {
-        return sqlite_db_file_location + "/" + FILE_NAME + "_" + db_type + ".db";
     }
 
     public static String changeSqliteDbFileLocation(int location){

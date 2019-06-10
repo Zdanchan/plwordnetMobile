@@ -16,21 +16,21 @@ import javax.persistence.Table;
 @Table(name = "lexicon")
 public class LexiconEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "identifier")
     private String identifier;
     @Column(name = "language_name")
-    private String language_name;
+    private String languageName;
     @Column(name = "name")
     private String name;
     @Column(name = "lexicon_version")
-    private String lexicon_version;
+    private String lexiconVersion;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,12 +42,12 @@ public class LexiconEntity {
         this.identifier = identifier;
     }
 
-    public String getLanguage_name() {
-        return language_name;
+    public String getLanguageName() {
+        return languageName;
     }
 
-    public void setLanguage_name(String language_name) {
-        this.language_name = language_name;
+    public void setLanguageName(String languageName) {
+        this.languageName = languageName;
     }
 
     public String getName() {
@@ -58,12 +58,12 @@ public class LexiconEntity {
         this.name = name;
     }
 
-    public String getLexicon_version() {
-        return lexicon_version;
+    public String getLexiconVersion() {
+        return lexiconVersion;
     }
 
-    public void setLexicon_version(String lexicon_version) {
-        this.lexicon_version = lexicon_version;
+    public void setLexiconVersion(String lexiconVersion) {
+        this.lexiconVersion = lexiconVersion;
     }
 
     public String toString(){
@@ -71,9 +71,9 @@ public class LexiconEntity {
         string+="LeE{";
         string+="id:" + id + ";";
         string+="identifier:" + identifier + ";";
-        string+="language_name:" + language_name + ";";
+        string+="languageName:" + languageName + ";";
         string+="name:" + name + ";";
-        string+="lexicon_version:" + lexicon_version;
+        string+="lexiconVersion:" + lexiconVersion;
         string+="}LeE";
 
         return string;

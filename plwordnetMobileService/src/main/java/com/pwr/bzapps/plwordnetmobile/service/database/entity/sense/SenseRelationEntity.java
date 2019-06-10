@@ -14,54 +14,54 @@ import javax.persistence.*;
 @Table(name = "sense_relation")
 public class SenseRelationEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "child_sense_id")
-    private Integer child_sense_id;
+    private Long childSenseId;
     @Column(name = "parent_sense_id")
-    private Integer parent_sense_id;
+    private Long parentSenseId;
     @ManyToOne
     @JoinColumn(name = "relation_type_id", referencedColumnName = "id")
-    private RelationTypeEntity relation_type_id;
+    private RelationTypeEntity relationTypeId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getChild_sense_id() {
-        return child_sense_id;
+    public Long getChildSenseId() {
+        return childSenseId;
     }
 
-    public void setChild_sense_id(Integer child_sense_id) {
-        this.child_sense_id = child_sense_id;
+    public void setChildSenseId(Long childSenseId) {
+        this.childSenseId = childSenseId;
     }
 
-    public Integer getParent_sense_id() {
-        return parent_sense_id;
+    public Long getParentSenseId() {
+        return parentSenseId;
     }
 
-    public void setParent_sense_id(Integer parent_sense_id) {
-        this.parent_sense_id = parent_sense_id;
+    public void setParentSenseId(Long parentSenseId) {
+        this.parentSenseId = parentSenseId;
     }
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
     public String toString(){
         String string = "";
         string+="SeRE{";
         string+="id:" + id + ";";
-        string+="child_sense_id:" + child_sense_id + ";";
-        string+="parent_sense_id:" + parent_sense_id + ";";
-        string+="relation_type_id:" + relation_type_id.toString();
+        string+="childSenseId:" + childSenseId + ";";
+        string+="parentSenseId:" + parentSenseId + ";";
+        string+="relationTypeId:" + relationTypeId.toString();
         string+="}SeRE";
 
         return string;

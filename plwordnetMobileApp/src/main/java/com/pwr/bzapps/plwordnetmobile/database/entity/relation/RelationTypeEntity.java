@@ -1,10 +1,12 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
 
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -23,36 +25,51 @@ import java.io.Serializable;
  *   `node_position` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Position in node LEFT,TOP,RIGHT,BOTTOM',
  *   `priority` int(11) DEFAULT NULL,
  * */
-public class RelationTypeEntity implements Entity, Serializable {
-    private Integer id;
-    private boolean auto_reverse;
+@Table(name = "relation_type", id = "id")
+public class RelationTypeEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "auto_reverse")
+    private boolean autoReverse;
+    @Column(name = "multilingual")
     private boolean multilingual;
-    private Integer description_id;
-    private Integer display_text_id;
-    private Integer name_id;
-    private Integer parent_relation_type_id;
-    private String relation_argument;
-    //private RelationTypeEntity reverse_relation_type;
-    private Integer reverse_relation_type_id;
-    private Integer short_display_text_id;
+    @Column(name = "description_id")
+    private Long descriptionId;
+    @Column(name = "display_text_id")
+    private Long displayTextId;
+    @Column(name = "name_id")
+    private Long nameId;
+    @Column(name = "parent_relation_type_id")
+    private Long parentRelationTypeId;
+    @Column(name = "relation_argument")
+    private String relationArgument;
+//    @Column(name = "reverse_relation_type_id")
+    //private RelationTypeEntity reverseRelationType;
+    @Column(name = "reverse_relation_type_id")
+    private Long reverseRelationTypeId;
+    @Column(name = "short_display_text_id")
+    private Long shortDisplayTextId;
+    @Column(name = "color")
     private String color;
-    private String node_position;
+    @Column(name = "node_position")
+    private String nodePosition;
+    @Column(name = "priority")
     private Integer priority;
 
-    public Integer getId() {
+    public Long getRelationTypeId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setRelationTypeId(Long id) {
         this.id = id;
     }
 
-    public boolean isAuto_reverse() {
-        return auto_reverse;
+    public boolean isAutoReverse() {
+        return autoReverse;
     }
 
-    public void setAuto_reverse(boolean auto_reverse) {
-        this.auto_reverse = auto_reverse;
+    public void setAutoReverse(boolean autoReverse) {
+        this.autoReverse = autoReverse;
     }
 
     public boolean isMultilingual() {
@@ -63,69 +80,69 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.multilingual = multilingual;
     }
 
-    public Integer getDescription_id() {
-        return description_id;
+    public Long getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Integer description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Long descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Integer getDisplay_text_id() {
-        return display_text_id;
+    public Long getDisplayTextId() {
+        return displayTextId;
     }
 
-    public void setDisplay_text_id(Integer display_text_id) {
-        this.display_text_id = display_text_id;
+    public void setDisplayTextId(Long displayTextId) {
+        this.displayTextId = displayTextId;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Long getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Long nameId) {
+        this.nameId = nameId;
     }
 
-    public Integer getParent_relation_type_id() {
-        return parent_relation_type_id;
+    public Long getParentRelationTypeId() {
+        return parentRelationTypeId;
     }
 
-    public void setParent_relation_type_id(Integer parent_relation_type_id) {
-        this.parent_relation_type_id = parent_relation_type_id;
+    public void setParentRelationTypeId(Long parentRelationTypeId) {
+        this.parentRelationTypeId = parentRelationTypeId;
     }
 
-    public String getRelation_argument() {
-        return relation_argument;
+    public String getRelationArgument() {
+        return relationArgument;
     }
 
-    public void setRelation_argument(String relation_argument) {
-        this.relation_argument = "null".equals(relation_argument) ? null : relation_argument;
+    public void setRelationArgument(String relationArgument) {
+        this.relationArgument = "null".equals(relationArgument) ? null : relationArgument;
     }
 
-    //public RelationTypeEntity getReverse_relation_type() {
-    //    return reverse_relation_type;
+    //public RelationTypeEntity getReverseRelationType() {
+    //    return reverseRelationType;
     //}
 
-    //public void setReverse_relation_type_id(RelationTypeEntity reverse_relation_type) {
-    //    this.reverse_relation_type = reverse_relation_type_;
+    //public void setReverseRelationTypeId(RelationTypeEntity reverseRelationType) {
+    //    this.reverseRelationType = reverseRelationType;
     //}
 
 
-    public Integer getReverse_relation_type_id() {
-        return reverse_relation_type_id;
+    public Long getReverseRelationTypeId() {
+        return reverseRelationTypeId;
     }
 
-    public void setReverse_relation_type_id(Integer reverse_relation_type_id) {
-        this.reverse_relation_type_id = reverse_relation_type_id;
+    public void setReverseRelationTypeId(Long reverseRelationTypeId) {
+        this.reverseRelationTypeId = reverseRelationTypeId;
     }
 
-    public Integer getShort_display_text_id() {
-        return short_display_text_id;
+    public Long getShortDisplayTextId() {
+        return shortDisplayTextId;
     }
 
-    public void setShort_display_text_id(Integer short_display_text_id) {
-        this.short_display_text_id = short_display_text_id;
+    public void setShortDisplayTextId(Long shortDisplayTextId) {
+        this.shortDisplayTextId = shortDisplayTextId;
     }
 
     public String getColor() {
@@ -136,12 +153,12 @@ public class RelationTypeEntity implements Entity, Serializable {
         this.color = "null".equals(color) ? null : color;
     }
 
-    public String getNode_position() {
-        return node_position;
+    public String getNodePosition() {
+        return nodePosition;
     }
 
-    public void setNode_position(String node_position) {
-        this.node_position = "null".equals(node_position) ? null : node_position;
+    public void setNodePosition(String nodePosition) {
+        this.nodePosition = "null".equals(nodePosition) ? null : nodePosition;
     }
 
     public Integer getPriority() {
@@ -154,6 +171,6 @@ public class RelationTypeEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "RT:" + getId();
+        return "RT:" + getRelationTypeId();
     }
 }

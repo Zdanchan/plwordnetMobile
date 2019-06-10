@@ -7,6 +7,7 @@ import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.SenseViewActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.ConnectionProvider;
 import com.pwr.bzapps.plwordnetmobile.database.access.parse.JSONParser;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
@@ -29,9 +30,9 @@ public class RetrieveOneSenseTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... strings) {
         String result = null;
         if(Settings.isOfflineMode())
-            resultHolder = (new SenseDAO()).findById(Integer.parseInt(strings[0]));
+            resultHolder = SenseDAO.findById(Long.parseLong(strings[0]));
         else
-            result = ConnectionProvider.getInstance(context).getSenseById(Integer.parseInt(strings[0]));
+            result = ConnectionProvider.getInstance(context).getSenseById(Long.parseLong(strings[0]));
         return result;
     }
 

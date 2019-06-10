@@ -1,10 +1,9 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
-
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -13,25 +12,29 @@ import java.io.Serializable;
  *   `name_id` bigint(20) DEFAULT NULL COMMENT 'Name of part of speech',
  *   `color` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'Color displayed on visualisation',
  * */
-public class PartOfSpeechEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer name_id;
+@Table(name = "part_of_speech", id = "id")
+public class PartOfSpeechEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "name_id")
+    private Long nameId;
+    @Column(name = "color")
     private String color;
 
-    public Integer getId() {
+    public Long getPartOfSpeechId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setPartOfSpeechId(Long id) {
         this.id = id;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Long getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Long nameId) {
+        this.nameId = nameId;
     }
 
     public String getColor() {
@@ -44,6 +47,6 @@ public class PartOfSpeechEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "POS:" + getId();
+        return "POS:" + getPartOfSpeechId();
     }
 }

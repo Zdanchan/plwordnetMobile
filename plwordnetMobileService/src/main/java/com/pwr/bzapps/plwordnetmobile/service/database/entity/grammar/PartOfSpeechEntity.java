@@ -11,26 +11,26 @@ import javax.persistence.*;
 @Table(name = "part_of_speech")
 public class PartOfSpeechEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "name_id")
-    private Integer name_id;
+    private Long nameId;
     @Column(name = "color")
     private String color;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Long getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Long nameId) {
+        this.nameId = nameId;
     }
 
     public String getColor() {
@@ -45,7 +45,7 @@ public class PartOfSpeechEntity {
         String string = "";
         string+="POSE{";
         string+="id:" + id + ";";
-        string+="name_id:" + name_id.toString() + ";";
+        string+="nameId:" + nameId.toString() + ";";
         string+="color:" + color;
         string+="}POSE";
 

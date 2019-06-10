@@ -19,7 +19,6 @@ import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetEntit
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetExampleEntity;
 import com.pwr.bzapps.plwordnetmobile.service.database.entity.synset.SynsetRelationEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SQLExporter {
@@ -161,8 +160,8 @@ public class SQLExporter {
                     + putValuesInString(new Object[]{
                             element.getDtype(),
                             element.getId(),
-                            element.getDescription_id(),
-                            element.getName_id(),
+                            element.getDescriptionId(),
+                            element.getNameId(),
                             element.getTag(),
                             element.getValue()})
                     + "),";
@@ -193,8 +192,8 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getDescription_id(),
-                    element.getName_id()})
+                    element.getDescriptionId(),
+                    element.getNameId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -222,9 +221,9 @@ public class SQLExporter {
                     + putValuesInString(new Object[]{
                     element.getId(),
                     element.getIdentifier(),
-                    element.getLanguage_name(),
+                    element.getLanguageName(),
                     element.getName(),
-                    element.getLexicon_version()})
+                    element.getLexiconVersion()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -257,9 +256,9 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getSense_id(),
-                    element.isHas_emotional_characteristic(),
-                    element.isSuper_anotation(),
+                    element.getSenseId(),
+                    element.isHasEmotionalCharacteristic(),
+                    element.isSuperAnotation(),
                     element.getEmotions(),
                     element.getValuations(),
                     element.getMarkedness(),
@@ -291,7 +290,7 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getName_id(),
+                    element.getNameId(),
                     element.getColor()})
                     + "),";
         }
@@ -343,8 +342,8 @@ public class SQLExporter {
         for(RelationTypeAllowedLexiconEntity element : elements){
             insert += "("
                     + putValuesInString(new Object[]{
-                    element.getRelation_type_id(),
-                    element.getLexicon_id()})
+                    element.getRelationTypeId(),
+                    element.getLexiconId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -370,8 +369,8 @@ public class SQLExporter {
         for(RelationTypeAllowedPartOfSpeechEntity element : elements){
             insert += "("
                     + putValuesInString(new Object[]{
-                    element.getRelation_type_id(),
-                    element.getPart_of_speech_id()})
+                    element.getRelationTypeId(),
+                    element.getPartOfSpeechId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -418,17 +417,17 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.isAuto_reverse(),
+                    element.isAutoReverse(),
                     element.isMultilingual(),
-                    element.getDescription_id(),
-                    element.getDisplay_text_id(),
-                    element.getName_id(),
-                    element.getParent_relation_type_id(),
-                    element.getRelation_argument(),
-                    element.getReverse_relation_type_id(),
-                    element.getShort_display_text_id(),
+                    element.getDescriptionId(),
+                    element.getDisplayTextId(),
+                    element.getNameId(),
+                    element.getParentRelationTypeId(),
+                    element.getRelationArgument(),
+                    element.getReverseRelationTypeId(),
+                    element.getShortDisplayTextId(),
                     element.getColor(),
-                    element.getNode_position(),
+                    element.getNodePosition(),
                     element.getPriority()})
                     + "),";
         }
@@ -460,15 +459,15 @@ public class SQLExporter {
         for(SenseAttributeEntity element : elements){
             insert += "("
                     + putValuesInString(new Object[]{
-                    element.getSense_id(),
+                    element.getSenseId(),
                     element.getComment(),
                     element.getDefinition(),
                     element.getLink(),
-                    element.getRegister_id(),
-                    element.getAspect_id(),
-                    element.getUser_id(),
-                    element.getError_comment(),
-                    element.isProper_name()})
+                    element.getRegisterId(),
+                    element.getAspectId(),
+                    element.getUserId(),
+                    element.getErrorComment(),
+                    element.isProperName()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -509,14 +508,14 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getSynset_position(),
+                    element.getSynsetPosition(),
                     element.getVariant(),
-                    element.getDomain_id(),
-                    element.getLexicon_id(),
-                    element.getPart_of_speech_id(),
-                    element.getSynset_id(),
-                    element.getWord_id(),
-                    element.getStatus_id()})
+                    element.getDomainId(),
+                    element.getLexiconId(),
+                    element.getPartOfSpeechId(),
+                    element.getSynsetId(),
+                    element.getWordId(),
+                    element.getStatusId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -544,7 +543,7 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getSense_attribute_id(),
+                    element.getSenseAttributeId(),
                     element.getExample(),
                     element.getType()})
                     + "),";
@@ -578,9 +577,9 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getChild_sense_id(),
-                    element.getParent_sense_id(),
-                    element.getRelation_type_id()})
+                    element.getChildSenseId(),
+                    element.getParentSenseId(),
+                    element.getRelationTypeId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -611,13 +610,13 @@ public class SQLExporter {
         for(SynsetAttributeEntity element : elements){
             insert += "("
                     + putValuesInString(new Object[]{
-                    element.getSynset_id(),
+                    element.getSynsetId(),
                     element.getComment(),
                     element.getDefinition(),
-                    element.getPrinceton_id(),
-                    element.getOwner_id(),
-                    element.getError_comment(),
-                    element.getIli_id()})
+                    element.getPrincetonId(),
+                    element.getOwnerId(),
+                    element.getErrorComment(),
+                    element.getIliId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,
@@ -647,8 +646,8 @@ public class SQLExporter {
                     + putValuesInString(new Object[]{
                     element.getId(),
                     element.getSplit(),
-                    element.getLexicon_id(),
-                    element.getStatus_id(),
+                    element.getLexiconId(),
+                    element.getStatusId(),
                     element.getAbstract()})
                     + "),";
         }
@@ -677,7 +676,7 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getSynset_attributes_id(),
+                    element.getSynsetAttributeId(),
                     element.getExample(),
                     element.getType()})
                     + "),";
@@ -711,9 +710,9 @@ public class SQLExporter {
             insert += "("
                     + putValuesInString(new Object[]{
                     element.getId(),
-                    element.getChild_synset_id(),
-                    element.getParent_synset_id(),
-                    element.getSynset_relation_type_id()})
+                    element.getChildSynsetId(),
+                    element.getParentSynsetId(),
+                    element.getSynsetRelationTypeId()})
                     + "),";
         }
         String query = String.format(INSERT_PATTERN,table_name,

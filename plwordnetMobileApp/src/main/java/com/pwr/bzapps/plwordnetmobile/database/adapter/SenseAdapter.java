@@ -49,25 +49,25 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
         rowResultItem.language_icon = ((ImageView) convertView.findViewById(R.id.language_icon));
 
 
-        rowResultItem.word_name.setText(senseEntity.getWord_id().getWord() + "-" + senseEntity.getVariant());
+        rowResultItem.word_name.setText(senseEntity.getWordId().getWord() + "-" + senseEntity.getVariant());
         //rowResultItem.word_meaning_id.setText("-" + senseEntity.getVariant());
-        rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPart_of_speech_id().getId()));
+        rowResultItem.part_of_speech.setText(getPartOfSpeechString(senseEntity.getPartOfSpeechId().getPartOfSpeechId()));
         String description = "";
         if(checkIfContainsSenseAttributes(senseEntity)) {
-            description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSense_attributes())).get(0).getDefinition());
+            description = shortenDescription(((ArrayList<SenseAttributeEntity>)(senseEntity.getSenseAttributes())).get(0).getDefinition());
         }
         else if(checkIfContainsSynsetAttributes(senseEntity)){
-            description = shortenDescription(((ArrayList<SynsetAttributeEntity>)(senseEntity.getSynset_id().getSynset_attributes())).get(0).getDefinition());
+            description = shortenDescription(((ArrayList<SynsetAttributeEntity>)(senseEntity.getSynsetId().getSynsetAttributes())).get(0).getDefinition());
         }
         rowResultItem.short_description.setText(description);
-        rowResultItem.language_icon.setImageResource(getFlagResource(context,senseEntity.getLexicon_id().getLanguage_name()));
+        rowResultItem.language_icon.setImageResource(getFlagResource(context,senseEntity.getLexiconId().getLanguageName()));
         return convertView;
     }
 
     public static boolean checkIfContainsSenseAttributes(SenseEntity entity){
-        if(!entity.getSense_attributes().isEmpty()){
-            if(((ArrayList<SenseAttributeEntity>)entity.getSense_attributes()).get(0).getDefinition() != null) {
-                if (!((ArrayList<SenseAttributeEntity>) entity.getSense_attributes()).get(0).getDefinition().isEmpty()) {
+        if(!entity.getSenseAttributes().isEmpty()){
+            if(((ArrayList<SenseAttributeEntity>)entity.getSenseAttributes()).get(0).getDefinition() != null) {
+                if (!((ArrayList<SenseAttributeEntity>) entity.getSenseAttributes()).get(0).getDefinition().isEmpty()) {
                     return true;
                 }
             }
@@ -76,9 +76,9 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
     }
 
     public static boolean checkIfContainsSynsetAttributes(SenseEntity entity){
-        if(!entity.getSynset_id().getSynset_attributes().isEmpty()){
-            if(((ArrayList<SynsetAttributeEntity>)entity.getSynset_id().getSynset_attributes()).get(0).getDefinition() != null) {
-                if (!((ArrayList<SynsetAttributeEntity>) entity.getSynset_id().getSynset_attributes()).get(0).getDefinition().isEmpty()) {
+        if(!entity.getSynsetId().getSynsetAttributes().isEmpty()){
+            if(((ArrayList<SynsetAttributeEntity>)entity.getSynsetId().getSynsetAttributes()).get(0).getDefinition() != null) {
+                if (!((ArrayList<SynsetAttributeEntity>) entity.getSynsetId().getSynsetAttributes()).get(0).getDefinition().isEmpty()) {
                     return true;
                 }
             }
@@ -98,11 +98,11 @@ public class SenseAdapter extends ArrayAdapter<SenseEntity> implements View.OnCl
         return flag_id;
     }
 
-    private String getPartOfSpeechString(Integer id){
+    private String getPartOfSpeechString(Long id){
         return getPartOfSpeechString(id,context);
     }
 
-    public static String getPartOfSpeechString(Integer id, Context context) {
+    public static String getPartOfSpeechString(Long id, Context context) {
         switch(id.intValue()){
             case 1:
                 return context.getResources().getString(R.string.verb);

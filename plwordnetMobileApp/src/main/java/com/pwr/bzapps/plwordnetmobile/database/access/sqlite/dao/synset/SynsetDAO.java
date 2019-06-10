@@ -1,30 +1,29 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset;
 
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.synset.SynsetEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 public class SynsetDAO {
-    static final String HEADER = "SELECT id, split, status_id, abstract, lexicon_id FROM " + SQLiteTablesConstNames.SYNSET_NAME;
 
-    public Collection<SynsetEntity> getAll(){
-        String query = HEADER;
-        Collection<SynsetEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,SynsetEntity.class);
-        return results;
+    public static SynsetEntity checkTable(){
+        return new Select()
+                .from(SynsetEntity.class)
+                .limit("1")
+                .executeSingle();
     }
 
-    public SynsetEntity findById(Integer id){
-        if(EntityManager.contains("Sy:"+id)){
-            return (SynsetEntity) EntityManager.getEntity("Sy:"+id);
-        }
-        String query = HEADER
-                + " WHERE id = " + id;
-        SynsetEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,SynsetEntity.class);
-        return result;
+    public static List<SynsetEntity> getAll(){
+        return new Select()
+                .from(SynsetEntity.class)
+                .execute();
+    }
+
+    public static SynsetEntity findById(Long id){
+        return new Select()
+                .from(SynsetEntity.class)
+                .where("id = ?",id)
+                .executeSingle();
     }
 }

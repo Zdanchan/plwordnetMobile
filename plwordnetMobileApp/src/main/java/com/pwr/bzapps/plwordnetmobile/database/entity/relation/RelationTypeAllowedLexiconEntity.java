@@ -1,6 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.relation;
 
-
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
 
@@ -10,28 +12,31 @@ import java.io.Serializable;
  *   `relation_type_id` bigint(20) NOT NULL,
  *   `lexicon_id` bigint(20) NOT NULL,
  * */
-public class RelationTypeAllowedLexiconEntity implements Serializable,Entity {
-    private RelationTypeEntity relation_type_id;
-    private LexiconEntity lexicon_id;
+@Table(name = "relation_type_allowed_lexicons", id = "id")
+public class RelationTypeAllowedLexiconEntity extends Model implements Serializable,Entity {
+    @Column(name = "relation_type_id")
+    private RelationTypeEntity relationTypeId;
+    @Column(name = "lexicon_id")
+    private LexiconEntity lexiconId;
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
     @Override
     public String getEntityID() {
-        return "RTAL:" + relation_type_id.getId() + "" + lexicon_id.getId();
+        return "RTAL:" + relationTypeId.getRelationTypeId() + "" + lexiconId.getLexiconId();
     }
 }

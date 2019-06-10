@@ -1,7 +1,9 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.grammar;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 
 import java.io.Serializable;
 
@@ -16,47 +18,57 @@ import java.io.Serializable;
  *   `example1` varchar(512) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  *   `example2` varchar(512) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  * */
-public class EmotionalAnnotationEntity implements Entity, Serializable{
-    private Integer id;
-    private Integer sense_id;
-    private boolean has_emotional_characteristic;
-    private boolean super_anotation;
+@Table(name = "emotional_annotations", id = "id")
+public class EmotionalAnnotationEntity extends Model implements Entity, Serializable{
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "sense_id")
+    private Long senseId;
+    @Column(name = "has_emotional_characteristic")
+    private boolean hasEmotionalCharacteristic;
+    @Column(name = "super_anotation")
+    private boolean superAnotation;
+    @Column(name = "emotions")
     private String emotions;
+    @Column(name = "valuations")
     private String valuations;
+    @Column(name = "markedness")
     private String markedness;
+    @Column(name = "example1")
     private String example1;
+    @Column(name = "example2")
     private String example2;
 
-    public Integer getId() {
+    public Long getEmotionalAnnotationId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setEmotionalAnnotationId(Long id) {
         this.id = id;
     }
 
-    public Integer getSense_id() {
-        return sense_id;
+    public Long getSenseId() {
+        return senseId;
     }
 
-    public void setSense_id(Integer sense_id) {
-        this.sense_id = sense_id;
+    public void setSenseId(Long senseId) {
+        this.senseId = senseId;
     }
 
-    public boolean isHas_emotional_characteristic() {
-        return has_emotional_characteristic;
+    public boolean isHasEmotionalCharacteristic() {
+        return hasEmotionalCharacteristic;
     }
 
-    public void setHas_emotional_characteristic(boolean has_emotional_characteristic) {
-        this.has_emotional_characteristic = has_emotional_characteristic;
+    public void setHasEmotionalCharacteristic(boolean hasEmotionalCharacteristic) {
+        this.hasEmotionalCharacteristic = hasEmotionalCharacteristic;
     }
 
-    public boolean isSuper_anotation() {
-        return super_anotation;
+    public boolean isSuperAnotation() {
+        return superAnotation;
     }
 
-    public void setSuper_anotation(boolean super_anotation) {
-        this.super_anotation = super_anotation;
+    public void setSuperAnotation(boolean superAnotation) {
+        this.superAnotation = superAnotation;
     }
 
     public String getEmotions() {
@@ -101,6 +113,6 @@ public class EmotionalAnnotationEntity implements Entity, Serializable{
 
     @Override
     public String getEntityID() {
-        return "EA:" + getId();
+        return "EA:" + getEmotionalAnnotationId();
     }
 }

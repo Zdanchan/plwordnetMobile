@@ -32,8 +32,8 @@ public class MainActivity extends DrawerMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         ConnectionProvider.setContext(getApplicationContext());
         SQLiteConnector.setContext(getApplicationContext());
-        if(SQLiteDBFileManager.doesLocalDBExists(Settings.getDbType()))
-            SQLiteConnector.reloadInstance(getApplicationContext());
+        if(SQLiteDBFileManager.getInstance(getApplicationContext()).doesLocalDBExists(Settings.getDbType()))
+            SQLiteConnector.reloadDatabaseInstance(getApplicationContext());
         Settings.loadSettings(getApplicationContext());
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);

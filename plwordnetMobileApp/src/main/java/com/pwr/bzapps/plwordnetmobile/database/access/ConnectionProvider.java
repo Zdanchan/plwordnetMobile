@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.pwr.bzapps.plwordnetmobile.R;
 
+import com.pwr.bzapps.plwordnetmobile.service.rest.ServiceRestTemplate;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +17,8 @@ public class ConnectionProvider{
     private static ConnectionProvider instance;
     private static Context context;
 
+    private static final int CONST_LOCALDB_CHECKER_TIMEOUT = 10000;
+    private static final int CONST_CONNECTING_TIMEOUT = 12000;
 
     private ConnectionProvider() {
 
@@ -23,10 +28,9 @@ public class ConnectionProvider{
         try {
             String url = context.getString(R.string.spring_interface_address) + "/ApplicationLocalisedStringsController/findAll";
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-
             String result = restTemplate.getForObject(url, String.class);
 
             return result;
@@ -39,7 +43,7 @@ public class ConnectionProvider{
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findByWord?word=" + word;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -55,7 +59,7 @@ public class ConnectionProvider{
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findRelatedSensesByWord?word=" + word;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -72,7 +76,7 @@ public class ConnectionProvider{
             String url = context.getString(R.string.spring_interface_address)
                     + "/sense/findRelatedSensesByWordAndLanguage?word=" + word + "&language=" + language;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -84,12 +88,12 @@ public class ConnectionProvider{
         }
     }
 
-    public String getRelatedSensesForWord(String word, String language, Integer part_of_speech){
+    public String getRelatedSensesForWord(String word, String language, Long part_of_speech){
         try {
             String url = context.getString(R.string.spring_interface_address)
                     + "/sense/findRelatedSensesByWordLanguageAndPartOfSpeech?word=" + word + "&language=" + language + "&part_of_speech=" + part_of_speech;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -101,11 +105,11 @@ public class ConnectionProvider{
         }
     }
 
-    public String getSenseById(int id){
+    public String getSenseById(Long id){
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findById?id=" + id;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -123,7 +127,7 @@ public class ConnectionProvider{
             url = url.replace("[","");
             url = url.replace("]","");
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -143,7 +147,7 @@ public class ConnectionProvider{
             url = url.replace("[","");
             url = url.replace("]","");
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -159,7 +163,7 @@ public class ConnectionProvider{
         try {
             String url = context.getString(R.string.spring_interface_address) + "/sense/findSynonymsBySynsetId?id=" + id;
 
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_CONNECTING_TIMEOUT);
 
             
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
@@ -178,16 +182,23 @@ public class ConnectionProvider{
             
             String url = context.getString(R.string.spring_interface_address) + "/db_controller/get_SQLite_last_update?db_type=" + db_type;
             
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = getCustomRestTemplate(CONST_LOCALDB_CHECKER_TIMEOUT);
             
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-
             Long result = Long.parseLong(restTemplate.getForObject(url, String.class));
 
             return result;
         }catch(Exception e){
             return Long.MAX_VALUE;
         }
+    }
+
+    private static RestTemplate getCustomRestTemplate(){
+        return getCustomRestTemplate(12000);
+    }
+
+    private static RestTemplate getCustomRestTemplate(int timeout){
+        return new ServiceRestTemplate(timeout);
     }
 
     public static void setContext(Context ctx){

@@ -1,8 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
+
 
 import java.io.Serializable;
 
@@ -11,16 +13,20 @@ import java.io.Serializable;
  *   `value` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  * */
-public class ApplicationLocalisedStringEntity implements Entity, Serializable {
-    private Integer id;
+@Table(name = "application_localised_string", id = "id")
+public class ApplicationLocalisedStringEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "value")
     private String value;
+    @Column(name = "language")
     private String language;
 
-    public Integer getId() {
+    public Long getApplicationLocalisedStringId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setApplicationLocalisedStringId(Long id) {
         this.id = id;
     }
 

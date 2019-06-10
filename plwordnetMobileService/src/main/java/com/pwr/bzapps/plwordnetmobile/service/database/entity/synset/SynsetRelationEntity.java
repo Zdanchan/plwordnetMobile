@@ -14,54 +14,54 @@ import javax.persistence.*;
 @Table(name = "synset_relation")
 public class SynsetRelationEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "child_synset_id")
-    private Integer child_synset_id;
+    private Long childSynsetId;
     @Column(name = "parent_synset_id")
-    private Integer parent_synset_id;
+    private Long parentSynsetId;
     @ManyToOne
     @JoinColumn(name = "synset_relation_type_id", referencedColumnName = "id")
-    private RelationTypeEntity synset_relation_type_id;
+    private RelationTypeEntity synsetRelationTypeId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getChild_synset_id() {
-        return child_synset_id;
+    public Long getChildSynsetId() {
+        return childSynsetId;
     }
 
-    public void setChild_synset_id(Integer child_synset_id) {
-        this.child_synset_id = child_synset_id;
+    public void setChildSynsetId(Long childSynsetId) {
+        this.childSynsetId = childSynsetId;
     }
 
-    public Integer getParent_synset_id() {
-        return parent_synset_id;
+    public Long getParentSynsetId() {
+        return parentSynsetId;
     }
 
-    public void setParent_synset_id(Integer parent_synset_id) {
-        this.parent_synset_id = parent_synset_id;
+    public void setParentSynsetId(Long parentSynsetId) {
+        this.parentSynsetId = parentSynsetId;
     }
 
-    public RelationTypeEntity getSynset_relation_type_id() {
-        return synset_relation_type_id;
+    public RelationTypeEntity getSynsetRelationTypeId() {
+        return synsetRelationTypeId;
     }
 
-    public void setSynset_relation_type_id(RelationTypeEntity synset_relation_type_id) {
-        this.synset_relation_type_id = synset_relation_type_id;
+    public void setSynsetRelationTypeId(RelationTypeEntity synsetRelationTypeId) {
+        this.synsetRelationTypeId = synsetRelationTypeId;
     }
 
     public String toString(){
         String string = "";
         string+="SyRE{";
         string+="id:" + id + ";";
-        string+="child_synset_id:" + child_synset_id + ";";
-        string+="parent_synset_id:" + parent_synset_id + ";";
-        string+="synset_relation_type_id:" + synset_relation_type_id.toString();
+        string+="childSynsetId:" + childSynsetId + ";";
+        string+="parentSynsetId:" + parentSynsetId + ";";
+        string+="synsetRelationTypeId:" + synsetRelationTypeId.toString();
         string+="}SyRE";
 
         return string;

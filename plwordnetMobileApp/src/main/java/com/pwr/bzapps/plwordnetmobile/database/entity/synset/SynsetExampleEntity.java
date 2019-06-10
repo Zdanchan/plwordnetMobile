@@ -1,5 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -10,26 +15,31 @@ import java.io.Serializable;
  *   `example` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  * */
-public class SynsetExampleEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer synset_attributes_id;
+@Table(name = "synset_examples", id = "id")
+public class SynsetExampleEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "synset_attributes_id")
+    private Long synsetAttributeId;
+    @Column(name = "example")
     private String example;
+    @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getSynsetExampleId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setSynsetExampleId(Long id) {
         this.id = id;
     }
 
-    public Integer getSynset_attributes_id() {
-        return synset_attributes_id;
+    public Long getSynsetAttributeId() {
+        return synsetAttributeId;
     }
 
-    public void setSynset_attributes_id(Integer synset_attributes_id) {
-        this.synset_attributes_id = synset_attributes_id;
+    public void setSynsetAttributeId(Long synsetAttributeId) {
+        this.synsetAttributeId = synsetAttributeId;
     }
 
     public String getExample() {
@@ -50,6 +60,6 @@ public class SynsetExampleEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SynEx:" + getId();
+        return "SynEx:" + getSynsetExampleId();
     }
 }

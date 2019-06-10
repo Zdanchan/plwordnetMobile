@@ -7,14 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PartOfSpeechRepository extends CrudRepository<PartOfSpeechEntity, Integer> {
+public interface PartOfSpeechRepository extends CrudRepository<PartOfSpeechEntity, Long> {
     @Query(value = "SELECT CONCAT(pos.id,',',pos.name_id,',','\"',pos.color,'\"') FROM part_of_speech pos", nativeQuery = true)
     public List<String> findAllAndParseString();
 
     @Query(value = "SELECT CONCAT(pos.id,',',pos.name_id,',','\"',pos.color,'\"') FROM part_of_speech pos" +
             " WHERE pos.id>=:begin AND pos.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM emotional_annotations", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

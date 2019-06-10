@@ -17,33 +17,33 @@ public class RelationTypeAllowedPartOfSpeechEntity implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "relation_type_id", referencedColumnName = "id")
-    private RelationTypeEntity relation_type_id;
+    private RelationTypeEntity relationTypeId;
     @Id
     @ManyToOne
     @JoinColumn(name = "part_of_speech_id", referencedColumnName = "id")
-    private PartOfSpeechEntity part_of_speech_id;
+    private PartOfSpeechEntity partOfSpeechId;
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
-    public PartOfSpeechEntity getPart_of_speech_id() {
-        return part_of_speech_id;
+    public PartOfSpeechEntity getPartOfSpeechId() {
+        return partOfSpeechId;
     }
 
-    public void setPart_of_speech_id(PartOfSpeechEntity part_of_speech_id) {
-        this.part_of_speech_id = part_of_speech_id;
+    public void setPartOfSpeechId(PartOfSpeechEntity partOfSpeechId) {
+        this.partOfSpeechId = partOfSpeechId;
     }
 
     public String toString(){
         String string = "";
         string+="RTAPOSE{";
-        string+="relation_type_id:" + relation_type_id.toString() + ";";
-        string+="lexicon_id:" + part_of_speech_id.toString();
+        string+="relationTypeId:" + relationTypeId.toString() + ";";
+        string+="lexicon_id:" + partOfSpeechId.toString();
         string+="}RTAPOSE";
 
         return string;

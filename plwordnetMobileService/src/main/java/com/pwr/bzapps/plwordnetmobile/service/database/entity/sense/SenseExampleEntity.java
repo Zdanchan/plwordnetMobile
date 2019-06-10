@@ -1,7 +1,6 @@
 package com.pwr.bzapps.plwordnetmobile.service.database.entity.sense;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  *   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -13,28 +12,28 @@ import java.util.Collection;
 @Table(name = "sense_examples")
 public class SenseExampleEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "sense_attribute_id")
-    private Integer sense_attribute_id;
+    private Long senseAttributeId;
     @Column(name = "example")
     private String example;
     @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getSense_attribute_id() {
-        return sense_attribute_id;
+    public Long getSenseAttributeId() {
+        return senseAttributeId;
     }
 
-    public void setSense_attribute_id(Integer sense_attribute_id) {
-        this.sense_attribute_id = sense_attribute_id;
+    public void setSenseAttributeId(Long senseAttributeId) {
+        this.senseAttributeId = senseAttributeId;
     }
 
     public String getExample() {
@@ -57,7 +56,7 @@ public class SenseExampleEntity {
         String string = "";
         string+="SenExE{";
         string+="id:" + id + ";";
-        string+="sense_attribute_id:" + sense_attribute_id + ";";
+        string+="senseAttributeId:" + senseAttributeId + ";";
         string+="example:" + example + ";";
         string+="type:" + type;
         string+="}SenExE";

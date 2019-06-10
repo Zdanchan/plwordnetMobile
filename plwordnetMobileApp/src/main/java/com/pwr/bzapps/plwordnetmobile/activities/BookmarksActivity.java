@@ -39,7 +39,7 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
         progressBar = findViewById(R.id.loading_spinner_bookmarks);
         data = new ArrayList<SenseEntity>();
         retrieveSelectedSensesTask = new RetrieveSelectedSensesTask(this,getApplicationContext());
-        Integer[] bookmarks = Settings.getBookmarkedIds(getApplicationContext());
+        Long[] bookmarks = Settings.getBookmarkedIds(getApplicationContext());
         if(bookmarks.length==0){
             message_text.setText(getResources().getText(R.string.no_bookmarks));
             progressBar.setVisibility(View.GONE);
@@ -48,6 +48,13 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
             retrieveSelectedSensesTask.execute(arrayToString(bookmarks));
         adapter = new SenseAdapter(getApplicationContext(),data);
         listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(retrieveSelectedSensesTask!=null)
+            retrieveSelectedSensesTask.cancel(true);
+        super.onDestroy();
     }
 
     @Override
@@ -101,7 +108,7 @@ public class BookmarksActivity extends BackButtonActivity implements AdapterView
         progressBar.setVisibility(View.GONE);
     }
 
-    private String arrayToString(Integer[] array){
+    private String arrayToString(Long[] array){
         String result = "";
         for(int i=0; i<array.length; i++){
             result+=array[i]+",";

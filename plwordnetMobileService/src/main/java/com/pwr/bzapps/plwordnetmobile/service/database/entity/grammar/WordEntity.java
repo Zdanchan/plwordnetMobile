@@ -13,16 +13,16 @@ import javax.persistence.Table;
 @Table(name = "word")
 public class WordEntity {
     @Id
-    private Integer id;
+    private Long id;
 
     @Column(name = "word")
     private String word;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

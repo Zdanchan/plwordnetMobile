@@ -1,27 +1,30 @@
 package com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.relation;
 
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
+import com.activeandroid.query.Select;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeAllowedPartOfSpeechEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 public class RelationTypeAllowedPartOfSpeechDAO {
-    static final String HEADER = "SELECT part_of_speech_id, relation_type_id FROM " + SQLiteTablesConstNames.RELATION_TYPE_ALLOWED_PART_OF_SPEECH_NAME;
 
-    public Collection<RelationTypeAllowedPartOfSpeechEntity> getAll(){
-        String query = HEADER;
-        Collection<RelationTypeAllowedPartOfSpeechEntity> results = SQLiteConnector.getInstance()
-                .getResultListForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
-        return results;
+    public static RelationTypeAllowedPartOfSpeechEntity checkTable(){
+        return new Select()
+                .from(RelationTypeAllowedPartOfSpeechEntity.class)
+                .limit("1")
+                .executeSingle();
     }
 
-    public RelationTypeAllowedPartOfSpeechEntity findById(Integer relation_type_id, Integer part_of_speech_id){
-        String query = HEADER
-                + " WHERE relation_type_id = " + relation_type_id
-                + " AND part_of_speech_id = " + part_of_speech_id;
-        RelationTypeAllowedPartOfSpeechEntity result = SQLiteConnector.getInstance()
-                .getResultForQuery(query,RelationTypeAllowedPartOfSpeechEntity.class);
-        return result;
+    public static List<RelationTypeAllowedPartOfSpeechEntity> getAll(){
+        return new Select()
+                .from(RelationTypeAllowedPartOfSpeechEntity.class)
+                .execute();
+    }
+
+    public static RelationTypeAllowedPartOfSpeechEntity findById(Long relation_type_id, Long part_of_speech_id){
+        return new Select()
+                .from(RelationTypeAllowedPartOfSpeechEntity.class)
+                .where("relation_type_id = ?",relation_type_id)
+                .and("part_of_speech_id = ?",part_of_speech_id)
+                .executeSingle();
     }
 }

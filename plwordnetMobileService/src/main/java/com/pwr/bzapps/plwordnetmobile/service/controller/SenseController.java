@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(path="/sense")
@@ -28,25 +26,25 @@ public class SenseController {
     private SenseRepository repository;
 
     @GetMapping(path="/findById")
-    private @ResponseBody SenseEntity findSenseById(@RequestParam Integer id){
-        SenseEntity result = repository.findById(id).get();
+    private @ResponseBody SenseEntity findSenseById(@RequestParam Long id){
+        SenseEntity result = repository.findSenseById(id);
         return result;
     }
 
     @GetMapping(path="/findSynonymsBySynsetId")
-    private @ResponseBody Response<List<SenseEntity>> findSynonymsBySynsetId(@RequestParam Integer id){
+    private @ResponseBody Response<List<SenseEntity>> findSynonymsBySynsetId(@RequestParam Long id){
         List<SenseEntity> result = repository.findSynonymsBySynsetId(id);
         return new Response<List<SenseEntity>>(result);
     }
 
     @GetMapping(path="/findMultipleByIds")
-    private @ResponseBody Response<List<SenseEntity>> findMultipleSensesByIds(@RequestParam Integer[] ids){
+    private @ResponseBody Response<List<SenseEntity>> findMultipleSensesByIds(@RequestParam Long[] ids){
         List<SenseEntity> result = repository.findMultipleByIds(ids);
         return new Response<List<SenseEntity>>(result);
     }
 
     @GetMapping(path="/findMultipleBySynsetIds")
-    private @ResponseBody Response<List<SenseEntity>> findMultipleBySynsetIds(@RequestParam Integer[] ids){
+    private @ResponseBody Response<List<SenseEntity>> findMultipleBySynsetIds(@RequestParam Long[] ids){
         List<SenseEntity> result = repository.findMultipleBySynsetIds(ids);
         return new Response<List<SenseEntity>>(result);
     }
@@ -71,7 +69,7 @@ public class SenseController {
     @GetMapping(path="/findRelatedSensesByWordLanguageAndPartOfSpeech")
     private @ResponseBody Response<Iterable<SenseEntity>> findRelatedSensesByWordLanguageAndPartOfSpeech(@RequestParam String word,
                                                                                              @RequestParam String language,
-                                                                                             @RequestParam Integer part_of_speech){
+                                                                                             @RequestParam Long part_of_speech){
         return new Response<Iterable<SenseEntity>>(repository.findRelatedSensesByWord(word,language,part_of_speech));
     }
 

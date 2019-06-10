@@ -12,28 +12,28 @@ import javax.persistence.*;
 @Table(name = "synset_examples")
 public class SynsetExampleEntity {
     @Id
-    private Integer id;
+    private Long id;
     @Column(name = "synset_attributes_id")
-    private Integer synset_attributes_id;
+    private Integer synsetAttributeId;
     @Column(name = "example")
     private String example;
     @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getSynset_attributes_id() {
-        return synset_attributes_id;
+    public Integer getSynsetAttributeId() {
+        return synsetAttributeId;
     }
 
-    public void setSynset_attributes_id(Integer synset_attributes_id) {
-        this.synset_attributes_id = synset_attributes_id;
+    public void setSynsetAttributeId(Integer synsetAttributeId) {
+        this.synsetAttributeId = synsetAttributeId;
     }
 
     public String getExample() {
@@ -56,7 +56,7 @@ public class SynsetExampleEntity {
         String string = "";
         string+="SynExE{";
         string+="id:" + id + ";";
-        string+="synset_attributes_id:" + synset_attributes_id + ";";
+        string+="synsetAttributeId:" + synsetAttributeId + ";";
         string+="example:" + example + ";";
         string+="type:" + type;
         string+="}SynExE";

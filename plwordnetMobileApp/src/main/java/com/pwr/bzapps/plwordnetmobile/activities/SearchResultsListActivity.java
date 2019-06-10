@@ -11,13 +11,9 @@ import android.view.*;
 import android.widget.*;
 
 import com.pwr.bzapps.plwordnetmobile.R;
-import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
 import com.pwr.bzapps.plwordnetmobile.activities.template.DrawerMenuActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.task.RetrieveSensesTask;
 import com.pwr.bzapps.plwordnetmobile.database.adapter.SenseAdapter;
-import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.PartOfSpeechEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.grammar.WordEntity;
 import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -173,9 +169,9 @@ public class SearchResultsListActivity extends DrawerMenuActivity implements Ada
         ArrayList<SenseEntity> word_related_senses = new ArrayList<SenseEntity>();
         intent.putExtra("sense_entity",data.get(i));
         for(SenseEntity sense : data){
-            if(sense.getWord_id().getWord().equals(data.get(i).getWord_id().getWord()) &&
-                    sense.getPart_of_speech_id().getId().equals(data.get(i).getPart_of_speech_id().getId()) &&
-                    sense.getLexicon_id().getLanguage_name().equals(data.get(i).getLexicon_id().getLanguage_name())){
+            if(sense.getWordId().getWord().equals(data.get(i).getWordId().getWord()) &&
+                    sense.getPartOfSpeechId().getPartOfSpeechId().equals(data.get(i).getPartOfSpeechId().getPartOfSpeechId()) &&
+                    sense.getLexiconId().getLanguageName().equals(data.get(i).getLexiconId().getLanguageName())){
                 word_related_senses.add(sense);
             }
         }

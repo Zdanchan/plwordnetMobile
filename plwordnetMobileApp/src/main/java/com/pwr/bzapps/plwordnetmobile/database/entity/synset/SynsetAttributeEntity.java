@@ -1,10 +1,16 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
 
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetExampleDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  *   `synset_id` bigint(20) NOT NULL,
@@ -15,32 +21,31 @@ import java.util.Collection;
  *   `error_comment` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `ili_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL COMMENT 'OMW id',
  * */
-public class SynsetAttributeEntity implements Entity, Serializable {
-    private Integer synset_id;
-    private SynsetEntity synset;
+@Table(name = "synset_attributes", id = "synset_id")
+public class SynsetAttributeEntity extends Model implements Entity, Serializable {
+    @Column(name = "synset_id", unique = true)
+    private Long synsetId;
+    @Column(name = "comment")
     private String comment;
+    @Column(name = "definition")
     private String definition;
-    private String princeton_id;
-    private Integer owner_id;
-    private String error_comment;
-    private String ili_id;
+    @Column(name = "princeton_id")
+    private String princetonId;
+    @Column(name = "owner_id")
+    private Integer ownerId;
+    @Column(name = "error_comment")
+    private String errorComment;
+    @Column(name = "ili_id")
+    private String iliId;
 
-    private Collection<SynsetExampleEntity> synset_examples;
+    private List<SynsetExampleEntity> synsetExamples;
 
-    public Integer getSynset_id() {
-        return synset_id;
+    public Long getSynsetAttributeId() {
+        return synsetId;
     }
 
-    public void setSynset_id(Integer synset_id) {
-        this.synset_id = synset_id;
-    }
-
-    public SynsetEntity getSynset() {
-        return synset;
-    }
-
-    public void setSynset(SynsetEntity synset) {
-        this.synset = synset;
+    public void setSynsetAttributeId(Long synsetId) {
+        this.synsetId = synsetId;
     }
 
     public String getComment() {
@@ -59,48 +64,50 @@ public class SynsetAttributeEntity implements Entity, Serializable {
         this.definition = "null".equals(definition) ? null : definition;
     }
 
-    public String getPrinceton_id() {
-        return princeton_id;
+    public String getPrincetonId() {
+        return princetonId;
     }
 
-    public void setPrinceton_id(String princeton_id) {
-        this.princeton_id = "null".equals(princeton_id) ? null : princeton_id;
+    public void setPrincetonId(String princetonId) {
+        this.princetonId = "null".equals(princetonId) ? null : princetonId;
     }
 
-    public Integer getOwner_id() {
-        return owner_id;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(Integer owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = "null".equals(error_comment) ? null : error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = "null".equals(errorComment) ? null : errorComment;
     }
 
-    public String getIli_id() {
-        return ili_id;
+    public String getIliId() {
+        return iliId;
     }
 
-    public void setIli_id(String ili_id) {
-        this.ili_id = "null".equals(ili_id) ? null : ili_id;
+    public void setIliId(String iliId) {
+        this.iliId = "null".equals(iliId) ? null : iliId;
     }
 
-    public Collection<SynsetExampleEntity> getSynset_examples() {
-        return synset_examples;
+    public List<SynsetExampleEntity> getSynsetExamples() {
+        if(Settings.isOfflineMode() && synsetExamples ==null)
+            synsetExamples = SynsetExampleDAO.findAllForSynsetAttribute(synsetId);
+        return synsetExamples;
     }
 
-    public void setSynset_examples(Collection<SynsetExampleEntity> synset_examples) {
-        this.synset_examples = synset_examples;
+    public void setSynsetExamples(List<SynsetExampleEntity> synsetExamples) {
+        this.synsetExamples = synsetExamples;
     }
 
     @Override
     public String getEntityID() {
-        return "SyA:" + getSynset_id();
+        return "SyA:" + getSynsetAttributeId();
     }
 }

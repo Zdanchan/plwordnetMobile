@@ -127,7 +127,7 @@ public class DBHelperComponent {
         }
         return null;
     }
-    public <T> List<T> findSynsetAndSensesAllByRelatedIds(Class<T> clazz, Integer[] ids){
+    public <T> List<T> findSynsetAndSensesAllByRelatedIds(Class<T> clazz, Long[] ids){
         switch(clazz.getSimpleName()){
             case "SenseAttributeEntity":
                 return ((List<T>)senseAttributeRepository.findMultipleBySenseId(ids));
@@ -189,7 +189,7 @@ public class DBHelperComponent {
         }
         return null;
     }
-    public <T> List<String> findAllForEntityAndParseString(Class<T> clazz, int begin, int end){
+    public <T> List<String> findAllForEntityAndParseString(Class<T> clazz, Long begin, Long end){
         switch(clazz.getSimpleName()){
             case "ApplicationLocalisedStringEntity":
                 return ((List<String>)applicationLocalisedStringRepository.findAllAndParseStringBatch(begin, end));
@@ -230,7 +230,7 @@ public class DBHelperComponent {
         }
         return null;
     }
-    public <T> int getMaxIndexForEntity(Class<T> clazz){
+    public <T> Long getMaxIndexForEntity(Class<T> clazz){
         switch(clazz.getSimpleName()){
             case "ApplicationLocalisedStringEntity":
                 return (applicationLocalisedStringRepository.getMaxIndex());
@@ -247,9 +247,9 @@ public class DBHelperComponent {
             case "WordEntity":
                 return (wordRepository.getMaxIndex());
             case "RelationTypeAllowedLexiconEntity":
-                return Integer.MAX_VALUE;
+                return Long.MAX_VALUE;
             case "RelationTypeAllowedPartOfSpeechEntity":
-                return Integer.MAX_VALUE;
+                return Long.MAX_VALUE;
             case "RelationTypeEntity":
                 return (relationTypeRepository.getMaxIndex());
             case "SenseAttributeEntity":
@@ -269,9 +269,9 @@ public class DBHelperComponent {
             case "SynsetRelationEntity":
                 return (synsetRelationRepository.getMaxIndex());
         }
-        return Integer.MAX_VALUE;
+        return Long.MAX_VALUE;
     }
-    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids){
+    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Long[] ids){
         if(ids.length==0)
             return new ArrayList<String>();
         switch(clazz.getSimpleName()){
@@ -296,7 +296,7 @@ public class DBHelperComponent {
         }
         return null;
     }
-    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Integer[] ids, int begin, int end){
+    public <T> List<String> findSynsetAndSensesAllByRelatedIdsAndParseString(Class<T> clazz, Long[] ids, Long begin, Long end){
         if(ids.length==0)
             return new ArrayList<String>();
         switch(clazz.getSimpleName()){
@@ -397,41 +397,41 @@ public class DBHelperComponent {
         return query;
     }
 
-    public List<SynsetRelationEntity> getSynsetRelationsByRelationIds(Integer[] relation_ids){
+    public List<SynsetRelationEntity> getSynsetRelationsByRelationIds(Long[] relation_ids){
         return synsetRelationRepository.findByRelationTypes(relation_ids);
     }
 
-    public List<SenseRelationEntity> getSenseRelationsByRelationIds(Integer[] relation_ids){
+    public List<SenseRelationEntity> getSenseRelationsByRelationIds(Long[] relation_ids){
         return senseRelationRepository.findByRelationTypes(relation_ids);
     }
 
-    public List<SynsetRelationEntity> getSynsetRelationsExcludingRelationIds(Integer[] relation_ids){
+    public List<SynsetRelationEntity> getSynsetRelationsExcludingRelationIds(Long[] relation_ids){
         return synsetRelationRepository.findExcludingRelationTypes(relation_ids);
     }
 
-    public List<SenseRelationEntity> getSenseRelationsExcludingRelationIds(Integer[] relation_ids){
+    public List<SenseRelationEntity> getSenseRelationsExcludingRelationIds(Long[] relation_ids){
         return senseRelationRepository.findExcludingRelationTypes(relation_ids);
     }
 
-    public Integer[] getIdsOfSensesByLanguage(Integer[] lexicons){
+    public Integer[] getIdsOfSensesByLanguage(Long[] lexicons){
         if(lexicons.length==0)
             return new Integer[0];
         return senseRepository.findIdsForLanguage(lexicons).toArray(new Integer[0]);
     }
 
-    public Integer[] getIdsOfSynsetsByLanguage(Integer[] lexicons){
+    public Integer[] getIdsOfSynsetsByLanguage(Long[] lexicons){
         if(lexicons.length==0)
             return new Integer[0];
         return synsetRepository.findIdsForLanguage(lexicons).toArray(new Integer[0]);
     }
 
-    public Integer[] getIdsOfSenseAttributesByLanguage(Integer[] sense_ids){
+    public Integer[] getIdsOfSenseAttributesByLanguage(Long[] sense_ids){
         if(sense_ids.length==0)
             return new Integer[0];
         return senseAttributeRepository.findIdsMultipleBySenseId(sense_ids).toArray(new Integer[0]);
     }
 
-    public Integer[] getIdsOfSynsetAttributesByLanguage(Integer[] synset_ids){
+    public Integer[] getIdsOfSynsetAttributesByLanguage(Long[] synset_ids){
         if(synset_ids.length==0)
             return new Integer[0];
         return synsetAttributeRepository.findIdsMultipleBySynsetId(synset_ids).toArray(new Integer[0]);

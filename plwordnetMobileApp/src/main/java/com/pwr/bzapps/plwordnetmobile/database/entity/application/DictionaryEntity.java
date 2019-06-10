@@ -1,6 +1,8 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.application;
 
-
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -13,12 +15,19 @@ import java.io.Serializable;
  *   `tag` varchar(20) CHARACTER SET utf8 COLLATE utf8_polish_ci DEFAULT NULL,
  *   `value` bigint(20) DEFAULT NULL,
  * */
-public class DictionaryEntity implements Entity, Serializable {
-    private Integer id;
+@Table(name = "dictionaries", id = "id")
+public class DictionaryEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "dtype")
     private String dtype;
-    private Integer description_id;
-    private Integer name_id;
+    @Column(name = "description_id")
+    private Integer descriptionId;
+    @Column(name = "name_id")
+    private Integer nameId;
+    @Column(name = "tag")
     private String tag;
+    @Column(name = "value")
     private Long value;
 
     public String getDtype() {
@@ -29,28 +38,28 @@ public class DictionaryEntity implements Entity, Serializable {
         this.dtype = "null".equals(dtype) ? null : dtype;
     }
 
-    public Integer getId() {
+    public Long getDictionaryId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setDictionaryId(Long id) {
         this.id = id;
     }
 
-    public Integer getDescription_id() {
-        return description_id;
+    public Integer getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription_id(Integer description_id) {
-        this.description_id = description_id;
+    public void setDescriptionId(Integer descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
-    public Integer getName_id() {
-        return name_id;
+    public Integer getNameId() {
+        return nameId;
     }
 
-    public void setName_id(Integer name_id) {
-        this.name_id = name_id;
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
     }
 
     public String getTag() {

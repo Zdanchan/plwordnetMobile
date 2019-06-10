@@ -174,11 +174,25 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/status_text"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@id/sync_progress_percentage"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
+                />
+        <TextView
+                android:id="@+id/sync_progress_percentage"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/status_text"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="15dp"
+                android:text="100%"
+                android:textColor="@color/colorMainText"
                 />
         <View
                 android:id="@+id/status_separator"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import com.pwr.bzapps.plwordnetmobile.R;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.fragments.SettingsLocalDatabaseFragment;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -34,13 +35,14 @@ public class DownloadService extends IntentService {
             connection.connect();
             int fileLength = connection.getContentLength();
 
-            File old_file = new File(Settings.getSqliteDbFile());
+            File old_file = SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType());
             if(old_file.exists()){
                 old_file.delete();
             }
 
             InputStream input = new BufferedInputStream(connection.getInputStream());
-            OutputStream output = new FileOutputStream(Settings.getSqliteDbFile());
+            OutputStream output = new FileOutputStream(
+                    SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()));
 
             byte data[] = new byte[1024];
             long total = 0;

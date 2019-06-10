@@ -12,14 +12,14 @@ import java.util.List;
  *   `description_id` bigint(20) DEFAULT NULL,
  *   `name_id` bigint(20) DEFAULT NULL,
  * */
-public interface DomainRepository extends CrudRepository<DomainEntity, Integer>{
+public interface DomainRepository extends CrudRepository<DomainEntity, Long>{
     @Query(value = "SELECT CONCAT(do.id,',',do.description_id,',',do.name_id) FROM domain do ", nativeQuery = true)
     public List<String> findAllAndParseString();
 
     @Query(value = "SELECT CONCAT(do.id,',',do.description_id,',',do.name_id) FROM domain do " +
             " WHERE do.id>=:begin AND do.id<:end", nativeQuery = true)
-    public List<String> findAllAndParseStringBatch(@Param("begin") Integer begin, @Param("end") Integer end);
+    public List<String> findAllAndParseStringBatch(@Param("begin") Long begin, @Param("end") Long end);
 
     @Query(value = "SELECT MAX(id) FROM domain", nativeQuery = true)
-    public Integer getMaxIndex();
+    public Long getMaxIndex();
 }

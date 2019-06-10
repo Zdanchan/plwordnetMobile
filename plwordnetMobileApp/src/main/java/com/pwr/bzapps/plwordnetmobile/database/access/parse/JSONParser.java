@@ -197,36 +197,36 @@ public class JSONParser {
             }
             else {
                 SenseEntity senseEntity = new SenseEntity();
-                senseEntity.setId(jsonSense.getInt("id"));
-                senseEntity.setStatus_id(handleNullInIntegerField(jsonSense.optInt("status_id",-1)));
-                //senseEntity.setSynset_id(handleNullInIntegerField(jsonSense.optInt("synset_id",-1)));
-                senseEntity.setSynset_position(handleNullInIntegerField(jsonSense.optInt("synset_position",-1)));
+                senseEntity.setSenseId(jsonSense.getLong("id"));
+                senseEntity.setStatusId(handleNullInIntegerField(jsonSense.optInt("statusId",-1)));
+                //senseEntity.setSynsetAttributeId(handleNullInIntegerField(jsonSense.optInt("synset_id",-1)));
+                senseEntity.setSynsetPosition(handleNullInIntegerField(jsonSense.optInt("synsetPosition",-1)));
                 senseEntity.setVariant(handleNullInIntegerField(jsonSense.optInt("variant",-1)));
 
-                JSONObject jsonSynset = jsonSense.getJSONObject("synset_id");
-                senseEntity.setSynset_id(parseJSONtoSynsetEntity(jsonSynset));
+                JSONObject jsonSynset = jsonSense.getJSONObject("synsetId");
+                senseEntity.setSynsetId(parseJSONtoSynsetEntity(jsonSynset));
 
-                JSONObject jsonDomain = jsonSense.getJSONObject("domain_id");
-                senseEntity.setDomain_id(parseJSONtoDomainEntity(jsonDomain));
+                JSONObject jsonDomain = jsonSense.getJSONObject("domainId");
+                senseEntity.setDomainId(parseJSONtoDomainEntity(jsonDomain));
 
-                JSONObject jsonLexicon = jsonSense.getJSONObject("lexicon_id");
-                senseEntity.setLexicon_id(parseJSONtoLexiconEntity(jsonLexicon));
+                JSONObject jsonLexicon = jsonSense.getJSONObject("lexiconId");
+                senseEntity.setLexiconId(parseJSONtoLexiconEntity(jsonLexicon));
 
-                JSONObject jsonWord = jsonSense.getJSONObject("word_id");
-                senseEntity.setWord_id(parseJSONtoWordEntity(jsonWord));
+                JSONObject jsonWord = jsonSense.getJSONObject("wordId");
+                senseEntity.setWordId(parseJSONtoWordEntity(jsonWord));
 
-                JSONObject jsonPartOfSpeech = jsonSense.getJSONObject("part_of_speech_id");
-                senseEntity.setPart_of_speech_id(parseJSONtoPartOfSpeechEntity(jsonPartOfSpeech));
+                JSONObject jsonPartOfSpeech = jsonSense.getJSONObject("partOfSpeechId");
+                senseEntity.setPartOfSpeechId(parseJSONtoPartOfSpeechEntity(jsonPartOfSpeech));
 
-                JSONArray jsonArraySenseAttributes = jsonSense.getJSONArray("sense_attributes");
-                senseEntity.setSense_attributes(parseJSONtoTList(jsonArraySenseAttributes,SenseAttributeEntity.class));
+                JSONArray jsonArraySenseAttributes = jsonSense.getJSONArray("senseAttributes");
+                senseEntity.setSenseAttributes(parseJSONtoTList(jsonArraySenseAttributes,SenseAttributeEntity.class));
 
-                JSONArray jsonArrayEmotionalAnnotations = jsonSense.getJSONArray("emotional_annotations");
-                senseEntity.setEmotional_annotations(parseJSONtoTList(jsonArrayEmotionalAnnotations,EmotionalAnnotationEntity.class));
-                //JSONArray jsonRelationChild = jsonSense.getJSONArray("relation_child");
-                //senseEntity.setRelation_child(parseJSONtoTList(jsonRelationChild,SenseRelationEntity.class));
-                //JSONArray jsonRelationParent = jsonSense.getJSONArray("relation_parent");
-                //senseEntity.setRelation_parent(parseJSONtoTList(jsonRelationParent,SenseRelationEntity.class));
+                JSONArray jsonArrayEmotionalAnnotations = jsonSense.getJSONArray("emotionalAnnotations");
+                senseEntity.setEmotionalAnnotations(parseJSONtoTList(jsonArrayEmotionalAnnotations,EmotionalAnnotationEntity.class));
+                //JSONArray jsonRelationChild = jsonSense.getJSONArray("relationChild");
+                //senseEntity.setRelationChild(parseJSONtoTList(jsonRelationChild,SenseRelationEntity.class));
+                //JSONArray jsonRelationParent = jsonSense.getJSONArray("relationParent");
+                //senseEntity.setRelationParent(parseJSONtoTList(jsonRelationParent,SenseRelationEntity.class));
 
                 EntityManager.putEntity(senseEntity);
                 return senseEntity;
@@ -247,14 +247,14 @@ public class JSONParser {
             }
             else{
                 DictionaryEntity dictionaryEntity = new DictionaryEntity();
-                dictionaryEntity.setId(jsonDictionary.getInt("id"));
+                dictionaryEntity.setDictionaryId(jsonDictionary.getLong("id"));
                 dictionaryEntity.setDtype(jsonDictionary.optString("dtype",null));
                 dictionaryEntity.setTag(jsonDictionary.optString("tag",null));
                 dictionaryEntity.setValue(jsonDictionary.optLong("value"));
 
-                dictionaryEntity.setName_id(handleNullInIntegerField(jsonDictionary.optInt("name_id",-1)));
+                dictionaryEntity.setNameId(handleNullInIntegerField(jsonDictionary.optInt("nameId",-1)));
 
-                dictionaryEntity.setDescription_id(handleNullInIntegerField(jsonDictionary.optInt("description_id",-1)));
+                dictionaryEntity.setDescriptionId(handleNullInIntegerField(jsonDictionary.optInt("descriptionId",-1)));
 
                 EntityManager.putEntity(dictionaryEntity);
                 return dictionaryEntity;
@@ -275,15 +275,15 @@ public class JSONParser {
             }
             else{
                 EmotionalAnnotationEntity emotionalAnnotationEntity = new EmotionalAnnotationEntity();
-                emotionalAnnotationEntity.setId(jsonEmotionalAnnotation.getInt("id"));
+                emotionalAnnotationEntity.setEmotionalAnnotationId(jsonEmotionalAnnotation.getLong("id"));
                 emotionalAnnotationEntity.setEmotions(jsonEmotionalAnnotation.optString("emotions",null));
-                emotionalAnnotationEntity.setHas_emotional_characteristic(jsonEmotionalAnnotation.getBoolean("has_emotional_characteristic"));
+                emotionalAnnotationEntity.setHasEmotionalCharacteristic(jsonEmotionalAnnotation.getBoolean("hasEmotionalCharacteristic"));
                 emotionalAnnotationEntity.setMarkedness(jsonEmotionalAnnotation.optString("markedness",null));
-                emotionalAnnotationEntity.setSuper_anotation(jsonEmotionalAnnotation.getBoolean("super_anotation"));
+                emotionalAnnotationEntity.setSuperAnotation(jsonEmotionalAnnotation.getBoolean("superAnotation"));
                 emotionalAnnotationEntity.setValuations(jsonEmotionalAnnotation.optString("valuations",null));
                 emotionalAnnotationEntity.setExample1(jsonEmotionalAnnotation.optString("example1",null));
                 emotionalAnnotationEntity.setExample2(jsonEmotionalAnnotation.optString("example2",null));
-                emotionalAnnotationEntity.setSense_id(handleNullInIntegerField(jsonEmotionalAnnotation.optInt("sense_id",-1)));
+                emotionalAnnotationEntity.setSenseId(handleNullInIntegerField(jsonEmotionalAnnotation.optLong("senseId",-1)));
 
                 EntityManager.putEntity(emotionalAnnotationEntity);
                 return emotionalAnnotationEntity;
@@ -300,10 +300,10 @@ public class JSONParser {
         }
         try{
             RelationTypeAllowedLexiconEntity relationTypeAllowedLexiconEntity = new RelationTypeAllowedLexiconEntity();
-            JSONObject jsonLexicon = jsonRelationTypeAllowedLexicon.getJSONObject("lexicon_id");
-            relationTypeAllowedLexiconEntity.setLexicon_id(parseJSONtoLexiconEntity(jsonLexicon));
-            JSONObject jsonRelationType = jsonRelationTypeAllowedLexicon.getJSONObject("relation_type_id");
-            relationTypeAllowedLexiconEntity.setRelation_type_id(parseJSONtoRelationTypeEntity(jsonRelationType));
+            JSONObject jsonLexicon = jsonRelationTypeAllowedLexicon.getJSONObject("lexiconId");
+            relationTypeAllowedLexiconEntity.setLexiconId(parseJSONtoLexiconEntity(jsonLexicon));
+            JSONObject jsonRelationType = jsonRelationTypeAllowedLexicon.getJSONObject("relationTypeId");
+            relationTypeAllowedLexiconEntity.setRelationTypeId(parseJSONtoRelationTypeEntity(jsonRelationType));
 
             if(EntityManager.contains(relationTypeAllowedLexiconEntity.getEntityID())){
                 return (RelationTypeAllowedLexiconEntity) EntityManager.getEntity(relationTypeAllowedLexiconEntity.getEntityID());
@@ -324,10 +324,10 @@ public class JSONParser {
         }
         try{
             RelationTypeAllowedPartOfSpeechEntity relationTypeAllowedPartOfSpeechEntity = new RelationTypeAllowedPartOfSpeechEntity();
-            JSONObject jsonPartOfSpeech = jsonRelationTypeAllowedPartOfSpeech.getJSONObject("part_of_speech_id");
-            relationTypeAllowedPartOfSpeechEntity.setPart_of_speech_id(parseJSONtoPartOfSpeechEntity(jsonPartOfSpeech));
-            JSONObject jsonRelationType = jsonRelationTypeAllowedPartOfSpeech.getJSONObject("relation_type_id");
-            relationTypeAllowedPartOfSpeechEntity.setRelation_type_id(parseJSONtoRelationTypeEntity(jsonRelationType));
+            JSONObject jsonPartOfSpeech = jsonRelationTypeAllowedPartOfSpeech.getJSONObject("partOfSpeechId");
+            relationTypeAllowedPartOfSpeechEntity.setPartOfSpeechId(parseJSONtoPartOfSpeechEntity(jsonPartOfSpeech));
+            JSONObject jsonRelationType = jsonRelationTypeAllowedPartOfSpeech.getJSONObject("relationTypeId");
+            relationTypeAllowedPartOfSpeechEntity.setRelationTypeId(parseJSONtoRelationTypeEntity(jsonRelationType));
 
             if(EntityManager.contains(relationTypeAllowedPartOfSpeechEntity.getEntityID())){
                 return (RelationTypeAllowedPartOfSpeechEntity) EntityManager.getEntity(relationTypeAllowedPartOfSpeechEntity.getEntityID());
@@ -352,20 +352,20 @@ public class JSONParser {
             }
             else{
                 RelationTypeEntity relationTypeEntity = new RelationTypeEntity();
-                relationTypeEntity.setId(jsonRelationType.getInt("id"));
+                relationTypeEntity.setRelationTypeId(jsonRelationType.getLong("id"));
                 relationTypeEntity.setPriority(handleNullInIntegerField(jsonRelationType.optInt("priority",-1)));
-                relationTypeEntity.setNode_position(jsonRelationType.optString("node_position",null));
+                relationTypeEntity.setNodePosition(jsonRelationType.optString("nodePosition",null));
                 relationTypeEntity.setColor(jsonRelationType.optString("color",null));
-                relationTypeEntity.setRelation_argument(jsonRelationType.optString("relation_argument",null));
+                relationTypeEntity.setRelationArgument(jsonRelationType.optString("relationArgument",null));
                 relationTypeEntity.setMultilingual(jsonRelationType.getBoolean("multilingual"));
-                relationTypeEntity.setAuto_reverse(jsonRelationType.getBoolean("auto_reverse"));
-                relationTypeEntity.setReverse_relation_type_id(handleNullInIntegerField(jsonRelationType.optInt("reverse_relation_type_id",-1)));
+                relationTypeEntity.setAutoReverse(jsonRelationType.getBoolean("autoReverse"));
+                relationTypeEntity.setReverseRelationTypeId(handleNullInIntegerField(jsonRelationType.optLong("reverseRelationTypeId",-1)));
 
-                relationTypeEntity.setName_id(handleNullInIntegerField(jsonRelationType.optInt("name_id",-1)));
-                relationTypeEntity.setDescription_id(handleNullInIntegerField(jsonRelationType.optInt("description_id",-1)));
-                relationTypeEntity.setDisplay_text_id(handleNullInIntegerField(jsonRelationType.optInt("display_text_id",-1)));
-                relationTypeEntity.setShort_display_text_id(handleNullInIntegerField(jsonRelationType.optInt("short_display_text_id",-1)));
-                relationTypeEntity.setParent_relation_type_id(handleNullInIntegerField(jsonRelationType.optInt("parent_relation_type_id",-1)));
+                relationTypeEntity.setNameId(handleNullInIntegerField(jsonRelationType.optLong("nameId",-1)));
+                relationTypeEntity.setDescriptionId(handleNullInIntegerField(jsonRelationType.optLong("descriptionId",-1)));
+                relationTypeEntity.setDisplayTextId(handleNullInIntegerField(jsonRelationType.optLong("displayTextId",-1)));
+                relationTypeEntity.setShortDisplayTextId(handleNullInIntegerField(jsonRelationType.optLong("shortDisplayTextId",-1)));
+                relationTypeEntity.setParentRelationTypeId(handleNullInIntegerField(jsonRelationType.optLong("parentRelationTypeId",-1)));
 
                 EntityManager.putEntity(relationTypeEntity);
                 return relationTypeEntity;
@@ -386,11 +386,11 @@ public class JSONParser {
             }
             else{
                 SenseExampleEntity senseExampleEntity = new SenseExampleEntity();
-                senseExampleEntity.setId(jsonSenseExample.getInt("id"));
+                senseExampleEntity.setSenseExampleId(jsonSenseExample.getLong("id"));
                 senseExampleEntity.setExample(jsonSenseExample.optString("example",null));
                 senseExampleEntity.setType(jsonSenseExample.optString("type",null));
 
-                senseExampleEntity.setSense_attribute_id(handleNullInIntegerField(jsonSenseExample.optInt("sense_attribute_id",-1)));
+                senseExampleEntity.setSenseAttributeId(handleNullInIntegerField(jsonSenseExample.optLong("senseAttributeId",-1)));
 
                 EntityManager.putEntity(senseExampleEntity);
                 return senseExampleEntity;
@@ -411,12 +411,12 @@ public class JSONParser {
             }
             else{
                 SenseRelationEntity senseRelationEntity = new SenseRelationEntity();
-                senseRelationEntity.setId(jsonSenseRelation.getInt("id"));
-                senseRelationEntity.setParent_sense_id(handleNullInIntegerField(jsonSenseRelation.optInt("parent_sense_id",-1)));
-                senseRelationEntity.setChild_sense_id(handleNullInIntegerField(jsonSenseRelation.optInt("child_sense_id",-1)));
+                senseRelationEntity.setSenseRelationId(jsonSenseRelation.getLong("id"));
+                senseRelationEntity.setParentSenseId(handleNullInIntegerField(jsonSenseRelation.optLong("parentSenseId",-1)));
+                senseRelationEntity.setChildSenseId(handleNullInIntegerField(jsonSenseRelation.optLong("childSenseId",-1)));
 
-                JSONObject jsonRelationType = jsonSenseRelation.getJSONObject("relation_type_id");
-                senseRelationEntity.setRelation_type_id(parseJSONtoRelationTypeEntity(jsonRelationType));
+                JSONObject jsonRelationType = jsonSenseRelation.getJSONObject("relationTypeId");
+                senseRelationEntity.setRelationTypeId(parseJSONtoRelationTypeEntity(jsonRelationType));
 
                 EntityManager.putEntity(senseRelationEntity);
                 return senseRelationEntity;
@@ -432,21 +432,21 @@ public class JSONParser {
             return null;
         }
         try{
-            if(EntityManager.contains("SyA:"+jsonSynsetAttribute.getInt("synset_id"))){
-                return (SynsetAttributeEntity) EntityManager.getEntity("SyA:"+jsonSynsetAttribute.getInt("synset_id"));
+            if(EntityManager.contains("SyA:"+jsonSynsetAttribute.getInt("synsetId"))){
+                return (SynsetAttributeEntity) EntityManager.getEntity("SyA:"+jsonSynsetAttribute.getInt("synsetId"));
             }
             else{
                 SynsetAttributeEntity synsetAttributeEntity = new SynsetAttributeEntity();
-                synsetAttributeEntity.setSynset_id(jsonSynsetAttribute.getInt("synset_id"));
+                synsetAttributeEntity.setSynsetAttributeId(jsonSynsetAttribute.getLong("synsetId"));
                 synsetAttributeEntity.setDefinition(jsonSynsetAttribute.optString("definition",null));
                 synsetAttributeEntity.setComment(jsonSynsetAttribute.optString("comment",null));
-                synsetAttributeEntity.setError_comment(jsonSynsetAttribute.optString("error_comment",null));
-                synsetAttributeEntity.setIli_id(jsonSynsetAttribute.optString("ili_id",null));
-                synsetAttributeEntity.setOwner_id(handleNullInIntegerField(jsonSynsetAttribute.optInt("owner_id",-1)));
-                synsetAttributeEntity.setPrinceton_id(jsonSynsetAttribute.optString("princeton_id",null));
+                synsetAttributeEntity.setErrorComment(jsonSynsetAttribute.optString("errorComment",null));
+                synsetAttributeEntity.setIliId(jsonSynsetAttribute.optString("iliId",null));
+                synsetAttributeEntity.setOwnerId(handleNullInIntegerField(jsonSynsetAttribute.optInt("ownerId",-1)));
+                synsetAttributeEntity.setPrincetonId(jsonSynsetAttribute.optString("princetonId",null));
 
-                JSONArray jsonArraySynsetExamples = jsonSynsetAttribute.getJSONArray("synset_examples");
-                synsetAttributeEntity.setSynset_examples(parseJSONtoTList(jsonArraySynsetExamples,SynsetExampleEntity.class));
+                JSONArray jsonArraySynsetExamples = jsonSynsetAttribute.getJSONArray("synsetExamples");
+                synsetAttributeEntity.setSynsetExamples(parseJSONtoTList(jsonArraySynsetExamples,SynsetExampleEntity.class));
 
                 EntityManager.putEntity(synsetAttributeEntity);
                 return synsetAttributeEntity;
@@ -467,19 +467,19 @@ public class JSONParser {
             }
             else{
                 SynsetEntity synsetEntity = new SynsetEntity();
-                synsetEntity.setId(jsonSynset.getInt("id"));
+                synsetEntity.setSynsetId(jsonSynset.getLong("id"));
                 synsetEntity.setSplit(handleNullInIntegerField(jsonSynset.optInt("split",-1)));
-                synsetEntity.setStatus_id(handleNullInIntegerField(jsonSynset.optInt("status_id",-1)));
+                synsetEntity.setStatusId(handleNullInIntegerField(jsonSynset.optInt("statusId",-1)));
                 synsetEntity.setAbstract(handleNullInIntegerField(jsonSynset.optInt("abstract",-1)).shortValue());
 
-                JSONObject jsonLexicon = jsonSynset.getJSONObject("lexicon_id");
-                synsetEntity.setLexicon_id(parseJSONtoLexiconEntity(jsonLexicon));
-                JSONArray jsonArrayRelationParent = jsonSynset.getJSONArray("relation_parent");
-                synsetEntity.setRelation_parent(parseJSONtoTList(jsonArrayRelationParent, SynsetRelationEntity.class));
-                JSONArray jsonArrayRelationChild = jsonSynset.getJSONArray("relation_child");
-                synsetEntity.setRelation_child(parseJSONtoTList(jsonArrayRelationChild, SynsetRelationEntity.class));
-                JSONArray jsonArraySynsetAttributes = jsonSynset.getJSONArray("synset_attributes");
-                synsetEntity.setSynset_attributes(parseJSONtoTList(jsonArraySynsetAttributes,SynsetAttributeEntity.class));
+                JSONObject jsonLexicon = jsonSynset.getJSONObject("lexiconId");
+                synsetEntity.setLexiconId(parseJSONtoLexiconEntity(jsonLexicon));
+                JSONArray jsonArrayRelationParent = jsonSynset.getJSONArray("relationParent");
+                synsetEntity.setRelationParent(parseJSONtoTList(jsonArrayRelationParent, SynsetRelationEntity.class));
+                JSONArray jsonArrayRelationChild = jsonSynset.getJSONArray("relationChild");
+                synsetEntity.setRelationChild(parseJSONtoTList(jsonArrayRelationChild, SynsetRelationEntity.class));
+                JSONArray jsonArraySynsetAttributes = jsonSynset.getJSONArray("synsetAttributes");
+                synsetEntity.setSynsetAttributes(parseJSONtoTList(jsonArraySynsetAttributes,SynsetAttributeEntity.class));
 
                 EntityManager.putEntity(synsetEntity);
                 return synsetEntity;
@@ -500,13 +500,13 @@ public class JSONParser {
             }
             else{
                 SynsetExampleEntity synsetExampleEntity = new SynsetExampleEntity();
-                synsetExampleEntity.setId(jsonSynsetExample.getInt("id"));
+                synsetExampleEntity.setSynsetExampleId(jsonSynsetExample.getLong("id"));
                 synsetExampleEntity.setExample(jsonSynsetExample.optString("example",null));
                 synsetExampleEntity.setType(jsonSynsetExample.optString("type",null));
-                synsetExampleEntity.setSynset_attributes_id(handleNullInIntegerField(jsonSynsetExample.optInt("synset_attributes_id",-1)));
+                synsetExampleEntity.setSynsetAttributeId(handleNullInIntegerField(jsonSynsetExample.optLong("synsetAttributesId",-1)));
 
-                //JSONObject jsonSynsetAttributes = jsonSynsetExample.getJSONObject("synset_attributes_id");
-                //synsetExampleEntity.setSynset_attributes_id(parseJSONtoSynsetAttributeEntity(jsonSynsetAttributes));
+                //JSONObject jsonSynsetAttributes = jsonSynsetExample.getJSONObject("synsetAttributesId");
+                //synsetExampleEntity.setSynsetAttributeId(parseJSONtoSynsetAttributeEntity(jsonSynsetAttributes));
 
                 EntityManager.putEntity(synsetExampleEntity);
                 return synsetExampleEntity;
@@ -527,12 +527,12 @@ public class JSONParser {
             }
             else{
                 SynsetRelationEntity synsetRelationEntity = new SynsetRelationEntity();
-                synsetRelationEntity.setId(jsonSynsetRelation.getInt("id"));
-                synsetRelationEntity.setParent_synset_id(handleNullInIntegerField(jsonSynsetRelation.optInt("parent_synset_id",-1)));
-                synsetRelationEntity.setChild_synset_id(handleNullInIntegerField(jsonSynsetRelation.optInt("child_synset_id",-1)));
+                synsetRelationEntity.setSYnsetRelationId(jsonSynsetRelation.getLong("id"));
+                synsetRelationEntity.setParentSynsetId(handleNullInIntegerField(jsonSynsetRelation.optLong("parentSynsetId",-1)));
+                synsetRelationEntity.setChildSynsetId(handleNullInIntegerField(jsonSynsetRelation.optLong("childSynsetId",-1)));
 
-                JSONObject jsonRelationType = jsonSynsetRelation.getJSONObject("synset_relation_type_id");
-                synsetRelationEntity.setSynset_relation_type_id(parseJSONtoRelationTypeEntity(jsonRelationType));
+                JSONObject jsonRelationType = jsonSynsetRelation.getJSONObject("synsetRelationTypeId");
+                synsetRelationEntity.setSynsetRelationTypeId(parseJSONtoRelationTypeEntity(jsonRelationType));
 
                 EntityManager.putEntity(synsetRelationEntity);
                 return synsetRelationEntity;
@@ -548,23 +548,23 @@ public class JSONParser {
             return null;
         }
         try{
-            if(EntityManager.contains("SeA:"+jsonSenseAttribute.getInt("sense_id"))){
-                return (SenseAttributeEntity) EntityManager.getEntity("SeA:"+jsonSenseAttribute.getInt("sense_id"));
+            if(EntityManager.contains("SeA:"+jsonSenseAttribute.getInt("senseId"))){
+                return (SenseAttributeEntity) EntityManager.getEntity("SeA:"+jsonSenseAttribute.getInt("senseId"));
             }
             else{
                 SenseAttributeEntity senseAttributeEntity = new SenseAttributeEntity();
-                senseAttributeEntity.setSense_id(jsonSenseAttribute.getInt("sense_id"));
-                senseAttributeEntity.setProper_name(jsonSenseAttribute.getBoolean("proper_name"));
-                senseAttributeEntity.setError_comment(jsonSenseAttribute.optString("error_comment",null));
-                senseAttributeEntity.setUser_id(handleNullInIntegerField(jsonSenseAttribute.optInt("user_id",-1)));
-                senseAttributeEntity.setAspect_id(handleNullInIntegerField(jsonSenseAttribute.optInt("aspect_id",-1)));
-                senseAttributeEntity.setRegister_id(handleNullInIntegerField(jsonSenseAttribute.optInt("register_id",-1)));
+                senseAttributeEntity.setSenseAttributeId(jsonSenseAttribute.getLong("senseId"));
+                senseAttributeEntity.setProperName(jsonSenseAttribute.getBoolean("properName"));
+                senseAttributeEntity.setErrorComment(jsonSenseAttribute.optString("errorComment",null));
+                senseAttributeEntity.setUserId(handleNullInIntegerField(jsonSenseAttribute.optInt("userId",-1)));
+                senseAttributeEntity.setAspectId(handleNullInIntegerField(jsonSenseAttribute.optInt("aspectId",-1)));
+                senseAttributeEntity.setRegisterId(handleNullInIntegerField(jsonSenseAttribute.optInt("registerId",-1)));
                 senseAttributeEntity.setLink(jsonSenseAttribute.optString("link",null));
                 senseAttributeEntity.setDefinition(jsonSenseAttribute.optString("definition",null));
                 senseAttributeEntity.setComment(jsonSenseAttribute.optString("comment",null));
 
-                JSONArray jsonSenseExamples = jsonSenseAttribute.getJSONArray("sense_examples");
-                senseAttributeEntity.setSense_examples(parseJSONtoTList(jsonSenseExamples,SenseExampleEntity.class));
+                JSONArray jsonSenseExamples = jsonSenseAttribute.getJSONArray("senseExamples");
+                senseAttributeEntity.setSenseExamples(parseJSONtoTList(jsonSenseExamples,SenseExampleEntity.class));
 
                 EntityManager.putEntity(senseAttributeEntity);
                 return senseAttributeEntity;
@@ -585,10 +585,10 @@ public class JSONParser {
             }
             else{
                 PartOfSpeechEntity partOfSpeechEntity = new PartOfSpeechEntity();
-                partOfSpeechEntity.setId(jsonPartOfSpeech.getInt("id"));
+                partOfSpeechEntity.setPartOfSpeechId(jsonPartOfSpeech.getLong("id"));
                 partOfSpeechEntity.setColor(jsonPartOfSpeech.optString("color",null));
 
-                partOfSpeechEntity.setName_id(handleNullInIntegerField(jsonPartOfSpeech.optInt("name_id",-1)));
+                partOfSpeechEntity.setNameId(handleNullInIntegerField(jsonPartOfSpeech.optLong("nameId",-1)));
 
                 EntityManager.putEntity(partOfSpeechEntity);
                 return partOfSpeechEntity;
@@ -609,7 +609,7 @@ public class JSONParser {
             }
             else{
                 WordEntity wordEntity = new WordEntity();
-                wordEntity.setId(jsonWord.getInt("id"));
+                wordEntity.setWordId(jsonWord.getLong("id"));
                 wordEntity.setWord(jsonWord.optString("word",null));
 
                 EntityManager.putEntity(wordEntity);
@@ -631,11 +631,11 @@ public class JSONParser {
             }
             else{
                 LexiconEntity lexiconEntity = new LexiconEntity();
-                lexiconEntity.setId(jsonLexicon.getInt("id"));
+                lexiconEntity.setLexiconId(jsonLexicon.getLong("id"));
                 lexiconEntity.setName(jsonLexicon.optString("name",null));
                 lexiconEntity.setIdentifier(jsonLexicon.optString("identifier",null));
-                lexiconEntity.setLanguage_name(jsonLexicon.optString("language_name",null));
-                lexiconEntity.setLexicon_version(jsonLexicon.optString("lexicon_version",null));
+                lexiconEntity.setLanguageName(jsonLexicon.optString("languageName",null));
+                lexiconEntity.setLexiconVersion(jsonLexicon.optString("lexiconVersion",null));
 
                 EntityManager.putEntity(lexiconEntity);
                 return lexiconEntity;
@@ -656,11 +656,11 @@ public class JSONParser {
             }
             else{
                 DomainEntity domainEntity = new DomainEntity();
-                domainEntity.setId(jsonDomain.getInt("id"));
+                domainEntity.setDomainId(jsonDomain.getLong("id"));
 
 
-                domainEntity.setName_id(handleNullInIntegerField(jsonDomain.optInt("name_id",-1)));
-                domainEntity.setDescription_id(handleNullInIntegerField(jsonDomain.optInt("description_id",-1)));
+                domainEntity.setNameId(handleNullInIntegerField(jsonDomain.optInt("nameId",-1)));
+                domainEntity.setDescriptionId(handleNullInIntegerField(jsonDomain.optInt("descriptionId",-1)));
 
                 EntityManager.putEntity(domainEntity);
                 return domainEntity;
@@ -681,7 +681,7 @@ public class JSONParser {
             }
             else{
                 ApplicationLocalisedStringEntity applicationLocalisedStringEntity = new ApplicationLocalisedStringEntity();
-                applicationLocalisedStringEntity.setId(jsonLocalisedString.getInt("id"));
+                applicationLocalisedStringEntity.setApplicationLocalisedStringId(jsonLocalisedString.getLong("id"));
                 applicationLocalisedStringEntity.setLanguage(jsonLocalisedString.optString("language",null));
                 applicationLocalisedStringEntity.setValue(jsonLocalisedString.optString("value",null));
 
@@ -695,6 +695,10 @@ public class JSONParser {
     }
 
     private static Integer handleNullInIntegerField(int value){
+        return (value>-1 ? value : null);
+    }
+
+    private static Long handleNullInIntegerField(long value){
         return (value>-1 ? value : null);
     }
 }

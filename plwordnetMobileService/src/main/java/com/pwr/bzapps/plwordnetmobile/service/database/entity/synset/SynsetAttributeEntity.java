@@ -1,7 +1,5 @@
 package com.pwr.bzapps.plwordnetmobile.service.database.entity.synset;
 
-import com.pwr.bzapps.plwordnetmobile.service.database.entity.sense.SenseExampleEntity;
-
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -19,41 +17,30 @@ import java.util.Collection;
 public class SynsetAttributeEntity {
     @Id
     @Column(name = "synset_id")
-    private Integer synset_id;
-    //@ManyToOne
-    //@JoinColumn(name = "synset", referencedColumnName = "id")
-    //private SynsetEntity synset;
+    private Long synsetId;
     @Column(name = "comment")
     private String comment;
     @Column(name = "definition")
     private String definition;
     @Column(name = "princeton_id")
-    private String princeton_id;
+    private String princetonId;
     @Column(name = "owner_id")
-    private Integer owner_id;
+    private Integer ownerId;
     @Column(name = "error_comment")
-    private String error_comment;
+    private String errorComment;
     @Column(name = "ili_id")
-    private String ili_id;
+    private String iliId;
 
-    @OneToMany(mappedBy = "synset_attributes_id")
-    private Collection<SynsetExampleEntity> synset_examples;
+    @OneToMany(mappedBy = "synsetAttributeId")
+    private Collection<SynsetExampleEntity> synsetExamples;
 
-    public Integer getSynset_id() {
-        return synset_id;
+    public Long getSynsetId() {
+        return synsetId;
     }
 
-    public void setSynset_id(Integer synset_id) {
-        this.synset_id = synset_id;
+    public void setSynsetId(Long synsetId) {
+        this.synsetId = synsetId;
     }
-
-    //public SynsetEntity getSynset() {
-    //    return synset;
-    //}
-//
-    //public void setSynset(SynsetEntity synset) {
-    //    this.synset = synset;
-    //}
 
     public String getComment() {
         return comment;
@@ -71,58 +58,58 @@ public class SynsetAttributeEntity {
         this.definition = definition;
     }
 
-    public String getPrinceton_id() {
-        return princeton_id;
+    public String getPrincetonId() {
+        return princetonId;
     }
 
-    public void setPrinceton_id(String princeton_id) {
-        this.princeton_id = princeton_id;
+    public void setPrincetonId(String princetonId) {
+        this.princetonId = princetonId;
     }
 
-    public Integer getOwner_id() {
-        return owner_id;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(Integer owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = errorComment;
     }
 
-    public String getIli_id() {
-        return ili_id;
+    public String getIliId() {
+        return iliId;
     }
 
-    public void setIli_id(String ili_id) {
-        this.ili_id = ili_id;
+    public void setIliId(String iliId) {
+        this.iliId = iliId;
     }
 
-    public Collection<SynsetExampleEntity> getSynset_examples() {
-        return synset_examples;
+    public Collection<SynsetExampleEntity> getSynsetExamples() {
+        return synsetExamples;
     }
 
-    public void setSynset_examples(Collection<SynsetExampleEntity> synset_examples) {
-        this.synset_examples = synset_examples;
+    public void setSynsetExamples(Collection<SynsetExampleEntity> synsetExamples) {
+        this.synsetExamples = synsetExamples;
     }
 
     public String toString(){
         String string = "";
         string+="SyAE{";
-        string+="synset_id:" + synset_id + ";";
+        string+="synsetId:" + synsetId + ";";
         //string+="synset: " + synset.toString() + ";";
         string+="comment:" + comment + ";";
         string+="definition:" + definition + ";";
-        string+="princeton_id:" + princeton_id + ";";
-        string+="owner_id:" + owner_id + ";";
-        string+="error_comment:" + error_comment + ";";
-        string+="ili_id:" + ili_id + ";";
-        string+="synset_examples:" + synset_examples.toString();
+        string+="princetonId:" + princetonId + ";";
+        string+="ownerId:" + ownerId + ";";
+        string+="errorComment:" + errorComment + ";";
+        string+="iliId:" + iliId + ";";
+        string+="synsetExamples:" + synsetExamples.toString();
         string+="}SyAE";
 
         return string;

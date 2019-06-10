@@ -1,6 +1,11 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
+
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
 
 import java.io.Serializable;
@@ -11,26 +16,31 @@ import java.io.Serializable;
  *   `example` text CHARACTER SET utf8 COLLATE utf8_polish_ci,
  *   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  * */
-public class SenseExampleEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer sense_attribute_id;
+@Table(name = "sense_examples", id = "id")
+public class SenseExampleEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "sense_attribute_id")
+    private Long senseAttributeId;
+    @Column(name = "example")
     private String example;
+    @Column(name = "type")
     private String type;
 
-    public Integer getId() {
+    public Long getSenseExampleId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setSenseExampleId(Long id) {
         this.id = id;
     }
 
-    public Integer getSense_attribute_id() {
-        return sense_attribute_id;
+    public Long getSenseAttributeId() {
+        return senseAttributeId;
     }
 
-    public void setSense_attribute_id(Integer sense_attribute_id) {
-        this.sense_attribute_id = sense_attribute_id;
+    public void setSenseAttributeId(Long senseAttributeId) {
+        this.senseAttributeId = senseAttributeId;
     }
 
     public String getExample() {
@@ -51,6 +61,6 @@ public class SenseExampleEntity implements Entity, Serializable {
 
     @Override
     public String getEntityID() {
-        return "SeEx:" + getId();
+        return "SeEx:" + getSenseExampleId();
     }
 }

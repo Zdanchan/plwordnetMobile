@@ -1,12 +1,16 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
 
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.sense.SenseExampleDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  *   `sense_id` bigint(20) NOT NULL,
@@ -20,25 +24,35 @@ import java.util.Collection;
  *   `proper_name` bit(1) NOT NULL DEFAULT b'0',
  *
  * */
-public class SenseAttributeEntity implements Entity, Serializable {
-    private Integer sense_id;
+@Table(name = "sense_attributes", id = "sense_id")
+public class SenseAttributeEntity extends Model implements Entity, Serializable {
+    @Column(name = "sense_id", unique = true)
+    private Long senseId;
+    @Column(name = "comment")
     private String comment;
+    @Column(name = "definition")
     private String definition;
+    @Column(name = "link")
     private String link;
-    private Integer register_id;
-    private Integer aspect_id;
-    private Integer user_id;
-    private String error_comment;
-    private boolean proper_name;
+    @Column(name = "register_id")
+    private Integer registerId;
+    @Column(name = "aspect_id")
+    private Integer aspectId;
+    @Column(name = "user_id")
+    private Integer userId;
+    @Column(name = "error_comment")
+    private String errorComment;
+    @Column(name = "proper_name")
+    private boolean properName;
 
-    private Collection<SenseExampleEntity> sense_examples;
+    private List<SenseExampleEntity> senseExamples;
 
-    public Integer getSense_id() {
-        return sense_id;
+    public Long getSenseAttributeId() {
+        return senseId;
     }
 
-    public void setSense_id(Integer sense_id) {
-        this.sense_id = sense_id;
+    public void setSenseAttributeId(Long senseId) {
+        this.senseId = senseId;
     }
 
     public String getComment() {
@@ -65,56 +79,58 @@ public class SenseAttributeEntity implements Entity, Serializable {
         this.link = "null".equals(link) ? null : link;
     }
 
-    public Integer getRegister_id() {
-        return register_id;
+    public Integer getRegisterId() {
+        return registerId;
     }
 
-    public void setRegister_id(Integer register_id) {
-        this.register_id = register_id;
+    public void setRegisterId(Integer registerId) {
+        this.registerId = registerId;
     }
 
-    public Integer getAspect_id() {
-        return aspect_id;
+    public Integer getAspectId() {
+        return aspectId;
     }
 
-    public void setAspect_id(Integer aspect_id) {
-        this.aspect_id = aspect_id;
+    public void setAspectId(Integer aspectId) {
+        this.aspectId = aspectId;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getError_comment() {
-        return error_comment;
+    public String getErrorComment() {
+        return errorComment;
     }
 
-    public void setError_comment(String error_comment) {
-        this.error_comment = "null".equals(error_comment) ? null : error_comment;
+    public void setErrorComment(String errorComment) {
+        this.errorComment = "null".equals(errorComment) ? null : errorComment;
     }
 
-    public boolean isProper_name() {
-        return proper_name;
+    public boolean isProperName() {
+        return properName;
     }
 
-    public void setProper_name(boolean proper_name) {
-        this.proper_name = proper_name;
+    public void setProperName(boolean properName) {
+        this.properName = properName;
     }
 
-    public Collection<SenseExampleEntity> getSense_examples() {
-        return sense_examples;
+    public List<SenseExampleEntity> getSenseExamples() {
+        if(Settings.isOfflineMode() && senseExamples==null)
+            senseExamples = SenseExampleDAO.findAllForSenseAttribute(senseId);
+        return senseExamples;
     }
 
-    public void setSense_examples(Collection<SenseExampleEntity> sense_examples) {
-        this.sense_examples = sense_examples;
+    public void setSenseExamples(List<SenseExampleEntity> senseExamples) {
+        this.senseExamples = senseExamples;
     }
 
     @Override
     public String getEntityID() {
-        return "SeAE:"+getSense_id();
+        return "SeAE:"+ getSenseAttributeId();
     }
 }

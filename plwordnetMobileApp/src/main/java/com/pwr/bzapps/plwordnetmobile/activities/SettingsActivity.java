@@ -3,12 +3,11 @@ package com.pwr.bzapps.plwordnetmobile.activities;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
-import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 import com.pwr.bzapps.plwordnetmobile.R;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
-import com.pwr.bzapps.plwordnetmobile.database.access.task.CheckLocalSQLiteDBWithServerTask;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.fragments.*;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
@@ -40,8 +39,12 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
     public void onBackPressed() {
         Settings.saveSettings(getApplication());
         if (settingsCategoriesFragment != null && settingsCategoriesFragment.isVisible()) {
+            if(!SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()).exists()){
+                Settings.setOfflineMode(false);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.selected_unavailable), Toast.LENGTH_LONG).show();
+            }
             if(!"none".equals(Settings.getDbType()))
-                SQLiteConnector.reloadInstance(getApplicationContext());
+                SQLiteConnector.reloadDatabaseInstance(getApplicationContext());
             else{
                 Settings.setOfflineMode(false);
             }
@@ -70,12 +73,18 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
         Fragment fragment = settingsCategoriesFragment;
         switch (fragment_class.getSimpleName()) {
             case "SettingsLocalDatabaseFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsLocalDatabaseFragment).commit();
+                settingsLocalDatabaseFragment = new SettingsLocalDatabaseFragment();
                 fragment = settingsLocalDatabaseFragment;
                 break;
             case "SettingsVisualFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsVisualFragment).commit();
+                settingsVisualFragment = new SettingsVisualFragment();
                 fragment = settingsVisualFragment;
                 break;
             case "SettingsHistoryAndBookmarksFragment":
+                getSupportFragmentManager().beginTransaction().remove(settingsHistoryAndBookmarksFragment).commit();
+                settingsHistoryAndBookmarksFragment = new SettingsHistoryAndBookmarksFragment();
                 fragment = settingsHistoryAndBookmarksFragment;
                 break;
         }

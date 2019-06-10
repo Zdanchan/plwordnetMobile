@@ -1,17 +1,17 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.synset;
 
 
-import android.support.annotation.NonNull;
-
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetAttributeDAO;
+import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetRelationDAO;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
 import com.pwr.bzapps.plwordnetmobile.database.entity.application.LexiconEntity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.sense.SenseEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
+import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  *   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -20,22 +20,29 @@ import java.util.Collection;
  *   `status_id` bigint(20) DEFAULT NULL,
  *   `abstract` tinyint(1) DEFAULT NULL COMMENT 'is synset abstract',
  * */
-public class SynsetEntity implements Entity, Serializable {
-    private Integer id;
+@Table(name = "synset", id = "id")
+public class SynsetEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "split")
     private Integer split;
-    private LexiconEntity lexicon_id;
-    private Integer status_id;
+    @Column(name = "lexicon_")
+    private LexiconEntity lexiconId;
+    @Column(name = "status_id")
+    private Integer statusId;
+    @Column(name = "abstract")
     private Short abstract_;
 
-    private Collection<SynsetRelationEntity> relation_child;
-    private Collection<SynsetRelationEntity> relation_parent;
-    private Collection<SynsetAttributeEntity> synset_attributes;
 
-    public Integer getId() {
+    private List<SynsetRelationEntity> relationChild;
+    private List<SynsetRelationEntity> relationParent;
+    private List<SynsetAttributeEntity> synsetAttributes;
+
+    public Long getSynsetId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setSynsetId(Long id) {
         this.id = id;
     }
 
@@ -47,20 +54,28 @@ public class SynsetEntity implements Entity, Serializable {
         this.split = split;
     }
 
-    public LexiconEntity getLexicon_id() {
-        return lexicon_id;
+    public LexiconEntity getLexiconId() {
+        return lexiconId;
     }
 
-    public void setLexicon_id(LexiconEntity lexicon_id) {
-        this.lexicon_id = lexicon_id;
+    public void setLexiconId(LexiconEntity lexiconId) {
+        this.lexiconId = lexiconId;
     }
 
-    public Integer getStatus_id() {
-        return status_id;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Integer status_id) {
-        this.status_id = status_id;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public Short getAbstract_() {
+        return getAbstract();
+    }
+
+    public void setAbstract_(Short abstract_) {
+        setAbstract(abstract_);
     }
 
     public Short getAbstract() {
@@ -71,32 +86,38 @@ public class SynsetEntity implements Entity, Serializable {
         this.abstract_ = abstract_;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_child() {
-        return relation_child;
+    public List<SynsetRelationEntity> getRelationChild() {
+        if(Settings.isOfflineMode() && relationChild==null)
+            relationChild = SynsetRelationDAO.findParentsByChildId(id);
+        return relationChild;
     }
 
-    public void setRelation_child(Collection<SynsetRelationEntity> relation_child) {
-        this.relation_child = relation_child;
+    public void setRelationChild(List<SynsetRelationEntity> relationChild) {
+        this.relationChild = relationChild;
     }
 
-    public Collection<SynsetRelationEntity> getRelation_parent() {
-        return relation_parent;
+    public List<SynsetRelationEntity> getRelationParent() {
+        if(Settings.isOfflineMode() && relationParent==null)
+            relationParent = SynsetRelationDAO.findChildrenByParentId(id);
+        return relationParent;
     }
 
-    public void setRelation_parent(Collection<SynsetRelationEntity> relation_parent) {
-        this.relation_parent = relation_parent;
+    public void setRelationParent(List<SynsetRelationEntity> relationParent) {
+        this.relationParent = relationParent;
     }
 
-    public Collection<SynsetAttributeEntity> getSynset_attributes() {
-        return synset_attributes;
+    public List<SynsetAttributeEntity> getSynsetAttributes() {
+        if(Settings.isOfflineMode() && synsetAttributes==null)
+            synsetAttributes = SynsetAttributeDAO.findAllForSynsetId(id);
+        return synsetAttributes;
     }
 
-    public void setSynset_attributes(Collection<SynsetAttributeEntity> synset_attributes) {
-        this.synset_attributes = synset_attributes;
+    public void setSynsetAttributes(List<SynsetAttributeEntity> synsetAttributes) {
+        this.synsetAttributes = synsetAttributes;
     }
 
     @Override
     public String getEntityID() {
-        return "Sy:" + getId();
+        return "Sy:" + getSynsetId();
     }
 }

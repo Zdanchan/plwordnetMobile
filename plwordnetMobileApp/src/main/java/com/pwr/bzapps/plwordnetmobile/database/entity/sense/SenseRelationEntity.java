@@ -1,10 +1,10 @@
 package com.pwr.bzapps.plwordnetmobile.database.entity.sense;
 
-
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.pwr.bzapps.plwordnetmobile.database.entity.Entity;
-import com.pwr.bzapps.plwordnetmobile.database.entity.EntityManager;
 import com.pwr.bzapps.plwordnetmobile.database.entity.relation.RelationTypeEntity;
-import com.pwr.bzapps.plwordnetmobile.utils.StringUtil;
 
 import java.io.Serializable;
 
@@ -14,46 +14,51 @@ import java.io.Serializable;
  *   `parent_sense_id` bigint(20) NOT NULL,
  *   `relation_type_id` bigint(20) NOT NULL,
  * */
-public class SenseRelationEntity implements Entity, Serializable {
-    private Integer id;
-    private Integer child_sense_id;
-    private Integer parent_sense_id;
-    private RelationTypeEntity relation_type_id;
+@Table(name = "sense_relation", id = "id")
+public class SenseRelationEntity extends Model implements Entity, Serializable {
+    @Column(name = "id", unique = true)
+    private Long id;
+    @Column(name = "child_sense_id")
+    private Long childSenseId;
+    @Column(name = "parent_sense_id")
+    private Long parentSenseId;
+    @Column(name = "relation_type_id")
+    private RelationTypeEntity relationTypeId;
 
-    public Integer getId() {
+    public Long getSenseRelationId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setSenseRelationId(Long id) {
         this.id = id;
     }
 
-    public Integer getChild_sense_id() {
-        return child_sense_id;
+    public Long getChildSenseId() {
+        return childSenseId;
     }
 
-    public void setChild_sense_id(Integer child_sense_id) {
-        this.child_sense_id = child_sense_id;
+    public void setChildSenseId(Long childSenseId) {
+        this.childSenseId = childSenseId;
     }
 
-    public Integer getParent_sense_id() {
-        return parent_sense_id;
+    public Long getParentSenseId() {
+        return parentSenseId;
     }
 
-    public void setParent_sense_id(Integer parent_sense_id) {
-        this.parent_sense_id = parent_sense_id;
+    public void setParentSenseId(Long parentSenseId) {
+        this.parentSenseId = parentSenseId;
     }
 
-    public RelationTypeEntity getRelation_type_id() {
-        return relation_type_id;
+    public RelationTypeEntity getRelationTypeId() {
+        return relationTypeId;
     }
 
-    public void setRelation_type_id(RelationTypeEntity relation_type_id) {
-        this.relation_type_id = relation_type_id;
+    public void setRelationTypeId(RelationTypeEntity relationTypeId) {
+        this.relationTypeId = relationTypeId;
     }
 
     @Override
     public String getEntityID() {
-        return "SeR:" + getId();
+        return "SeR:" + getSenseRelationId();
     }
 }

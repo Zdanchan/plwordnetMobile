@@ -25,7 +25,7 @@ public class GraphBrowserActivity extends BackButtonActivity{
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
-        int synset_id = getIntent().getExtras().getInt("synset_id",2914);
+        Long synset_id = getIntent().getExtras().getLong("synset_id",2914);
         if(savedInstanceState == null)
             webView.loadUrl("file:///android_asset/index.html?synset_id=" + synset_id + "&language=" + Settings.getShortLocalName());
         toolbar_hide_button = findViewById(R.id.toolbar_hide_button);
