@@ -34,6 +34,8 @@ import com.pwr.bzapps.plwordnetmobile.layout.listener.OnClickExpander;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SenseViewActivity extends DrawerMenuActivity {
 
