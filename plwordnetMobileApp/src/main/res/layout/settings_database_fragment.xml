@@ -182,11 +182,11 @@
                 />
         <TextView
                 android:id="@+id/sync_progress_percentage"
-                android:layout_width="35dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/status_text"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"

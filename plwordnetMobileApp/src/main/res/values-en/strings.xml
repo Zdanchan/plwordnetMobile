@@ -129,5 +129,9 @@
     <string name="download_error_title">Update error</string>
     <string name="download_error_content">An error occurred during local database update, please try again.</string>
     <string name="selected_unavailable">Cannot load database until it\'s downloaded, switching back to Online mode.</string>
+    <string name="please_wait">Please wait</string>
+    <string name="currently_downloading">Currently downloading dictionary, please wait until process is finished or cancel it to go back.</string>
+    <string name="wait_button">Wait</string>
+    <string name="cancel_button">Cancel downloading</string>
     <!---->
 </resources>

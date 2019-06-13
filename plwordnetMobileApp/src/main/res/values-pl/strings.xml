@@ -129,5 +129,9 @@
     <string name="download_error_title">Błąd aktualizacji</string>
     <string name="download_error_content">Podczas aktualizacji lokalnej bazy danych wystąpił błąd, proszę spróbować ponownie.</string>
     <string name="selected_unavailable">Nie można otworzyć bazy danych dopóki nie zostanie pobrana. Powrót do trybu Online.</string>
+    <string name="please_wait">Proszę czekać</string>
+    <string name="currently_downloading">Trwa pobieranie słownika, proszę poczekaj aż proces zostanie zakończony lub przerwij pobieranie by móc wyjść.</string>
+    <string name="wait_button">Poczekaj</string>
+    <string name="cancel_button">Przerwij pobieranie</string>
     <!---->
 </resources>
