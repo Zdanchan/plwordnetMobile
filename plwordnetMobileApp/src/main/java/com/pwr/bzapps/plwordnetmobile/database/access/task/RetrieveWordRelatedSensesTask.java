@@ -35,7 +35,7 @@ public class RetrieveWordRelatedSensesTask extends AsyncTask<String,Void,String>
             try{
                 resultHolder = new ArrayList<SenseEntity>(
                         SenseDAO.findRelatedForWordLanguageAndPartOfSpeech(strings[0], strings[1], Long.parseLong(strings[2])));
-            }catch (SQLiteException e){
+            }catch (Exception e){
                 return "LocalDBException";
             }
         }

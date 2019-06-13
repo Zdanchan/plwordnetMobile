@@ -37,7 +37,7 @@ public class RetrieveSynonymsTask extends AsyncTask<String,Void,String> {
             try{
                 resultHolder = new ArrayList<SenseEntity>(
                         SenseDAO.findBySynsetId(Long.parseLong(strings[0])));
-            }catch (SQLiteException e){
+            }catch (Exception e){
                 return "LocalDBException";
             }
         }

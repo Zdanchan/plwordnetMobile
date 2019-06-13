@@ -38,7 +38,7 @@ public class RetrieveSelectedSensesTask extends AsyncTask<String,Void,String> {
             try{
                 resultHolder = new ArrayList<SenseEntity>(
                         SenseDAO.findMultipleByIds(StringUtil.parseStringToLongArray(strings[0])));
-            }catch (SQLiteException e){
+            }catch (Exception e){
                 return "LocalDBException";
             }
         }
