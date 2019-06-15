@@ -3,12 +3,16 @@ package com.pwr.bzapps.plwordnetmobile.activities;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.Toast;
 import com.pwr.bzapps.plwordnetmobile.R;
+import com.pwr.bzapps.plwordnetmobile.activities.notification.WarningPopup;
 import com.pwr.bzapps.plwordnetmobile.activities.template.BackButtonActivity;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
 import com.pwr.bzapps.plwordnetmobile.fragments.*;
+import com.pwr.bzapps.plwordnetmobile.service.DownloadService;
+import com.pwr.bzapps.plwordnetmobile.service.receiver.DownloadReceiver;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public class SettingsActivity extends BackButtonActivity implements FragmentChangeListener{
@@ -39,10 +43,6 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
     public void onBackPressed() {
         Settings.saveSettings(getApplication());
         if (settingsCategoriesFragment != null && settingsCategoriesFragment.isVisible()) {
-            if(!SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()).exists()){
-                Settings.setOfflineMode(false);
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.selected_unavailable), Toast.LENGTH_LONG).show();
-            }
             if(!"none".equals(Settings.getDbType()))
                 SQLiteConnector.reloadDatabaseInstance(getApplicationContext());
             else{
@@ -51,8 +51,34 @@ public class SettingsActivity extends BackButtonActivity implements FragmentChan
             super.onBackPressed();
         }
         else if (settingsLocalDatabaseFragment != null && settingsLocalDatabaseFragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.settings_fragment_container, settingsCategoriesFragment, "SettingsCategoriesFragment").commit();
+            if(DownloadReceiver.isDownloadReceiverRunning()){
+                final WarningPopup warningPopup =
+                        new WarningPopup(this,
+                                getLayoutInflater(),
+                                getResources().getString(R.string.please_wait),
+                                getResources().getString(R.string.currently_downloading),
+                                getResources().getString(R.string.wait_button),
+                                getResources().getString(R.string.cancel_button)
+                                );
+                warningPopup.addOnClickListener(0, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        warningPopup.dismiss();
+                    }
+                });
+                warningPopup.addOnClickListener(1, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(DownloadReceiver.isInitialized())
+                            DownloadReceiver.getInstance().cancel();
+                        warningPopup.dismiss();
+                    }
+                });
+                warningPopup.show();
+            }
+            else
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.settings_fragment_container, settingsCategoriesFragment, "SettingsCategoriesFragment").commit();
         }
         else if (settingsVisualFragment != null && settingsVisualFragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()

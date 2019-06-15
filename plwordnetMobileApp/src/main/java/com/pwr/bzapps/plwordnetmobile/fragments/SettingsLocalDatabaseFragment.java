@@ -142,6 +142,7 @@ public class SettingsLocalDatabaseFragment extends Fragment {
             if(DownloadReceiver.getInstance().isRunning()) {
                 DownloadReceiver.getInstance().setSettingsLocalDatabaseFragment(this);
                 DownloadReceiver.getInstance().setProgressBar(syncProgress);
+                DownloadReceiver.getInstance().setPercentageProgress(syncProgressPercentage);
                 startSyncAction();
             }
         }
@@ -237,12 +238,14 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         if (status == 1 || status == 2) {
             startSyncAction();
             Intent intent = new Intent(getActivity(), DownloadService.class);
+            DownloadReceiver downloadReceiver = DownloadReceiver.getInstance(
+                    intent,
+                    syncProgress,
+                    syncProgressPercentage,
+                    SettingsLocalDatabaseFragment.this);
             intent.putExtra("db_type", Settings.getDbType());
-            intent.putExtra("receiver",
-                    DownloadReceiver.getInstance(
-                            syncProgress,
-                            syncProgressPercentage,
-                            SettingsLocalDatabaseFragment.this));
+            intent.putExtra("receiver", downloadReceiver);
+            downloadReceiver.restart();
             getActivity().startService(intent);
         }
     }
@@ -271,21 +274,23 @@ public class SettingsLocalDatabaseFragment extends Fragment {
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
         buttonsEnabled = true;
-        chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
-                getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
-        adapter.setBackgroundsResource(outValue.resourceId);
-        adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         adapter.setIsEnabled(true);
-        synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        synchronizeButton.setBackgroundResource(outValue.resourceId);
-        ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor
-                (getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        removeButton.setBackgroundResource(outValue.resourceId);
-        ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
-                getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        if(Settings.isOfflineMode()) {
+            chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+            ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
+                    getActivity().getApplicationContext().getColor(R.color.colorMainText));
+            adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
+            adapter.setBackgroundsResource(outValue.resourceId);
+            adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
+            synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+            synchronizeButton.setBackgroundResource(outValue.resourceId);
+            ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor
+                    (getActivity().getApplicationContext().getColor(R.color.colorMainText));
+            removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+            removeButton.setBackgroundResource(outValue.resourceId);
+            ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
+                    getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        }
     }
 
     public void disableLocalDBSettings(){
@@ -312,21 +317,23 @@ public class SettingsLocalDatabaseFragment extends Fragment {
 
     public void enableLocalDBSettings(){
         buttonsEnabled = true;
+        adapter.setIsEnabled(true);
+        adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
+        adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
         chooseLocalDbLabel.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
         ((TextView) chooseLocalDbLabel.findViewById(R.id.database_text)).setTextColor(
                 getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        adapter.setBackgrounds(getActivity().getApplicationContext().getColor(R.color.alpha));
-        adapter.setTextColor(getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        adapter.setIsEnabled(true);
         synchronizeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
         ((TextView) synchronizeButton.findViewById(R.id.sync_databases_text)).setTextColor(
                 getActivity().getApplicationContext().getColor(R.color.colorMainText));
         removeButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
         ((TextView) removeButton.findViewById(R.id.remove_databases_text)).setTextColor(
                 getActivity().getApplicationContext().getColor(R.color.colorMainText));
-        statusButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
-        ((TextView) statusButton.findViewById(R.id.status_text)).setTextColor(
-                getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        if (DownloadReceiver.getInstance() == null || !DownloadReceiver.getInstance().isRunning()) {
+            statusButton.setBackgroundColor(getActivity().getApplicationContext().getColor(R.color.alpha));
+            ((TextView) statusButton.findViewById(R.id.status_text)).setTextColor(
+                    getActivity().getApplicationContext().getColor(R.color.colorMainText));
+        }
         setStatus(status);
     }
 

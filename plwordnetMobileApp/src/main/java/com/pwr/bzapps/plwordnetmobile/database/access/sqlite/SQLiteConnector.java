@@ -30,14 +30,17 @@ public class SQLiteConnector {
 
     private static Context context;
 
+    public static void reloadDatabaseInstance(){
+        reloadDatabaseInstance(context);
+    }
+
     public static void reloadDatabaseInstance(Context context){
         if(Cache.isInitialized()) {
             ActiveAndroid.dispose();
         }
         if(SQLiteConnector.context==null)
             SQLiteConnector.context=context;
-        if(!SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()).exists()) {
-            Settings.setOfflineMode(false);
+        if(!SQLiteDBFileManager.getInstance(context).getSqliteDbFile(Settings.getDbType()).exists()) {
             return;
         }
         try {

@@ -1,7 +1,6 @@
 package com.pwr.bzapps.plwordnetmobile.service.receiver;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteException;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteConnector;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteDBFileManager;
-import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.SQLiteTablesConstNames;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application.ApplicationLocalisedStringDAO;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application.DictionaryDAO;
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.application.DomainDAO;
@@ -31,6 +29,7 @@ import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetEx
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetRelationDAO;
 import com.pwr.bzapps.plwordnetmobile.fragments.SettingsLocalDatabaseFragment;
 import com.pwr.bzapps.plwordnetmobile.service.DownloadService;
+import com.pwr.bzapps.plwordnetmobile.service.ServiceManagement;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public class DownloadReceiver extends ResultReceiver {
@@ -38,26 +37,40 @@ public class DownloadReceiver extends ResultReceiver {
     private SettingsLocalDatabaseFragment settingsLocalDatabaseFragment;
     private ProgressBar progressBar;
     private TextView percentageProgress;
-    private static DownloadReceiver instance = null;
+    private Intent downloadService;
     private boolean isRunning = false;
+    private boolean isCanceled = false;
     private boolean finalized = false;
 
+    private static DownloadReceiver instance = null;
+
     private DownloadReceiver(Handler handler,
+                             Intent downloadService,
                              ProgressBar progressBar,
                              TextView percentageProgress,
                              SettingsLocalDatabaseFragment settingsLocalDatabaseFragment) {
         super(handler);
+        this.downloadService=downloadService;
         this.progressBar=progressBar;
         this.percentageProgress=percentageProgress;
         this.settingsLocalDatabaseFragment=settingsLocalDatabaseFragment;
     }
 
-    public static DownloadReceiver getInstance(ProgressBar progressBar,
+    public static DownloadReceiver getInstance(Intent downloadService,
+                                               ProgressBar progressBar,
                                                TextView percentageProgress,
                                                SettingsLocalDatabaseFragment settingsLocalDatabaseFragment) {
         if(!isInitialized()){
-            instance = new DownloadReceiver(new Handler(), progressBar, percentageProgress,settingsLocalDatabaseFragment);
+            instance =
+                    new DownloadReceiver(new Handler(),
+                            downloadService,
+                            progressBar,
+                            percentageProgress,
+                            settingsLocalDatabaseFragment);
         }
+        instance.setProgressBar(progressBar);
+        instance.setPercentageProgress(percentageProgress);
+        instance.setSettingsLocalDatabaseFragment(settingsLocalDatabaseFragment);
         return instance;
     }
 
@@ -69,14 +82,37 @@ public class DownloadReceiver extends ResultReceiver {
         return instance!=null;
     }
 
+    public static boolean isDownloadReceiverRunning(){
+        if(!isInitialized())
+            return false;
+        return getInstance().isRunning();
+    }
+
     public boolean isRunning() {
         return isRunning;
+    }
+
+    public void cancel(){
+        if(downloadService!=null &&
+                settingsLocalDatabaseFragment!=null &&
+                settingsLocalDatabaseFragment.getActivity()!=null){
+            ServiceManagement serviceManagement = new ServiceManagement(settingsLocalDatabaseFragment.getContext());
+            boolean isKilled = serviceManagement.killService(":plwordnetGoDownloadService");
+            isCanceled = true;
+        }
+    }
+
+    public void restart(){
+        isCanceled = false;
     }
 
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
         super.onReceiveResult(resultCode, resultData);
-        if (resultCode == DownloadService.UPDATE_PROGRESS) {
+        if(isCanceled && isRunning){
+            cancelDownload();
+        }
+        else if(resultCode == DownloadService.UPDATE_PROGRESS && !isCanceled) {
             int progress = resultData.getInt("progress");
             int status = resultData.getInt("status", -1);
             if(progress < 100){
@@ -106,19 +142,28 @@ public class DownloadReceiver extends ResultReceiver {
     }
 
     private void finalizeDownload(){
-        if(isLocalDBFine()){
-            if(settingsLocalDatabaseFragment!=null) {
+        if(settingsLocalDatabaseFragment!=null) {
+            SQLiteConnector.reloadDatabaseInstance(settingsLocalDatabaseFragment.getContext());
+            if (isLocalDBFine()) {
                 settingsLocalDatabaseFragment.stopSyncAction();
                 settingsLocalDatabaseFragment.setStatus(0);
-            }
-        }
-        else {
-            SQLiteDBFileManager.getInstance().removeLocalDB(Settings.getDbType());
-            if(settingsLocalDatabaseFragment!=null) {
+            } else {
+                SQLiteDBFileManager.getInstance().removeLocalDB(Settings.getDbType());
                 settingsLocalDatabaseFragment.setStatus(6);
                 settingsLocalDatabaseFragment.stopSyncAction();
                 settingsLocalDatabaseFragment.showWarningPopup();
+
             }
+        }
+        isRunning = false;
+        finalized = true;
+    }
+
+    private void cancelDownload(){
+        SQLiteDBFileManager.getInstance().removeLocalDB(Settings.getDbType());
+        if(settingsLocalDatabaseFragment!=null) {
+            settingsLocalDatabaseFragment.stopSyncAction();
+            settingsLocalDatabaseFragment.setStatus(0);
         }
         isRunning = false;
         finalized = true;
@@ -171,5 +216,13 @@ public class DownloadReceiver extends ResultReceiver {
 
     public void setProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
+    }
+
+    public TextView getPercentageProgress() {
+        return percentageProgress;
+    }
+
+    public void setPercentageProgress(TextView percentageProgress) {
+        this.percentageProgress = percentageProgress;
     }
 }

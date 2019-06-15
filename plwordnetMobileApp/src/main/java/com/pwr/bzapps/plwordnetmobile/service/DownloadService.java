@@ -1,6 +1,7 @@
 package com.pwr.bzapps.plwordnetmobile.service;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -28,6 +29,13 @@ public class DownloadService extends IntentService {
             return;
         String urlToDownload = getApplicationContext().getString(R.string.spring_interface_address) + "/db_controller/files?db_type=" + intent.getStringExtra("db_type");
         ResultReceiver receiver = (ResultReceiver) intent.getParcelableExtra("receiver");
+        String dbType = (String) intent.getStringExtra("db_type");
+        if("none".equals(dbType)) {
+            Bundle resultData = new Bundle();
+            resultData.putInt("status", 5);
+            receiver.send(UPDATE_PROGRESS, resultData);
+            return;
+        }
         try {
             running = true;
             URL url = new URL(urlToDownload);
@@ -35,14 +43,14 @@ public class DownloadService extends IntentService {
             connection.connect();
             int fileLength = connection.getContentLength();
 
-            File old_file = SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType());
+            File old_file = SQLiteDBFileManager.getInstance(getApplicationContext()).getSqliteDbFile(dbType);
             if(old_file.exists()){
                 old_file.delete();
             }
 
             InputStream input = new BufferedInputStream(connection.getInputStream());
             OutputStream output = new FileOutputStream(
-                    SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()));
+                    SQLiteDBFileManager.getInstance(getApplicationContext()).getSqliteDbFile(dbType));
 
             byte data[] = new byte[1024];
             long total = 0;
@@ -50,7 +58,7 @@ public class DownloadService extends IntentService {
             while ((count = input.read(data)) != -1) {
                 total += count;
                 Bundle resultData = new Bundle();
-                resultData.putInt("progress" ,(int) (total * 100 / fileLength));
+                resultData.putInt("progress" , (int) (total * 100 / fileLength));
                 resultData.putInt("status",4);
                 receiver.send(UPDATE_PROGRESS, resultData);
                 output.write(data, 0, count);

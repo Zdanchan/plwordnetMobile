@@ -36,7 +36,7 @@ public class RetrieveSensesBySynsetsTask extends AsyncTask<String,Void,String> {
             try {
                 resultHolder = new ArrayList<SenseEntity>(
                         SenseDAO.findMultipleBySynsetIds(StringUtil.parseStringToLongArray(strings[0])));
-            }catch (SQLiteException e){
+            }catch (Exception e){
             return "LocalDBException";
             }
         }

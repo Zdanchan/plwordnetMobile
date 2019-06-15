@@ -63,7 +63,7 @@ public class RetrieveSensesTask extends AsyncTask<String,Void,String>{
             try {
                 resultHolder = new ArrayList<SenseEntity>(SenseDAO.findByWord(strings[0], Settings.RESULTS_LIMIT));
                 Collections.sort((ArrayList<SenseEntity>) resultHolder);
-            }catch (SQLiteException e){
+            }catch (Exception e){
                 return "LocalDBException";
             }
         }
