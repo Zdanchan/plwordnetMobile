@@ -29,6 +29,7 @@ import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetEx
 import com.pwr.bzapps.plwordnetmobile.database.access.sqlite.dao.synset.SynsetRelationDAO;
 import com.pwr.bzapps.plwordnetmobile.fragments.SettingsLocalDatabaseFragment;
 import com.pwr.bzapps.plwordnetmobile.service.DownloadService;
+import com.pwr.bzapps.plwordnetmobile.service.ServiceManagement;
 import com.pwr.bzapps.plwordnetmobile.settings.Settings;
 
 public class DownloadReceiver extends ResultReceiver {
@@ -95,7 +96,8 @@ public class DownloadReceiver extends ResultReceiver {
         if(downloadService!=null &&
                 settingsLocalDatabaseFragment!=null &&
                 settingsLocalDatabaseFragment.getActivity()!=null){
-            settingsLocalDatabaseFragment.getActivity().stopService(downloadService); //TODO fix service stopping
+            ServiceManagement serviceManagement = new ServiceManagement(settingsLocalDatabaseFragment.getContext());
+            boolean isKilled = serviceManagement.killService(":plwordnetGoDownloadService");
             isCanceled = true;
         }
     }
@@ -140,19 +142,17 @@ public class DownloadReceiver extends ResultReceiver {
     }
 
     private void finalizeDownload(){
-        SQLiteConnector.reloadDatabaseInstance();
-        if(isLocalDBFine()){
-            if(settingsLocalDatabaseFragment!=null) {
+        if(settingsLocalDatabaseFragment!=null) {
+            SQLiteConnector.reloadDatabaseInstance(settingsLocalDatabaseFragment.getContext());
+            if (isLocalDBFine()) {
                 settingsLocalDatabaseFragment.stopSyncAction();
                 settingsLocalDatabaseFragment.setStatus(0);
-            }
-        }
-        else {
-            SQLiteDBFileManager.getInstance().removeLocalDB(Settings.getDbType());
-            if(settingsLocalDatabaseFragment!=null) {
+            } else {
+                SQLiteDBFileManager.getInstance().removeLocalDB(Settings.getDbType());
                 settingsLocalDatabaseFragment.setStatus(6);
                 settingsLocalDatabaseFragment.stopSyncAction();
                 settingsLocalDatabaseFragment.showWarningPopup();
+
             }
         }
         isRunning = false;

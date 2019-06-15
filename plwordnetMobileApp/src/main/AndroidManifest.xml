@@ -47,7 +47,8 @@
             android:configChanges="locale|layoutDirection|screenSize">
         </activity>
 
-        <service android:name=".service.DownloadService"/>
+        <service android:name=".service.DownloadService"
+                android:process=":plwordnetGoDownloadService"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

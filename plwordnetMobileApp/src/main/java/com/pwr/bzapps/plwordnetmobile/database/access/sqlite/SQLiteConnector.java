@@ -40,7 +40,7 @@ public class SQLiteConnector {
         }
         if(SQLiteConnector.context==null)
             SQLiteConnector.context=context;
-        if(!SQLiteDBFileManager.getInstance().getSqliteDbFile(Settings.getDbType()).exists()) {
+        if(!SQLiteDBFileManager.getInstance(context).getSqliteDbFile(Settings.getDbType()).exists()) {
             return;
         }
         try {
