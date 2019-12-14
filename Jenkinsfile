@@ -12,10 +12,8 @@ pipeline {
                 }
             }
             steps {
-                cd 'plwordnetMobileService'
-                sh 'gradle clean build'
+                sh 'gradle -p plwordnetMobileService/ clean build'
                 stash includes: 'target/*.jar', name: 'targetfiles'
-                cd '..'
             }     
         }
         stage('Test') {
@@ -26,8 +24,7 @@ pipeline {
             }
             steps {
                 cd 'plwordnetMobileService'
-                sh 'gradle test'
-                cd '..'
+                sh 'gradle -p plwordnetMobileService/ test'
             }
         }
         stage('Remove Unused docker image') {
