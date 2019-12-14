@@ -9,7 +9,6 @@ pipeline {
             agent {
                 docker {
                     image 'gradle:jdk8'
-                    label 'plwordnetmobile-jenkins-builder'
                 }
             }
             steps {
@@ -21,7 +20,6 @@ pipeline {
             agent {
                 docker {
                     image 'gradle:jdk8'
-                    label 'plwordnetmobile-jenkins-tester'
                 }
             }
             steps {
