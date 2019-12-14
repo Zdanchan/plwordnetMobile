@@ -9,9 +9,41 @@
       <options/>
     </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
   </actions>
-  <description></description>
+  <description>This job is used to rebuild and redeploy plwordnetMobile-service application on server after every stable release.</description>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.github.kostyasha.github.integration.branch.GitHubBranchTrigger plugin="github-pullrequest@0.2.6">
+          <spec>*/5 * * * *</spec>
+          <triggerMode>HEAVY_HOOKS_CRON</triggerMode>
+          <cancelQueued>false</cancelQueued>
+          <abortRunning>false</abortRunning>
+          <skipFirstRun>false</skipFirstRun>
+          <repoProviders>
+            <com.github.kostyasha.github.integration.generic.repoprovider.GitHubPluginRepoProvider>
+              <cacheConnection>true</cacheConnection>
+              <manageHooks>true</manageHooks>
+              <repoPermission>ADMIN</repoPermission>
+            </com.github.kostyasha.github.integration.generic.repoprovider.GitHubPluginRepoProvider>
+          </repoProviders>
+          <events>
+            <com.github.kostyasha.github.integration.branch.events.impl.GitHubBranchCommitEvent>
+              <checks>
+                <com.github.kostyasha.github.integration.branch.events.impl.commitchecks.impl.GitHubBranchCommitMessageCheck>
+                  <exclude>false</exclude>
+                  <matchCriteria>
+                    <string>.*[stable-release].*</string>
+                  </matchCriteria>
+                </com.github.kostyasha.github.integration.branch.events.impl.commitchecks.impl.GitHubBranchCommitMessageCheck>
+              </checks>
+            </com.github.kostyasha.github.integration.branch.events.impl.GitHubBranchCommitEvent>
+          </events>
+          <preStatus>false</preStatus>
+        </com.github.kostyasha.github.integration.branch.GitHubBranchTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.65">
     <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.3">
       <configVersion>2</configVersion>

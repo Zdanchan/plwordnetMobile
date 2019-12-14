@@ -13,7 +13,9 @@ services:
    context: ./docker-jenkins/
    args:
     - HOST_DOCKER_GROUP_ID=docker
-  volumes: ['/var/run/docker.sock:/var/run/docker.sock']
+  volumes: 
+   - '/var/run/docker.sock:/var/run/docker.sock'
+   - '/usr/local/bin/docker:/usr/bin/docker'
   ports:
    - '9080:8080'
    - '50000:50000'

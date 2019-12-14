@@ -13,6 +13,7 @@ buildscript {
 
 group 'bzapps'
 version rootProject.version
+apply plugin: 'base'
 apply plugin: 'com.android.application'
 
 
