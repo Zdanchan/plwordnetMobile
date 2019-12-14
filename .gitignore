@@ -6,3 +6,4 @@
 *.iml
 **/proguard-rules.pro
 plwordnetMobileService/src/main/resources/application.properties
+plwordnetMobileDocker/docker-mysql/sql-scripts/wordnet.sql
