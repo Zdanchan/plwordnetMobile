@@ -1,0 +1,19 @@
+version: '3'
+services:
+ plwordnetmobile-mysql:
+  container_name: plwordnetmobile-mysql
+  build: ./docker-mysql/
+  environment: 
+   - MYSQL_ROOT_PASSWORD=plw0rdn3t2018
+  ports:
+   - '33060:33060'
+ plwordnetmobile-jenkins:
+  container_name: plwordnetmobile-jenkins
+  build:
+   context: ./docker-jenkins/
+   args:
+    - HOST_DOCKER_GROUP_ID=docker
+  volumes: ['/var/run/docker.sock:/var/run/docker.sock']
+  ports:
+   - '9080:8080'
+   - '50000:50000'
