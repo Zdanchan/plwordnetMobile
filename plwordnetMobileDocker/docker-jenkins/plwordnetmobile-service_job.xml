@@ -12,6 +12,10 @@
   <description>This job is used to rebuild and redeploy plwordnetMobile-service application on server after every stable release.</description>
   <keepDependencies>false</keepDependencies>
   <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.5">
+      <projectUrl>https://github.com/Zdanchan/plwordnetMobile.git/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         <com.github.kostyasha.github.integration.branch.GitHubBranchTrigger plugin="github-pullrequest@0.2.6">
