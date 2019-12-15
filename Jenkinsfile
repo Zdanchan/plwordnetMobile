@@ -16,7 +16,7 @@ pipeline {
 		script {
 		    mysql_ip = sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql"
 		    replace_regex = 's/localhost/' + mysql_ip + '/g'
-		    sh "sed $replace_regex plwordnetMobileService/src/main/resources/application.properties > plwordnetMobileService/src/main/resources/application.properties"
+		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
                     sh 'gradle -p plwordnetMobileService/ clean build'
                     stash includes: 'plwordnetMobileService/build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
 		}
