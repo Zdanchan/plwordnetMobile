@@ -70,5 +70,6 @@
     <lightweight>true</lightweight>
   </definition>
   <triggers/>
+  <authToken>MY_TOKEN</authToken>
   <disabled>false</disabled>
 </flow-definition>

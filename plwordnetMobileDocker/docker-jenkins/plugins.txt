@@ -2,3 +2,4 @@ gradle:1.35
 docker-plugin:1.1.9
 github:1.29.5
 workflow-aggregator:2.6
+github-pullrequest:0.2.6
