@@ -13,6 +13,8 @@ pipeline {
 		    mysql_ip =readFile('mysql_ip').trim()
 		    replace_regex = 's/localhost/' + mysql_ip + '/g'
 		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
+		    sh "echo pwd"
+		    sh "cat plwordnetMobileService/src/main/resources/application.properties"
 		}
 	    }
 	}
