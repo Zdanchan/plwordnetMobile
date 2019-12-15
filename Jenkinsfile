@@ -12,7 +12,7 @@ pipeline {
 		    mysql_ip = sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql"
 		    replace_regex = 's/localhost/' + mysql_ip + '/g'
 		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
-		    echo plwordnetMobileService/src/main/resources/application.properties
+		    sh "echo plwordnetMobileService/src/main/resources/application.properties"
 		}
 	    }
 	}
