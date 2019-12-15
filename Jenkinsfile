@@ -3,6 +3,7 @@ pipeline {
     environment {
         registry = "plwordnetmobile-service"
         dockerImage = ''
+	mysql_ip = 'localhost'
     }
     stages {
         stage('build'){
@@ -12,8 +13,7 @@ pipeline {
                 }
             }
             steps {
-		sh "mysql_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql)"
-		sh "sed 's/localhost/$mysql_ip/g' plwordnetMobileService/src/main/resources/application.properties > plwordnetMobileService/src/main/resources/application.properties"
+		sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql | sed 's/localhost/$?/g' plwordnetMobileService/src/main/resources/application.properties > plwordnetMobileService/src/main/resources/application.properties"
                 sh 'gradle -p plwordnetMobileService/ clean build'
                 stash includes: 'plwordnetMobileService/build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
             }     
