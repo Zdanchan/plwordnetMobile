@@ -6,18 +6,6 @@ pipeline {
 	mysql_ip = 'localhost'
     }
     stages {
-	stage('Setup property files') {
-	    steps {
-		script {
-		    sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql > mysql_ip"
-		    mysql_ip =readFile('mysql_ip').trim()
-		    replace_regex = 's/localhost/' + mysql_ip + '/g'
-		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
-		    sh "echo pwd"
-		    sh "cat plwordnetMobileService/src/main/resources/application.properties"
-		}
-	    }
-	}
         stage('Build'){
             agent {
                 docker {
@@ -26,6 +14,10 @@ pipeline {
             }
             steps {
 		script {
+		    sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql > mysql_ip"
+		    mysql_ip =readFile('mysql_ip').trim()
+		    replace_regex = 's/localhost/' + mysql_ip + '/g'
+		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
                     sh 'gradle -p plwordnetMobileService/ clean build'
                     stash includes: 'plwordnetMobileService/build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
 		}
