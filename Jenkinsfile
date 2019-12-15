@@ -13,7 +13,7 @@ pipeline {
             }
             steps {
                 sh 'gradle -p plwordnetMobileService/ clean build'
-                stash includes: '/build/libs/*.jar', name: 'targetfiles'
+                stash includes: 'build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
             }     
         }
         stage('Test') {
