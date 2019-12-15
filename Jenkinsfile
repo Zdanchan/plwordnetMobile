@@ -23,7 +23,6 @@ pipeline {
                 }
             }
             steps {
-                cd 'plwordnetMobileService'
                 sh 'gradle -p plwordnetMobileService/ test'
             }
         }
