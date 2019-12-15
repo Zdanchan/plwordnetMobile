@@ -13,7 +13,7 @@ pipeline {
                 }
             }
             steps {
-		sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql | sed 's/localhost/$?/g' plwordnetMobileService/src/main/resources/application.properties > plwordnetMobileService/src/main/resources/application.properties"
+		sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql | sed 's/localhost/${?}/g' plwordnetMobileService/src/main/resources/application.properties > plwordnetMobileService/src/main/resources/application.properties"
                 sh 'gradle -p plwordnetMobileService/ clean build'
                 stash includes: 'plwordnetMobileService/build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
             }     
