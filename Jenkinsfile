@@ -9,7 +9,7 @@ pipeline {
 	stage('Setup property files') {
 	    steps {
 		script {
-		    mysql_ip = docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql
+		    sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql > mysql_ip"
 		    replace_regex = 's/localhost/' + mysql_ip + '/g'
 		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
 		    sh "cat plwordnetMobileService/src/main/resources/application.properties"
