@@ -8,7 +8,7 @@ pipeline {
         stage('build'){
             agent {
                 docker {
-                    image 'gradle:jdk8'
+                    image 'gradle:4.6-jdk8'
                 }
             }
             steps {
@@ -19,7 +19,7 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'gradle:jdk8'
+                    image 'gradle:4.6-jdk8'
                 }
             }
             steps {
