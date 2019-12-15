@@ -70,13 +70,5 @@ pipeline {
 		}
 	    }
 	}
-        stage('Building stable backup image') {
-            steps{
-                script {
-		    sh "docker rmi -f $registry-backup:latest || true"
-                    dockerImageBackup = docker.build registry + "-backup:latest"
-                }
-            }
-        }
     }
 }
