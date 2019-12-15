@@ -8,6 +8,7 @@ services:
    - MYSQL_ROOT_PASSWORD=plw0rdn3t2018
   ports:
    - '33060:33060'
+   - '3306:3306'
  plwordnetmobile-jenkins:
   container_name: plwordnetmobile-jenkins
   build:

@@ -6,7 +6,16 @@ pipeline {
 	mysql_ip = 'localhost'
     }
     stages {
-        stage('build'){
+	stage('Setup property files') {
+	    steps {
+		script {
+		    mysql_ip = sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql"
+		    replace_regex = 's/localhost/' + mysql_ip + '/g'
+		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
+		}
+	    }
+	}
+        stage('Build'){
             agent {
                 docker {
                     image 'gradle:4.6-jdk8'
@@ -14,9 +23,6 @@ pipeline {
             }
             steps {
 		script {
-		    mysql_ip = sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql"
-		    replace_regex = 's/localhost/' + mysql_ip + '/g'
-		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
                     sh 'gradle -p plwordnetMobileService/ clean build'
                     stash includes: 'plwordnetMobileService/build/libs/plwordnetmobile-service.jar', name: 'targetfiles'
 		}
@@ -40,7 +46,7 @@ pipeline {
 		}
 	    }
 	}
-        stage('Remove Unused docker image') {
+        stage('Remove unused docker image') {
             steps{
                 script {
                     sh "docker rmi -f $registry:latest"
