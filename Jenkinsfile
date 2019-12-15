@@ -66,7 +66,7 @@ pipeline {
 	stage('Deploy container') {
 	    steps{
 	        script {
-		    sh "docker run --name plwordnetmobile-service -p 8080:8080 $registry:latest"
+		    sh "docker run -d -t --link plwordnetmobile-mysql:mysql --name plwordnetmobile-service -p 8080:8080 $registry:latest"
 		}
 	    }
 	}
