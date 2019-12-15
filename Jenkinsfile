@@ -29,7 +29,7 @@ pipeline {
         stage('Remove Unused docker image') {
             steps{
                 script {
-                    sh "docker rmi -f $registry:$BUILD_NUMBER"
+                    sh "docker rmi -f $registry:latest"
                 }
             }
         }
@@ -38,16 +38,16 @@ pipeline {
                 script {
                     unstash 'targetfiles'
                     sh 'ls -l -R'
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":latest"
                 }
             }
         }
-        stage('Deploy Image') {
-            steps{
-                script {
-                    dockerImage.withRun('-p 8080:8080')
-                }
-            }
-        }
+	stage('Deploy container') {
+	    steps{
+	        script {
+		    sh "docker run --name plwordnetmobile-service -p 8080:8080 $registry:latest"
+		}
+	    }
+	}
     }
 }
