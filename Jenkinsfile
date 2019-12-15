@@ -26,6 +26,14 @@ pipeline {
                 sh 'gradle -p plwordnetMobileService/ test'
             }
         }
+	stage('Stop old container') {
+	    steps{
+		script {
+		    sh "docker stop $registry"
+		    sh "docker rm -f $registry"
+		}
+	    }
+	}
         stage('Remove Unused docker image') {
             steps{
                 script {
@@ -49,5 +57,12 @@ pipeline {
 		}
 	    }
 	}
+        stage('Building stable backup image') {
+            steps{
+                script {
+                    dockerImageBackup = docker.build registry + "-backup:latest"
+                }
+            }
+        }
     }
 }
