@@ -10,8 +10,7 @@ pipeline {
 	    steps {
 		script {
 		    sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' plwordnetmobile-mysql > mysql_ip"
-		    def output=readFile('mysql_ip').trim()
-		    echo "mysql_ip=$output";
+		    mysql_ip =readFile('mysql_ip').trim()
 		    replace_regex = 's/localhost/' + mysql_ip + '/g'
 		    sh "sed -i $replace_regex plwordnetMobileService/src/main/resources/application.properties"
 		    sh "cat plwordnetMobileService/src/main/resources/application.properties"
