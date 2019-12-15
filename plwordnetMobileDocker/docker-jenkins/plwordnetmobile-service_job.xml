@@ -19,7 +19,6 @@
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         <com.github.kostyasha.github.integration.branch.GitHubBranchTrigger plugin="github-pullrequest@0.2.6">
-          <spec>*/5 * * * *</spec>
           <triggerMode>HEAVY_HOOKS</triggerMode>
           <cancelQueued>false</cancelQueued>
           <abortRunning>false</abortRunning>

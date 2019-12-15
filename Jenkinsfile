@@ -29,8 +29,8 @@ pipeline {
 	stage('Stop old container') {
 	    steps{
 		script {
-		    sh "docker stop $registry"
-		    sh "docker rm -f $registry"
+		    sh "docker stop $registry || true"
+		    sh "docker rm -f $registry || true"
 		}
 	    }
 	}
@@ -60,6 +60,7 @@ pipeline {
         stage('Building stable backup image') {
             steps{
                 script {
+		    sh "docker rmi -f $registry-backup:latest || true"
                     dockerImageBackup = docker.build registry + "-backup:latest"
                 }
             }
