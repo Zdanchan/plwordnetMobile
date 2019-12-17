@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        stage('Scan SCM for updates'){
+            steps {
+                script {
+                    sh "touch last_commit"
+                    last_commit_local =readFile('last_commit').trim()
+                    sh "git log origin/stable/current -1 --format=%cd"
+                    last_commit_github =readFile('last_commit').trim()
+                    sh "echo $last_commit_local" 
+                    sh "echo last_commit_github" 
+                    if (last_commit_local == last_commit_github) {
+                        echo "New stable version found - triggering service rebuild"
+                    } else {
+                        echo "No new stable version found - skipping service rebuild"
+                    }
+                }
+            }
+        }
+        
+    }
+}
