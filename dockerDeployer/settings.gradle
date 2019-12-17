@@ -1,5 +1,0 @@
-def path = file('..').getAbsolutePath()
-
-rootProject.name = 'plwordnetmobile-root'
-rootProject.projectDir = new File(path + "/plwordnetmobileRoot")
-

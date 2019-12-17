@@ -3,12 +3,9 @@ def path = file('..').getAbsolutePath()
 
 include 'plwordnetMobileService'
 include 'plwordnetMobileApp'
-include 'dockerDeployer'
 
 project(":plwordnetMobileService").name = "plwordnetmobile-service"
 project(":plwordnetMobileApp").name = "plwordnetmobile-app"
-project(":dockerDeployer").name = "docker-deployer"
 
 project(':plwordnetmobile-service').projectDir = new File (path + "/plwordnetMobileService")
 project(':plwordnetmobile-app').projectDir = new File (path + "/plwordnetMobileApp")
-project(':docker-deployer').projectDir = new File (path + "/dockerDeployer")
