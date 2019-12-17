@@ -2,10 +2,12 @@ FROM jenkins/jenkins:lts
 
 ARG HOST_DOCKER_GROUP_ID
 ARG job_name_1="plwordnetmobile-service"
+ARG job_name_2="plwordnetmobile-SCM-scanner"
 
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 COPY plwordnetmobile-service_job.xml "$JENKINS_HOME"/jobs/${job_name_1}/config.xml  
+COPY plwordnetmobile-scm-scanner_job.xml "$JENKINS_HOME"/jobs/${job_name_2}/config.xml  
 COPY security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
 
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
