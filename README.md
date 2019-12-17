@@ -6,14 +6,11 @@
 # Project Overview
 Project is split on several modules containing source files, configurations and resources used to create "plWordNet GO!" app.
 
-## dockerDeployer
-Module used as tool to deploy built spring service and start it inside docker.
-
 ## plwordnetMobileApp
 Module contains source code of android "plWordNet GO!" application.
 
 ## plwordnetMobileDocker
-Module contains files necessary to configure "plWordNet GO!" spring service on server side inside docker container.
+Module contains files necessary to configure "plWordNet GO!" Continuous integration and spring service on server side.
 
 ## plwordnetMobileResources
 Module contains only images used in "plWordnetGO!" app and editable .xcf files for GIMP editor.

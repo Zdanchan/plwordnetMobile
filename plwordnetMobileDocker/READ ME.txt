@@ -1,13 +1,14 @@
-0) edit launch_configuration.sh file and replace all "<insert_database_file>" with name of the SQL database insert file and all "<wordnet_android_password>" with password assigned to SQL database user which is plWordNetMobile-Service
-1) docker build -t plwordnetmobile_service:1.0 - < plwordnet_docker/Dockerfile
-2) docker run --name=plwordnetmobile_server --env="MYSQL_ROOT_PASSWORD=<mysql_root_password>" --publish 8080:8080 <image_name or id>
-3) docker cp plwordnet_docker/<insert_database_file>.sql plwordnetmobile_server:/data/<insert_database_file>.sql
-4) docker cp plwordnet_docker/launch_configuration.sh plwordnetmobile_server:/data/launch_configuration.sh
-5) docker cp plwordnet_docker/git-organiser.sh plwordnetmobile_server:/data/git-organiser.sh
-6) docker exec -it plwordnetmobile_server /bin/bash
-7) cd data
-8) source ./launch_configuration.sh
-9) accept agreement when needed and pass <mysql_root_password> when needed
-10) gradle -p /data/plwordnetMobile-repo/plwordnetmobileRoot build
-11) gradle -p /data/plwordnetMobile-repo/dockerDeployer deploySpringServiceToDocker
-12) nohup java -jar /data/plwordnetMobile-spring-service/plwordnetmobile-service.jar &
+1) ./rebuild.sh
+Builds all images and start all dockers simply use this script (it also stops and removes old containers if necessary)
+
+2) ./stop_all.sh
+Stops all plwordnetmobile related containers
+
+3) ./remove_all.sh
+Stops and removes all plwordnetmobile related containers and images
+
+4) ./configure_token.sh MY_TOKEN OLD_TOKEN(optional)
+Configures connection token for triggering Jenkins job (must be used before rebuilding). If replacing old token with new must be provided as second parameter.
+
+5) ./start_all.sh
+Starts all plwordnetmobile related containers
