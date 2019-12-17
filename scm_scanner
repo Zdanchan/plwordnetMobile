@@ -11,9 +11,10 @@ pipeline {
                     sh "echo $last_commit_local" 
                     sh "echo $last_commit_github" 
                     if (last_commit_local == last_commit_github) {
-                        echo "New stable version found - triggering service rebuild"
+			echo "No new stable version found - skipping service rebuild"
                     } else {
-                        echo "No new stable version found - skipping service rebuild"
+                        echo "New stable version found - triggering service rebuild"
+			sh "curl --silent -I -u admin:admin http://localhost:8080/job/plwordnetmobile-service/build?token=MY_TOKEN"
                     }
                 }
             }
