@@ -1,9 +1,8 @@
 OLD="MY_TOKEN"
 
-if [! -z "$1" ]
+if [ ! -z "$1" ]
 then
-
-	if [ -z "$2" ]
+	if [ ! -z "$2" ]
 	then
       		OLD=$2
 	fi
